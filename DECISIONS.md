@@ -116,6 +116,35 @@ The local-model variant (self-host to avoid API costs) was considered. The cross
 
 ---
 
+## Federalist corpus: source, schema, and editorial calls
+
+**Decision:** Federalist Papers Phase 0 corpus is sourced from Project Gutenberg eBook #1404 (SHA-256 recorded in `data/federalist/raw/pg1404.sha256`), parsed by `data/federalist/parse.ts` into a single `data/federalist/federalist.json`, with a small set of editorial calls baked into the parse.
+
+**Source choice — PG #1404 over alternatives:**
+- PG #1404 is the most widely-used clean transcription of the McLean's bound edition. Single file, well-maintained.
+- The Avalon Project (Yale) is the canonical online citation source but lacks a single bulk-download. Used as a spot-check reference, not a primary source.
+- Library of Congress hosts the text but in a less convenient form. Same role as Avalon: spot-check reference.
+- Spot-check method (5 papers' canonical incipits: 1, 10, 51, 70, 78) was approved over a systematic line-by-line cross-edition diff, which is deferred until the editorial pipeline that produces `plain_english`.
+
+**Schema decisions:**
+- Single JSON file rather than per-paper files. 85 entries is small; one file is easier to load, diff, and edit.
+- Top-level `source` block rather than per-paper `source`. Every paper comes from the same edition; per-paper would be redundant.
+- Disputed twelve (49–58, 62, 63) tagged `authorship_status: "disputed"` with `attributed_author: "Madison"`, following Mosteller-Wallace (1964). The historical claim by Hamilton is preserved in `authorship_note`, not erased.
+- Joint papers (18, 19, 20) tagged `authorship_status: "joint"` with `attributed_author: "Hamilton and Madison"`. PG byline ("MADISON, with HAMILTON") is preserved in the raw file and acknowledged in the note.
+- `plain_english`, `constitutional_section`, `topic_tags` are stub fields, all `null`/`[]` in Phase 0. Reserved for later phases. The `plain_english` stub was added at the project owner's explicit request to lock the schema shape now and avoid migration churn when the rendering work begins.
+
+**Editorial calls in the parse:**
+- Salutation ("To the People of the State of New York:") is preserved as `paragraphs[0]` on every paper. It is part of each paper as published.
+- Closing `PUBLIUS` signature is stripped — metadata, not body.
+- Footnotes that appear after the signature (paper 1, 78, etc.) are preserved as trailing paragraphs in the same array. Splitting them into a dedicated field is deferred until the footnote presentation standard is set.
+- One transcription typo found in PG #1404 (paper 26's dateline reads "1788" instead of "1787"). Corrected to "1787-12-22" after the project owner verified the correct date against Founders Online (https://founders.archives.gov/documents/Hamilton/01-04-02-0183), Teaching American History, Ballotpedia, and Wikipedia. The correction is encoded in a `CORRECTIONS` map in `parse.ts` keyed by paper number, and logged in `data/federalist/data_quality_issues.md` with the cited sources. The parser refuses to apply a correction unless the `from` value matches what it actually parsed, so an upstream fix to PG #1404 will fail loudly rather than re-corrupt the data.
+
+**Editorial standard for source deviations:** Do not silently overwrite the source. Any deviation between the structured corpus and the raw source must either (a) be applied as a logged correction with cited external sources verified by the project owner, or (b) be left as-is and surfaced as an open issue for editorial review. The diagnosis discipline in CLAUDE.md applies — own the call, document the reasoning, make the deviation auditable.
+
+**Revisit if:** A different source edition becomes preferable (e.g., a critically-edited digital edition with stable paragraph IDs); footnote handling needs to be split out; cross-paper citation IDs become necessary.
+
+---
+
 ## Monetization: deferred
 
 **Decision:** Do not decide monetization model until after launch and first real user cohort.
