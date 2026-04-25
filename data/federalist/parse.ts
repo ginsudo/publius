@@ -87,6 +87,46 @@ const CORRECTIONS: Record<number, Correction[]> = {
   ],
 };
 
+// Source-text fixups: precondition-checked raw-text replacements applied
+// per-paper BEFORE block parsing. Sibling mechanism to CORRECTIONS, which
+// operates on parsed field values AFTER extraction. Same editorial discipline:
+// each fixup names the paper, the substring to replace, the replacement, the
+// reason, and the external sources verified by the project owner. The raw
+// file on disk is never modified — fixups live in this script and are applied
+// to an in-memory copy of each paper's slice. Each `from` must match exactly
+// one occurrence in the slice; both zero matches and multiple matches throw.
+type SourceFixup = {
+  paper: number;
+  from: string;
+  to: string;
+  reason: string;
+  sources: string[];
+};
+const SOURCE_FIXUPS: SourceFixup[] = [
+  {
+    paper: 11,
+    from: 'PUBLIUS "Recherches philosophiques sur les Americains."',
+    to: 'PUBLIUS\n\n1. "Recherches philosophiques sur les Americains."',
+    reason: 'PG #1404 mashes the closing PUBLIUS signature onto the same line as Hamilton\'s footnote 1 citation. The inline reference (1) in the body refers to Cornelius de Pauw\'s "Recherches philosophiques sur les Américains" (Berlin, 1768), which Hamilton cites as the source of the "American degeneracy" thesis Madison-style mocks (the dogs-cease-to-bark passage). The fixup splits PUBLIUS and footnote 1 onto separate lines so the footnote parses normally; the inline (1) marker in the body then resolves to the reconstructed footnote.',
+    sources: [
+      'Cornelius de Pauw, "Recherches philosophiques sur les Américains, ou Mémoires intéressants pour servir à l\'histoire de l\'espèce humaine" (Berlin, 1768) — the work Hamilton\'s footnote cites.',
+      'The Avalon Project (Yale Law School) — Federalist No. 11.',
+      'Founders Online (National Archives) — Federalist No. 11.',
+    ],
+  },
+  {
+    paper: 37,
+    from: 'by delays or by new experiments.',
+    to: 'by delays or by new experiments.\n\nPUBLIUS',
+    reason: 'PG #1404 omits the closing PUBLIUS signature for Madison\'s paper 37; canonical editions place it after the final paragraph. Paper 37 has no footnotes (verified: zero inline (N) markers in body), so the missing signature is a pure transcription omission with no missing footnote material behind it. The fixup restores structural uniformity with the other 84 papers and removes a special case for any downstream tooling that assumes PUBLIUS is the body terminator.',
+    sources: [
+      'The Avalon Project (Yale Law School) — Federalist No. 37.',
+      'Founders Online (National Archives) — Federalist No. 37.',
+      "McLean's bound edition (1788).",
+    ],
+  },
+];
+
 type Footnote = {
   marker: string;
   paragraphs: string[];
@@ -116,12 +156,38 @@ type Item = {
 };
 
 const issues: string[] = [];
+const acknowledgedQuirks: string[] = [];
+const sourceFixupsApplied: SourceFixup[] = [];
 const items: Item[] = [];
+
+// Group fixups by paper number for per-paper application.
+const FIXUPS_BY_PAPER = new Map<number, SourceFixup[]>();
+for (const fx of SOURCE_FIXUPS) {
+  const list = FIXUPS_BY_PAPER.get(fx.paper) ?? [];
+  list.push(fx);
+  FIXUPS_BY_PAPER.set(fx.paper, list);
+}
 
 for (let i = 0; i < headings.length; i++) {
   const h = headings[i];
   const blockEnd = i + 1 < headings.length ? headings[i + 1].index : text.length;
-  const block = text.slice(h.lineEnd, blockEnd);
+  let block = text.slice(h.lineEnd, blockEnd);
+
+  // Apply per-paper source-text fixups before any parsing. Each fixup's `from`
+  // must match exactly one occurrence in the block — both zero matches and
+  // multiple matches throw, so an upstream PG #1404 update will fail the
+  // build rather than silently re-corrupt or apply twice.
+  for (const fx of FIXUPS_BY_PAPER.get(h.num) ?? []) {
+    const occurrences = block.split(fx.from).length - 1;
+    if (occurrences === 0) {
+      throw new Error(`Paper ${h.num}: source fixup precondition failed — \`from\` substring not found in block. Source may have been updated upstream — review before re-applying.`);
+    }
+    if (occurrences > 1) {
+      throw new Error(`Paper ${h.num}: source fixup ambiguous — \`from\` substring matches ${occurrences} times in block; expected exactly one match. Tighten the \`from\` string.`);
+    }
+    block = block.replace(fx.from, fx.to);
+    sourceFixupsApplied.push(fx);
+  }
 
   const dateMatch = block.match(DATE_RE);
   if (!dateMatch) {
@@ -237,7 +303,12 @@ for (let i = 0; i < headings.length; i++) {
       throw new Error(`Paper ${h.num}: trailing material after PUBLIUS does not match footnote pattern: "${para.slice(0, 80)}"`);
     }
     if (m[2] === '') {
-      issues.push(`- Paper ${h.num}: footnote ${m[1]} in PG #1404 is missing the period after the marker (rendered as \`${m[1]} \` rather than the canonical \`${m[1]}. \`). Footnote stored as parsed; flag for editorial review.`);
+      // Cosmetic source-side typo (e.g., paper 24 footnote 1). The parsed
+      // footnote is structurally correct and the inline marker resolves.
+      // Owner-acknowledged as no-action in DECISIONS.md; surfaced here so
+      // the discrepancy with PG #1404 remains auditable without polluting
+      // the open-issues queue that needs editorial attention.
+      acknowledgedQuirks.push(`- Paper ${h.num}: footnote ${m[1]} in PG #1404 is missing the period after the marker (rendered as \`${m[1]} \` rather than the canonical \`${m[1]}. \`). Cosmetic source-side typo; parsed footnote is structurally correct and inline marker resolves. No action needed.`);
     }
     footnotes.push({ marker: `(${m[1]})`, paragraphs: [m[3]] });
   }
@@ -356,7 +427,7 @@ const corpus = {
     url: 'https://www.gutenberg.org/ebooks/1404',
     sha256,
     fetched: new Date().toISOString().slice(0, 10),
-    notes: 'Single-source, single-edition. CRLF line endings normalized to LF before parsing. Closing PUBLIUS signature lines stripped. Footnotes that PG #1404 prints after the signature (formatted as `N. Footnote text…` blocks) are extracted into the universal `footnotes` field per data/SCHEMA.md; inline reference form `(N)` is preserved verbatim in `paragraphs`.',
+    notes: 'Single-source, single-edition. CRLF line endings normalized to LF before parsing. Closing PUBLIUS signature lines stripped. Footnotes that PG #1404 prints after the signature (formatted as `N. Footnote text…` blocks) are extracted into the universal `footnotes` field per data/SCHEMA.md; inline reference form `(N)` is preserved verbatim in `paragraphs`. Owner-verified source-text fixups (precondition-checked) are applied per-paper before block parsing for documented PG #1404 transcription anomalies; see data_quality_issues.md for the full audit trail.',
   },
   count: items.length,
   items,
@@ -364,12 +435,25 @@ const corpus = {
 
 writeFileSync(OUT_PATH, JSON.stringify(corpus, null, 2) + '\n');
 
+const indent = (s: string, n = 4) => s.split('\n').map((l) => ' '.repeat(n) + l).join('\n');
+
+const sourceFixupsSection = sourceFixupsApplied.length === 0
+  ? '_No source-text fixups applied._\n'
+  : sourceFixupsApplied.map((fx) => {
+      const sourceLines = fx.sources.map((s) => `    - ${s}`).join('\n');
+      return `- **Paper ${fx.paper}, raw text**: replaced \`from\` substring with \`to\` substring (precondition: exactly one occurrence of \`from\` must exist in the per-paper block).\n  - \`from\`:\n${indent('```\n' + fx.from + '\n```', 4)}\n  - \`to\`:\n${indent('```\n' + fx.to + '\n```', 4)}\n  - Reason: ${fx.reason}\n  - Sources verified by project owner:\n${sourceLines}`;
+    }).join('\n\n') + '\n';
+
 const correctionsSection = correctionsApplied.length === 0
-  ? '_No corrections applied._\n'
+  ? '_No field corrections applied._\n'
   : correctionsApplied.map((c) => {
       const sourceLines = c.sources.map((s) => `    - ${s}`).join('\n');
       return `- **Paper ${c.number}, \`${c.field}\`**: corrected from \`${c.from}\` to \`${c.to}\`.\n  - Reason: ${c.reason}\n  - Sources verified by project owner:\n${sourceLines}`;
     }).join('\n\n') + '\n';
+
+const acknowledgedSection = acknowledgedQuirks.length === 0
+  ? '_No acknowledged quirks._\n'
+  : acknowledgedQuirks.join('\n') + '\n';
 
 const issuesSection = issues.length === 0
   ? '_No open issues._\n'
@@ -379,13 +463,23 @@ const issuesDoc = `# Federalist corpus — data quality
 
 This file is regenerated by \`parse.ts\` on every run.
 
-The editorial standard is: do not silently overwrite the source. Any deviation between \`federalist.json\` and Project Gutenberg #1404 must either (a) be applied as a logged correction with cited external sources verifying the correct value, or (b) be left as-is and surfaced as an open issue for editorial review.
+The editorial standard is: do not silently overwrite the source. Any deviation between \`federalist.json\` and Project Gutenberg #1404 must either (a) be applied as a logged correction or fixup with cited external sources verifying the correct value, or (b) be left as-is and surfaced as an open issue for editorial review. Cosmetic source-side typos that don't affect the parsed structure can be marked as acknowledged quirks (no action) once the project owner has reviewed them.
 
-## Corrections applied
+## Source-text fixups applied
 
-These are values where \`federalist.json\` differs from PG #1404. The \`from\` value is what PG #1404 contains; the \`to\` value is what the JSON now stores. The parser refuses to apply a correction unless the \`from\` value matches what it actually parsed — so if PG #1404 is ever updated upstream and the typo is fixed there, this script will fail loudly rather than re-corrupt the data.
+Owner-verified raw-text replacements applied per-paper BEFORE block parsing. Sibling mechanism to field corrections (below); operates on the source text rather than parsed values. Each fixup's \`from\` substring must match exactly one occurrence in the per-paper block — both zero matches and multiple matches throw, so if PG #1404 is ever updated upstream and the anomaly is fixed there, this script will fail loudly rather than silently re-corrupt or apply twice.
+
+${sourceFixupsSection}
+## Field corrections applied
+
+Owner-verified corrections applied to parsed field values AFTER extraction. The \`from\` value is what PG #1404 contains; the \`to\` value is what the JSON now stores. Same precondition discipline as source-text fixups.
 
 ${correctionsSection}
+## Acknowledged quirks (no action)
+
+PG #1404 anomalies the project owner has reviewed and explicitly chosen not to fix because they don't affect the parsed structure. Surfaced here so the discrepancy with PG #1404 remains auditable, but kept out of the open-issues queue that needs editorial attention.
+
+${acknowledgedSection}
 ## Open issues
 
 Anomalies parsed faithfully from PG #1404 and surfaced here for editorial review. These have NOT been corrected; they remain as the source has them.
@@ -397,7 +491,9 @@ console.log(`Wrote ${items.length} items to ${OUT_PATH}`);
 console.log(`Source SHA256: ${sha256}`);
 console.log(`Disputed: ${[...DISPUTED].sort((a, b) => a - b).join(', ')}`);
 console.log(`Joint: ${[...JOINT].sort((a, b) => a - b).join(', ')}`);
-console.log(`Corrections applied: ${correctionsApplied.length}`);
+console.log(`Source-text fixups applied: ${sourceFixupsApplied.length}`);
+console.log(`Field corrections applied: ${correctionsApplied.length}`);
+console.log(`Acknowledged quirks: ${acknowledgedQuirks.length}`);
 console.log(`Open issues: ${issues.length}`);
 const papersWithFootnotes = items.filter((it) => it.footnotes.length > 0);
 const totalFootnotes = items.reduce((acc, it) => acc + it.footnotes.length, 0);

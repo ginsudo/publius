@@ -156,7 +156,7 @@ The local-model variant (self-host to avoid API costs) was considered. The cross
 **Editorial calls in the parse:**
 - Salutation ("To the People of the State of New York:") is preserved as `paragraphs[0]` on every paper. It is part of each paper as published.
 - Closing `PUBLIUS` signature is stripped — metadata, not body.
-- Footnotes are structured in the universal `footnotes` field per `data/SCHEMA.md` (see "Footnotes: universal schema field" decision below). PG #1404's trailing-after-PUBLIUS blocks are split out by the parser. Three PG #1404 transcription quirks surface during this split — paper 11 (malformed PUBLIUS line), paper 24 (missing-period marker), paper 37 (missing PUBLIUS) — left as parsed and logged in `data_quality_issues.md` rather than silently fixed up.
+- Footnotes are structured in the universal `footnotes` field per `data/SCHEMA.md` (see "Footnotes: universal schema field" decision below). PG #1404's trailing-after-PUBLIUS blocks are split out by the parser. Three PG #1404 transcription quirks surface during this split — paper 11 (PUBLIUS line concatenated with footnote 1 citation), paper 37 (closing PUBLIUS missing entirely), paper 24 (footnote 1 missing the period after the marker). Editorial calls applied: papers 11 and 37 restored via owner-verified `SOURCE_FIXUPS` with cited sources (see "Federalist SOURCE_FIXUPS" decision below); paper 24 acknowledged as a cosmetic source-side typo that parses correctly anyway. All three are documented in `data_quality_issues.md`.
 - One transcription typo found in PG #1404 (paper 26's dateline reads "1788" instead of "1787"). Corrected to "1787-12-22" after the project owner verified the correct date against Founders Online (https://founders.archives.gov/documents/Hamilton/01-04-02-0183), Teaching American History, Ballotpedia, and Wikipedia. The correction is encoded in a `CORRECTIONS` map in `parse.ts` keyed by paper number, and logged in `data/federalist/data_quality_issues.md` with the cited sources. The parser refuses to apply a correction unless the `from` value matches what it actually parsed, so an upstream fix to PG #1404 will fail loudly rather than re-corrupt the data. The verbatim PG dateline (with the typo) is preserved per-item in `federalist.publication.raw_dateline` so any reader can see the discrepancy without consulting the raw source file.
 
 **Editorial standard for source deviations:** Do not silently overwrite the source. Any deviation between the structured corpus and the raw source must either (a) be applied as a logged correction with cited external sources verified by the project owner, or (b) be left as-is and surfaced as an open issue for editorial review. The diagnosis discipline in CLAUDE.md applies — own the call, document the reasoning, make the deviation auditable.
@@ -183,9 +183,30 @@ The local-model variant (self-host to avoid API costs) was considered. The cross
 - Single string for footnote body. Rejected: SCOTUS and Tocqueville footnotes regularly run multiple paragraphs of analysis; the `paragraphs[]` shape mirrors the item-level body and a single-paragraph footnote is a one-element array.
 - Back-reference field on each footnote (paragraph index that references it). Rejected: derivable from inline marker; storing introduces a brittle redundancy that can drift from the canonical source.
 
-**Federalist migration shipped with this decision:** `data/federalist/parse.ts` regenerated; trailing-after-PUBLIUS blocks moved from `paragraphs[]` into `footnotes[]`; inline `(N)` markers preserved verbatim; PG #1404 transcription quirks (papers 11, 24, 37) surfaced as data-quality issues rather than auto-fixed.
+**Federalist migration shipped with this decision:** `data/federalist/parse.ts` regenerated; trailing-after-PUBLIUS blocks moved from `paragraphs[]` into `footnotes[]`; inline `(N)` markers preserved verbatim. PG #1404 transcription quirks surfaced by the migration (papers 11, 24, 37) were resolved per the editorial standard — see "Federalist SOURCE_FIXUPS" below.
 
 **Revisit if:** A new corpus brings a footnote pattern these primitives can't express (e.g., footnotes that themselves contain structured citation metadata worth typing). Until then, additive — no version bump.
+
+---
+
+## Federalist SOURCE_FIXUPS: raw-text corrections layer
+
+**Decision:** Add a `SOURCE_FIXUPS` array to `data/federalist/parse.ts` as a sibling mechanism to `CORRECTIONS`. Each entry is `{ paper, from, to, reason, sources[] }` and is applied to the per-paper text slice *before* block parsing. Precondition: the `from` substring must match exactly one occurrence in the per-paper block — both zero matches and multiple matches throw, so an upstream fix to PG #1404 (or a duplicated fixup) fails loudly rather than silently re-corrupting or applying twice.
+
+**Why a separate mechanism from CORRECTIONS:** Both layers carry owner-verified deviations from the source with cited sources, and both follow the same precondition discipline. They differ in *what* they correct:
+- `CORRECTIONS` repairs a parsed *field value* (e.g., a date) after extraction — used when the source text parses cleanly but a parsed value is wrong.
+- `SOURCE_FIXUPS` repairs the *raw text* before extraction — used when the source text itself is structurally malformed in a way that breaks the parser (a missing line break, a missing terminator). Field-level correction can't reach these cases because the structural defect prevents the field from being extracted at all.
+
+Keeping them as parallel layers (rather than merging into one) makes it explicit at which stage of the pipeline a deviation is being applied, and keeps the data-quality log auditable in two cleanly separated sections.
+
+**Editorial calls applied (Phase 0):**
+- **Paper 11 (raw-text fixup).** PG #1404 mashes Hamilton's closing `PUBLIUS` signature onto the same line as footnote 1's citation: `PUBLIUS "Recherches philosophiques sur les Americains."`. The inline reference (1) in the body refers to Cornelius de Pauw's *Recherches philosophiques sur les Américains* (Berlin, 1768), which Hamilton cites as the source of the "American degeneracy" thesis Madison-style mocks (the dogs-cease-to-bark passage). The fixup splits PUBLIUS and footnote 1 onto separate lines. Sources verified by project owner: de Pauw (1768), Avalon Project, Founders Online.
+- **Paper 37 (raw-text fixup).** PG #1404 omits the closing `PUBLIUS` signature for Madison's paper 37; canonical editions place it after the final paragraph. Paper 37 has no footnotes (verified: zero inline `(N)` markers), so the missing signature is a pure transcription omission with no missing footnote material behind it. The fixup appends `PUBLIUS` after the final body line, restoring structural uniformity with the other 84 papers and removing a special case for downstream tooling that assumes PUBLIUS is the body terminator. Sources verified by project owner: Avalon Project, Founders Online, McLean's bound edition (1788).
+- **Paper 24 (acknowledged quirk; no action).** PG #1404 renders footnote 1's marker as `1 ` rather than the canonical `1. ` (missing the period after the marker). The parser accepts this via a tolerant marker regex; the parsed footnote is structurally correct and the inline marker resolves. Logged as an acknowledged source-side typo to keep the discrepancy with PG #1404 auditable, but kept out of the open-issues queue.
+
+**Outcome:** `data_quality_issues.md` is auto-regenerated by every parser run with four sections — source-text fixups, field corrections, acknowledged quirks, open issues. Phase 0 final state: 2 fixups, 1 correction, 1 acknowledged quirk, 0 open issues.
+
+**Revisit if:** A new PG #1404 anomaly is discovered that requires a different correction shape (e.g., a multi-occurrence replacement, or a fixup that needs to delete content rather than replace it). For now, the single-occurrence string-replace primitive covers every case found.
 
 ---
 
