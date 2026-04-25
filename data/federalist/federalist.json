@@ -1,4 +1,5 @@
 {
+  "corpus": "federalist",
   "source": {
     "edition": "Project Gutenberg eBook #1404 — The Federalist Papers",
     "url": "https://www.gutenberg.org/ebooks/1404",
@@ -7,17 +8,16 @@
     "notes": "Single-source, single-edition. CRLF line endings normalized to LF before parsing. Closing PUBLIUS signature lines stripped. Paragraphs preserve order including any footnote material that appears after the signature in the source."
   },
   "count": 85,
-  "papers": [
+  "items": [
     {
-      "number": 1,
+      "id": "federalist:1",
+      "corpus": "federalist",
       "title": "General Introduction",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1787-10-27"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1787-10-27",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "AFTER an unequivocal experience of the inefficacy of the subsisting federal government, you are called upon to deliberate on a new Constitution for the United States of America. The subject speaks its own importance; comprehending in its consequences nothing less than the existence of the UNION, the safety and welfare of the parts of which it is composed, the fate of an empire in many respects the most interesting in the world. It has been frequently remarked that it seems to have been reserved to the people of this country, by their conduct and example, to decide the important question, whether societies of men are really capable or not of establishing good government from reflection and choice, or whether they are forever destined to depend for their political constitutions on accident and force. If there be any truth in the remark, the crisis at which we are arrived may with propriety be regarded as the era in which that decision is to be made; and a wrong election of the part we shall act may, in this view, deserve to be considered as the general misfortune of mankind.",
@@ -34,18 +34,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 1,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Saturday, October 27, 1787"
+        }
+      }
     },
     {
-      "number": 2,
+      "id": "federalist:2",
+      "corpus": "federalist",
       "title": "Concerning Dangers from Foreign Force and Influence",
-      "attributed_author": "Jay",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1787-10-31"
-      },
+      "authors": [
+        "Jay"
+      ],
+      "date": "1787-10-31",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "WHEN the people of America reflect that they are now called upon to decide a question, which, in its consequences, must prove one of the most important that ever engaged their attention, the propriety of their taking a very comprehensive, as well as a very serious, view of it, will be evident.",
@@ -65,18 +73,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 2,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Wednesday, October 31, 1787"
+        }
+      }
     },
     {
-      "number": 3,
+      "id": "federalist:3",
+      "corpus": "federalist",
       "title": "The Same Subject Continued (Concerning Dangers From Foreign Force and Influence)",
-      "attributed_author": "Jay",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1787-11-03"
-      },
+      "authors": [
+        "Jay"
+      ],
+      "date": "1787-11-03",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "IT IS not a new observation that the people of any country (if, like the Americans, intelligent and wellinformed) seldom adopt and steadily persevere for many years in an erroneous opinion respecting their interests. That consideration naturally tends to create great respect for the high opinion which the people of America have so long and uniformly entertained of the importance of their continuing firmly united under one federal government, vested with sufficient powers for all general and national purposes.",
@@ -100,18 +116,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 3,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Saturday, November 3, 1787"
+        }
+      }
     },
     {
-      "number": 4,
+      "id": "federalist:4",
+      "corpus": "federalist",
       "title": "The Same Subject Continued (Concerning Dangers From Foreign Force and Influence)",
-      "attributed_author": "Jay",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1787-11-07"
-      },
+      "authors": [
+        "Jay"
+      ],
+      "date": "1787-11-07",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "MY LAST paper assigned several reasons why the safety of the people would be best secured by union against the danger it may be exposed to by JUST causes of war given to other nations; and those reasons show that such causes would not only be more rarely given, but would also be more easily accommodated, by a national government than either by the State governments or the proposed little confederacies.",
@@ -134,18 +158,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 4,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Wednesday, November 7, 1787"
+        }
+      }
     },
     {
-      "number": 5,
+      "id": "federalist:5",
+      "corpus": "federalist",
       "title": "The Same Subject Continued (Concerning Dangers From Foreign Force and Influence)",
-      "attributed_author": "Jay",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1787-11-10"
-      },
+      "authors": [
+        "Jay"
+      ],
+      "date": "1787-11-10",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "QUEEN ANNE, in her letter of the 1st July, 1706, to the Scotch Parliament, makes some observations on the importance of the UNION then forming between England and Scotland, which merit our attention. I shall present the public with one or two extracts from it: \"An entire and perfect union will be the solid foundation of lasting peace: It will secure your religion, liberty, and property; remove the animosities amongst yourselves, and the jealousies and differences betwixt our two kingdoms. It must increase your strength, riches, and trade; and by this union the whole island, being joined in affection and free from all apprehensions of different interest, will be ENABLED TO RESIST ALL ITS ENEMIES.\" \"We most earnestly recommend to you calmness and unanimity in this great and weighty affair, that the union may be brought to a happy conclusion, being the only EFFECTUAL way to secure our present and future happiness, and disappoint the designs of our and your enemies, who will doubtless, on this occasion, USE THEIR UTMOST ENDEAVORS TO PREVENT OR DELAY THIS UNION.\"",
@@ -163,18 +195,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 5,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Saturday, November 10, 1787"
+        }
+      }
     },
     {
-      "number": 6,
+      "id": "federalist:6",
+      "corpus": "federalist",
       "title": "Concerning Dangers from Dissensions Between the States",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1787-11-14"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1787-11-14",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE three last numbers of this paper have been dedicated to an enumeration of the dangers to which we should be exposed, in a state of disunion, from the arms and arts of foreign nations. I shall now proceed to delineate dangers of a different and, perhaps, still more alarming kind--those which will in all probability flow from dissensions between the States themselves, and from domestic factions and convulsions. These have been already in some instances slightly anticipated; but they deserve a more particular and more full investigation.",
@@ -211,18 +251,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 6,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Wednesday, November 14, 1787"
+        }
+      }
     },
     {
-      "number": 7,
+      "id": "federalist:7",
+      "corpus": "federalist",
       "title": "The Same Subject Continued (Concerning Dangers from Dissensions Between the States)",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1787-11-15"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1787-11-15",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "IT IS sometimes asked, with an air of seeming triumph, what inducements could the States have, if disunited, to make war upon each other? It would be a full answer to this question to say--precisely the same inducements which have, at different times, deluged in blood all the nations in the world. But, unfortunately for us, the question admits of a more particular answer. There are causes of differences within our immediate contemplation, of the tendency of which, even under the restraints of a federal constitution, we have had sufficient experience to enable us to form a judgment of what might be expected if those restraints were removed.",
@@ -240,18 +288,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 7,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Thursday, November 15, 1787"
+        }
+      }
     },
     {
-      "number": 8,
+      "id": "federalist:8",
+      "corpus": "federalist",
       "title": "The Consequences of Hostilities Between the States",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1787-11-20"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1787-11-20",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "ASSUMING it therefore as an established truth that the several States, in case of disunion, or such combinations of them as might happen to be formed out of the wreck of the general Confederacy, would be subject to those vicissitudes of peace and war, of friendship and enmity, with each other, which have fallen to the lot of all neighboring nations not united under one government, let us enter into a concise detail of some of the consequences that would attend such a situation.",
@@ -272,18 +328,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 8,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Tuesday, November 20, 1787."
+        }
+      }
     },
     {
-      "number": 9,
+      "id": "federalist:9",
+      "corpus": "federalist",
       "title": "The Union as a Safeguard Against Domestic Faction and Insurrection",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1787-11-21"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1787-11-21",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "A FIRM Union will be of the utmost moment to the peace and liberty of the States, as a barrier against domestic faction and insurrection. It is impossible to read the history of the petty republics of Greece and Italy without feeling sensations of horror and disgust at the distractions with which they were continually agitated, and at the rapid succession of revolutions by which they were kept in a state of perpetual vibration between the extremes of tyranny and anarchy. If they exhibit occasional calms, these only serve as short-lived contrast to the furious storms that are to succeed. If now and then intervals of felicity open to view, we behold them with a mixture of regret, arising from the reflection that the pleasing scenes before us are soon to be overwhelmed by the tempestuous waves of sedition and party rage. If momentary rays of glory break forth from the gloom, while they dazzle us with a transient and fleeting brilliancy, they at the same time admonish us to lament that the vices of government should pervert the direction and tarnish the lustre of those bright talents and exalted endowments for which the favored soils that produced them have been so justly celebrated.",
@@ -307,18 +371,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 9,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Wednesday, November 21, 1787"
+        }
+      }
     },
     {
-      "number": 10,
+      "id": "federalist:10",
+      "corpus": "federalist",
       "title": "The Same Subject Continued (The Union as a Safeguard Against Domestic Faction and Insurrection)",
-      "attributed_author": "Madison",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Daily Advertiser",
-        "date": "1787-11-22"
-      },
+      "authors": [
+        "Madison"
+      ],
+      "date": "1787-11-22",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "AMONG the numerous advantages promised by a well constructed Union, none deserves to be more accurately developed than its tendency to break and control the violence of faction. The friend of popular governments never finds himself so much alarmed for their character and fate, as when he contemplates their propensity to this dangerous vice. He will not fail, therefore, to set a due value on any plan which, without violating the principles to which he is attached, provides a proper cure for it. The instability, injustice, and confusion introduced into the public councils, have, in truth, been the mortal diseases under which popular governments have everywhere perished; as they continue to be the favorite and fruitful topics from which the adversaries to liberty derive their most specious declamations. The valuable improvements made by the American constitutions on the popular models, both ancient and modern, cannot certainly be too much admired; but it would be an unwarrantable partiality, to contend that they have as effectually obviated the danger on this side, as was wished and expected. Complaints are everywhere heard from our most considerate and virtuous citizens, equally the friends of public and private faith, and of public and personal liberty, that our governments are too unstable, that the public good is disregarded in the conflicts of rival parties, and that measures are too often decided, not according to the rules of justice and the rights of the minor party, but by the superior force of an interested and overbearing majority. However anxiously we may wish that these complaints had no foundation, the evidence, of known facts will not permit us to deny that they are in some degree true. It will be found, indeed, on a candid review of our situation, that some of the distresses under which we labor have been erroneously charged on the operation of our governments; but it will be found, at the same time, that other causes will not alone account for many of our heaviest misfortunes; and, particularly, for that prevailing and increasing distrust of public engagements, and alarm for private rights, which are echoed from one end of the continent to the other. These must be chiefly, if not wholly, effects of the unsteadiness and injustice with which a factious spirit has tainted our public administrations.",
@@ -347,18 +419,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 10,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Daily Advertiser",
+          "raw_dateline": "From the Daily Advertiser. Thursday, November 22, 1787."
+        }
+      }
     },
     {
-      "number": 11,
+      "id": "federalist:11",
+      "corpus": "federalist",
       "title": "The Utility of the Union in Respect to Commercial Relations and a Navy",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1787-11-24"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1787-11-24",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE importance of the Union, in a commercial light, is one of those points about which there is least room to entertain a difference of opinion, and which has, in fact, commanded the most general assent of men who have any acquaintance with the subject. This applies as well to our intercourse with foreign countries as with each other.",
@@ -379,18 +459,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 11,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Saturday, November 24, 1787"
+        }
+      }
     },
     {
-      "number": 12,
+      "id": "federalist:12",
+      "corpus": "federalist",
       "title": "The Utility of the Union In Respect to Revenue",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1787-11-27"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1787-11-27",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE effects of Union upon the commercial prosperity of the States have been sufficiently delineated. Its tendency to promote the interests of revenue will be the subject of our present inquiry.",
@@ -409,18 +497,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 12,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Tuesday, November 27, 1787."
+        }
+      }
     },
     {
-      "number": 13,
+      "id": "federalist:13",
+      "corpus": "federalist",
       "title": "Advantage of the Union in Respect to Economy in Government",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1787-11-28"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1787-11-28",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "As CONNECTED with the subject of revenue, we may with propriety consider that of economy. The money saved from one object may be usefully applied to another, and there will be so much the less to be drawn from the pockets of the people. If the States are united under one government, there will be but one national civil list to support; if they are divided into several confederacies, there will be as many different national civil lists to be provided for--and each of them, as to the principal departments, coextensive with that which would be necessary for a government of the whole. The entire separation of the States into thirteen unconnected sovereignties is a project too extravagant and too replete with danger to have many advocates. The ideas of men who speculate upon the dismemberment of the empire seem generally turned toward three confederacies--one consisting of the four Northern, another of the four Middle, and a third of the five Southern States. There is little probability that there would be a greater number. According to this distribution, each confederacy would comprise an extent of territory larger than that of the kingdom of Great Britain. No well-informed man will suppose that the affairs of such a confederacy can be properly regulated by a government less comprehensive in its organs or institutions than that which has been proposed by the convention. When the dimensions of a State attain to a certain magnitude, it requires the same energy of government and the same forms of administration which are requisite in one of much greater extent. This idea admits not of precise demonstration, because there is no rule by which we can measure the momentum of civil power necessary to the government of any given number of individuals; but when we consider that the island of Britain, nearly commensurate with each of the supposed confederacies, contains about eight millions of people, and when we reflect upon the degree of authority required to direct the passions of so large a society to the public good, we shall see no reason to doubt that the like portion of power would be sufficient to perform the same task in a society far more numerous. Civil power, properly organized and exerted, is capable of diffusing its force to a very great extent; and can, in a manner, reproduce itself in every part of a great empire by a judicious arrangement of subordinate institutions.",
@@ -430,18 +526,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 13,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Wednesday, November 28, 1787"
+        }
+      }
     },
     {
-      "number": 14,
+      "id": "federalist:14",
+      "corpus": "federalist",
       "title": "Objections to the Proposed Constitution From Extent of Territory Answered",
-      "attributed_author": "Madison",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1787-11-30"
-      },
+      "authors": [
+        "Madison"
+      ],
+      "date": "1787-11-30",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "WE HAVE seen the necessity of the Union, as our bulwark against foreign danger, as the conservator of peace among ourselves, as the guardian of our commerce and other common interests, as the only substitute for those military establishments which have subverted the liberties of the Old World, and as the proper antidote for the diseases of faction, which have proved fatal to other popular governments, and of which alarming symptoms have been betrayed by our own. All that remains, within this branch of our inquiries, is to take notice of an objection that may be drawn from the great extent of country which the Union embraces. A few observations on this subject will be the more proper, as it is perceived that the adversaries of the new Constitution are availing themselves of the prevailing prejudice with regard to the practicable sphere of republican administration, in order to supply, by imaginary difficulties, the want of those solid objections which they endeavor in vain to find.",
@@ -459,18 +563,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 14,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Friday, November 30, 1787."
+        }
+      }
     },
     {
-      "number": 15,
+      "id": "federalist:15",
+      "corpus": "federalist",
       "title": "The Insufficiency of the Present Confederation to Preserve the Union",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1787-12-01"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1787-12-01",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York.",
         "IN THE course of the preceding papers, I have endeavored, my fellow citizens, to place before you, in a clear and convincing light, the importance of Union to your political safety and happiness. I have unfolded to you a complication of dangers to which you would be exposed, should you permit that sacred knot which binds the people of America together be severed or dissolved by ambition or by avarice, by jealousy or by misrepresentation. In the sequel of the inquiry through which I propose to accompany you, the truths intended to be inculcated will receive further confirmation from facts and arguments hitherto unnoticed. If the road over which you will still have to pass should in some places appear to you tedious or irksome, you will recollect that you are in quest of information on a subject the most momentous which can engage the attention of a free people, that the field through which you have to travel is in itself spacious, and that the difficulties of the journey have been unnecessarily increased by the mazes with which sophistry has beset the way. It will be my aim to remove the obstacles from your progress in as compendious a manner as it can be done, without sacrificing utility to despatch.",
@@ -492,18 +604,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 15,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Saturday, December 1, 1787"
+        }
+      }
     },
     {
-      "number": 16,
+      "id": "federalist:16",
+      "corpus": "federalist",
       "title": "The Same Subject Continued (The Insufficiency of the Present Confederation to Preserve the Union)",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1787-12-04"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1787-12-04",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE tendency of the principle of legislation for States, or communities, in their political capacities, as it has been exemplified by the experiment we have made of it, is equally attested by the events which have befallen all other governments of the confederate kind, of which we have any account, in exact proportion to its prevalence in those systems. The confirmations of this fact will be worthy of a distinct and particular examination. I shall content myself with barely observing here, that of all the confederacies of antiquity, which history has handed down to us, the Lycian and Achaean leagues, as far as there remain vestiges of them, appear to have been most free from the fetters of that mistaken principle, and were accordingly those which have best deserved, and have most liberally received, the applauding suffrages of political writers.",
@@ -520,18 +640,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 16,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Tuesday, December 4, 1787."
+        }
+      }
     },
     {
-      "number": 17,
+      "id": "federalist:17",
+      "corpus": "federalist",
       "title": "The Same Subject Continued (The Insufficiency of the Present Confederation to Preserve the Union)",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1787-12-05"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1787-12-05",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "AN OBJECTION, of a nature different from that which has been stated and answered, in my last address, may perhaps be likewise urged against the principle of legislation for the individual citizens of America. It may be said that it would tend to render the government of the Union too powerful, and to enable it to absorb those residuary authorities, which it might be judged proper to leave with the States for local purposes. Allowing the utmost latitude to the love of power which any reasonable man can require, I confess I am at a loss to discover what temptation the persons intrusted with the administration of the general government could ever feel to divest the States of the authorities of that description. The regulation of the mere domestic police of a State appears to me to hold out slender allurements to ambition. Commerce, finance, negotiation, and war seem to comprehend all the objects which have charms for minds governed by that passion; and all the powers necessary to those objects ought, in the first instance, to be lodged in the national depository. The administration of private justice between the citizens of the same State, the supervision of agriculture and of other concerns of a similar nature, all those things, in short, which are proper to be provided for by local legislation, can never be desirable cares of a general jurisdiction. It is therefore improbable that there should exist a disposition in the federal councils to usurp the powers with which they are connected; because the attempt to exercise those powers would be as troublesome as it would be nugatory; and the possession of them, for that reason, would contribute nothing to the dignity, to the importance, or to the splendor of the national government.",
@@ -551,18 +679,27 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 17,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Wednesday, December 5, 1787"
+        }
+      }
     },
     {
-      "number": 18,
+      "id": "federalist:18",
+      "corpus": "federalist",
       "title": "The Same Subject Continued (The Insufficiency of the Present Confederation to Preserve the Union)",
-      "attributed_author": "Hamilton and Madison",
-      "authorship_status": "joint",
-      "authorship_note": "Jointly authored. The Project Gutenberg #1404 byline reads \"MADISON, with HAMILTON\", reflecting Madison as principal author with Hamilton contributing.",
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1787-12-07"
-      },
+      "authors": [
+        "Madison",
+        "Hamilton"
+      ],
+      "date": "1787-12-07",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "AMONG the confederacies of antiquity, the most considerable was that of the Grecian republics, associated under the Amphictyonic council. From the best accounts transmitted of this celebrated institution, it bore a very instructive analogy to the present Confederation of the American States.",
@@ -589,18 +726,27 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 18,
+        "authorship_status": "joint",
+        "authorship_note": "Jointly authored. The Project Gutenberg #1404 byline reads \"MADISON, with HAMILTON\", reflecting Madison as principal author with Hamilton contributing.",
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "For the New York Packet. Friday, December 7, 1787"
+        }
+      }
     },
     {
-      "number": 19,
+      "id": "federalist:19",
+      "corpus": "federalist",
       "title": "The Same Subject Continued (The Insufficiency of the Present Confederation to Preserve the Union)",
-      "attributed_author": "Hamilton and Madison",
-      "authorship_status": "joint",
-      "authorship_note": "Jointly authored. The Project Gutenberg #1404 byline reads \"MADISON, with HAMILTON\", reflecting Madison as principal author with Hamilton contributing.",
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1787-12-08"
-      },
+      "authors": [
+        "Madison",
+        "Hamilton"
+      ],
+      "date": "1787-12-08",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE examples of ancient confederacies, cited in my last paper, have not exhausted the source of experimental instruction on this subject. There are existing institutions, founded on a similar principle, which merit particular consideration. The first which presents itself is the Germanic body.",
@@ -626,18 +772,27 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 19,
+        "authorship_status": "joint",
+        "authorship_note": "Jointly authored. The Project Gutenberg #1404 byline reads \"MADISON, with HAMILTON\", reflecting Madison as principal author with Hamilton contributing.",
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Saturday, December 8, 1787"
+        }
+      }
     },
     {
-      "number": 20,
+      "id": "federalist:20",
+      "corpus": "federalist",
       "title": "The Same Subject Continued (The Insufficiency of the Present Confederation to Preserve the Union)",
-      "attributed_author": "Hamilton and Madison",
-      "authorship_status": "joint",
-      "authorship_note": "Jointly authored. The Project Gutenberg #1404 byline reads \"MADISON, with HAMILTON\", reflecting Madison as principal author with Hamilton contributing.",
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1787-12-11"
-      },
+      "authors": [
+        "Madison",
+        "Hamilton"
+      ],
+      "date": "1787-12-11",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE United Netherlands are a confederacy of republics, or rather of aristocracies of a very remarkable texture, yet confirming all the lessons derived from those which we have already reviewed.",
@@ -667,18 +822,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 20,
+        "authorship_status": "joint",
+        "authorship_note": "Jointly authored. The Project Gutenberg #1404 byline reads \"MADISON, with HAMILTON\", reflecting Madison as principal author with Hamilton contributing.",
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Tuesday, December 11, 1787."
+        }
+      }
     },
     {
-      "number": 21,
+      "id": "federalist:21",
+      "corpus": "federalist",
       "title": "Other Defects of the Present Confederation",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1787-12-12"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1787-12-12",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "HAVING in the three last numbers taken a summary review of the principal circumstances and events which have depicted the genius and fate of other confederate governments, I shall now proceed in the enumeration of the most important of those defects which have hitherto disappointed our hopes from the system established among ourselves. To form a safe and satisfactory judgment of the proper remedy, it is absolutely necessary that we should be well acquainted with the extent and malignity of the disease.",
@@ -695,18 +858,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 21,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Wednesday, December 12, 1787"
+        }
+      }
     },
     {
-      "number": 22,
+      "id": "federalist:22",
+      "corpus": "federalist",
       "title": "The Same Subject Continued (Other Defects of the Present Confederation)",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1787-12-14"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1787-12-14",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "IN ADDITION to the defects already enumerated in the existing federal system, there are others of not less importance, which concur in rendering it altogether unfit for the administration of the affairs of the Union.",
@@ -735,18 +906,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 22,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Friday, December 14, 1787."
+        }
+      }
     },
     {
-      "number": 23,
+      "id": "federalist:23",
+      "corpus": "federalist",
       "title": "The Necessity of a Government as Energetic as the One Proposed to the Preservation of the Union",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1787-12-18"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1787-12-18",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE necessity of a Constitution, at least equally energetic with the one proposed, to the preservation of the Union, is the point at the examination of which we are now arrived.",
@@ -764,18 +943,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 23,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Tuesday, December 18, 1787."
+        }
+      }
     },
     {
-      "number": 24,
+      "id": "federalist:24",
+      "corpus": "federalist",
       "title": "The Powers Necessary to the Common Defense Further Considered",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1787-12-19"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1787-12-19",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "TO THE powers proposed to be conferred upon the federal government, in respect to the creation and direction of the national forces, I have met with but one specific objection, which, if I understand it right, is this, that proper provision has not been made against the existence of standing armies in time of peace; an objection which, I shall now endeavor to show, rests on weak and unsubstantial foundations.",
@@ -795,18 +982,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 24,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Wednesday, December 19, 1787"
+        }
+      }
     },
     {
-      "number": 25,
+      "id": "federalist:25",
+      "corpus": "federalist",
       "title": "The Same Subject Continued (The Powers Necessary to the Common Defense Further Considered)",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1787-12-21"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1787-12-21",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "IT MAY perhaps be urged that the objects enumerated in the preceding number ought to be provided for by the State governments, under the direction of the Union. But this would be, in reality, an inversion of the primary principle of our political association, as it would in practice transfer the care of the common defense from the federal head to the individual members: a project oppressive to some States, dangerous to all, and baneful to the Confederacy.",
@@ -822,18 +1017,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 25,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Friday, December 21, 1787."
+        }
+      }
     },
     {
-      "number": 26,
+      "id": "federalist:26",
+      "corpus": "federalist",
       "title": "The Idea of Restraining the Legislative Authority in Regard to the Common Defense Considered.",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1787-12-22"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1787-12-22",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "IT WAS a thing hardly to be expected that in a popular revolution the minds of men should stop at that happy mean which marks the salutary boundary between POWER and PRIVILEGE, and combines the energy of government with the security of private rights. A failure in this delicate and important point is the great source of the inconveniences we experience, and if we are not cautious to avoid a repetition of the error, in our future attempts to rectify and ameliorate our system, we may travel from one chimerical project to another; we may try change after change; but we shall never be likely to make any material change for the better.",
@@ -853,18 +1056,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 26,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Saturday, December 22, 1788"
+        }
+      }
     },
     {
-      "number": 27,
+      "id": "federalist:27",
+      "corpus": "federalist",
       "title": "The Same Subject Continued (The Idea of Restraining the Legislative Authority in Regard to the Common Defense Considered)",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1787-12-25"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1787-12-25",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "IT HAS been urged, in different shapes, that a Constitution of the kind proposed by the convention cannot operate without the aid of a military force to execute its laws. This, however, like most other things that have been alleged on that side, rests on mere general assertion, unsupported by any precise or intelligible designation of the reasons upon which it is founded. As far as I have been able to divine the latent meaning of the objectors, it seems to originate in a presupposition that the people will be disinclined to the exercise of federal authority in any matter of an internal nature. Waiving any exception that might be taken to the inaccuracy or inexplicitness of the distinction between internal and external, let us inquire what ground there is to presuppose that disinclination in the people. Unless we presume at the same time that the powers of the general government will be worse administered than those of the State government, there seems to be no room for the presumption of ill-will, disaffection, or opposition in the people. I believe it may be laid down as a general rule that their confidence in and obedience to a government will commonly be proportioned to the goodness or badness of its administration. It must be admitted that there are exceptions to this rule; but these exceptions depend so entirely on accidental causes, that they cannot be considered as having any relation to the intrinsic merits or demerits of a constitution. These can only be judged of by general principles and maxims.",
@@ -877,18 +1088,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 27,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Tuesday, December 25, 1787."
+        }
+      }
     },
     {
-      "number": 28,
+      "id": "federalist:28",
+      "corpus": "federalist",
       "title": "The Same Subject Continued (The Idea of Restraining the Legislative Authority in Regard to the Common Defense Considered)",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1787-12-26"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1787-12-26",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THAT there may happen cases in which the national government may be necessitated to resort to force, cannot be denied. Our own experience has corroborated the lessons taught by the examples of other nations; that emergencies of this sort will sometimes arise in all societies, however constituted; that seditions and insurrections are, unhappily, maladies as inseparable from the body politic as tumors and eruptions from the natural body; that the idea of governing at all times by the simple force of law (which we have been told is the only admissible principle of republican government), has no place but in the reveries of those political doctors whose sagacity disdains the admonitions of experimental instruction.",
@@ -905,18 +1124,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 28,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Wednesday, December 26, 1787"
+        }
+      }
     },
     {
-      "number": 29,
+      "id": "federalist:29",
+      "corpus": "federalist",
       "title": "Concerning the Militia",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1788-01-09"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-01-09",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE power of regulating the militia, and of commanding its services in times of insurrection and invasion are natural incidents to the duties of superintending the common defense, and of watching over the internal peace of the Confederacy.",
@@ -937,18 +1164,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 29,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Wednesday, January 9, 1788"
+        }
+      }
     },
     {
-      "number": 30,
+      "id": "federalist:30",
+      "corpus": "federalist",
       "title": "Concerning the General Power of Taxation",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1787-12-28"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1787-12-28",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "IT HAS been already observed that the federal government ought to possess the power of providing for the support of the national forces; in which proposition was intended to be included the expense of raising troops, of building and equipping fleets, and all other expenses in any wise connected with military arrangements and operations. But these are not the only objects to which the jurisdiction of the Union, in respect to revenue, must necessarily be empowered to extend. It must embrace a provision for the support of the national civil list; for the payment of the national debts contracted, or that may be contracted; and, in general, for all those matters which will call for disbursements out of the national treasury. The conclusion is, that there must be interwoven, in the frame of the government, a general power of taxation, in one shape or another.",
@@ -965,18 +1200,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 30,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Friday, December 28, 1787."
+        }
+      }
     },
     {
-      "number": 31,
+      "id": "federalist:31",
+      "corpus": "federalist",
       "title": "The Same Subject Continued (Concerning the General Power of Taxation)",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1788-01-01"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-01-01",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "IN DISQUISITIONS of every kind, there are certain primary truths, or first principles, upon which all subsequent reasonings must depend. These contain an internal evidence which, antecedent to all reflection or combination, commands the assent of the mind. Where it produces not this effect, it must proceed either from some defect or disorder in the organs of perception, or from the influence of some strong interest, or passion, or prejudice. Of this nature are the maxims in geometry, that \"the whole is greater than its part; things equal to the same are equal to one another; two straight lines cannot enclose a space; and all right angles are equal to each other.\" Of the same nature are these other maxims in ethics and politics, that there cannot be an effect without a cause; that the means ought to be proportioned to the end; that every power ought to be commensurate with its object; that there ought to be no limitation of a power destined to effect a purpose which is itself incapable of limitation. And there are other truths in the two latter sciences which, if they cannot pretend to rank in the class of axioms, are yet such direct inferences from them, and so obvious in themselves, and so agreeable to the natural and unsophisticated dictates of common-sense, that they challenge the assent of a sound and unbiased mind, with a degree of force and conviction almost equally irresistible.",
@@ -994,18 +1237,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 31,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Tuesday, January 1, 1788."
+        }
+      }
     },
     {
-      "number": 32,
+      "id": "federalist:32",
+      "corpus": "federalist",
       "title": "The Same Subject Continued (Concerning the General Power of Taxation)",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1788-01-02"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-01-02",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "ALTHOUGH I am of opinion that there would be no real danger of the consequences which seem to be apprehended to the State governments from a power in the Union to control them in the levies of money, because I am persuaded that the sense of the people, the extreme hazard of provoking the resentments of the State governments, and a conviction of the utility and necessity of local administrations for local purposes, would be a complete barrier against the oppressive use of such a power; yet I am willing here to allow, in its full extent, the justness of the reasoning which requires that the individual States should possess an independent and uncontrollable authority to raise their own revenues for the supply of their own wants. And making this concession, I affirm that (with the sole exception of duties on imports and exports) they would, under the plan of the convention, retain that authority in the most absolute and unqualified sense; and that an attempt on the part of the national government to abridge them in the exercise of it, would be a violent assumption of power, unwarranted by any article or clause of its Constitution.",
@@ -1016,18 +1267,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 32,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "From The Independent Journal. Wednesday, January 2, 1788."
+        }
+      }
     },
     {
-      "number": 33,
+      "id": "federalist:33",
+      "corpus": "federalist",
       "title": "The Same Subject Continued (Concerning the General Power of Taxation)",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1788-01-02"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-01-02",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE residue of the argument against the provisions of the Constitution in respect to taxation is ingrafted upon the following clause. The last clause of the eighth section of the first article of the plan under consideration authorizes the national legislature \"to make all laws which shall be NECESSARY and PROPER for carrying into execution THE POWERS by that Constitution vested in the government of the United States, or in any department or officer thereof\"; and the second clause of the sixth article declares, \"that the Constitution and the laws of the United States made IN PURSUANCE THEREOF, and the treaties made by their authority shall be the SUPREME LAW of the land, any thing in the constitution or laws of any State to the contrary notwithstanding.\"",
@@ -1041,18 +1300,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 33,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "From The Independent Journal. Wednesday, January 2, 1788."
+        }
+      }
     },
     {
-      "number": 34,
+      "id": "federalist:34",
+      "corpus": "federalist",
       "title": "The Same Subject Continued (Concerning the General Power of Taxation)",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1788-01-05"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-01-05",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "I FLATTER myself it has been clearly shown in my last number that the particular States, under the proposed Constitution, would have COEQUAL authority with the Union in the article of revenue, except as to duties on imports. As this leaves open to the States far the greatest part of the resources of the community, there can be no color for the assertion that they would not possess means as abundant as could be desired for the supply of their own wants, independent of all external control. That the field is sufficiently wide will more fully appear when we come to advert to the inconsiderable share of the public expenses for which it will fall to the lot of the State governments to provide.",
@@ -1069,18 +1336,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 34,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "From The Independent Journal. Saturday, January 5, 1788."
+        }
+      }
     },
     {
-      "number": 35,
+      "id": "federalist:35",
+      "corpus": "federalist",
       "title": "The Same Subject Continued (Concerning the General Power of Taxation)",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1788-01-05"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-01-05",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "BEFORE we proceed to examine any other objections to an indefinite power of taxation in the Union, I shall make one general remark; which is, that if the jurisdiction of the national government, in the article of revenue, should be restricted to particular objects, it would naturally occasion an undue proportion of the public burdens to fall upon those objects. Two evils would spring from this source: the oppression of particular branches of industry; and an unequal distribution of the taxes, as well among the several States as among the citizens of the same State.",
@@ -1097,18 +1372,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 35,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Saturday, January 5, 1788"
+        }
+      }
     },
     {
-      "number": 36,
+      "id": "federalist:36",
+      "corpus": "federalist",
       "title": "The Same Subject Continued (Concerning the General Power of Taxation)",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1788-01-08"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-01-08",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "WE HAVE seen that the result of the observations, to which the foregoing number has been principally devoted, is, that from the natural operation of the different interests and views of the various classes of the community, whether the representation of the people be more or less numerous, it will consist almost entirely of proprietors of land, of merchants, and of members of the learned professions, who will truly represent all those different interests and views. If it should be objected that we have seen other descriptions of men in the local legislatures, I answer that it is admitted there are exceptions to the rule, but not in sufficient number to influence the general complexion or character of the government. There are strong minds in every walk of life that will rise superior to the disadvantages of situation, and will command the tribute due to their merit, not only from the classes to which they particularly belong, but from the society in general. The door ought to be equally open to all; and I trust, for the credit of human nature, that we shall see examples of such vigorous plants flourishing in the soil of federal as well as of State legislation; but occasional instances of this sort will not render the reasoning founded upon the general course of things, less conclusive.",
@@ -1134,18 +1417,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 36,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Tuesday, January 8, 1788."
+        }
+      }
     },
     {
-      "number": 37,
+      "id": "federalist:37",
+      "corpus": "federalist",
       "title": "Concerning the Difficulties of the Convention in Devising a Proper Form of Government.",
-      "attributed_author": "Madison",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Daily Advertiser",
-        "date": "1788-01-11"
-      },
+      "authors": [
+        "Madison"
+      ],
+      "date": "1788-01-11",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "IN REVIEWING the defects of the existing Confederation, and showing that they cannot be supplied by a government of less energy than that before the public, several of the most important principles of the latter fell of course under consideration. But as the ultimate object of these papers is to determine clearly and fully the merits of this Constitution, and the expediency of adopting it, our plan cannot be complete without taking a more critical and thorough survey of the work of the convention, without examining it on all its sides, comparing it in all its parts, and calculating its probable effects. That this remaining task may be executed under impressions conducive to a just and fair result, some reflections must in this place be indulged, which candor previously suggests.",
@@ -1166,18 +1457,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 37,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Daily Advertiser",
+          "raw_dateline": "From the Daily Advertiser. Friday, January 11, 1788."
+        }
+      }
     },
     {
-      "number": 38,
+      "id": "federalist:38",
+      "corpus": "federalist",
       "title": "The Same Subject Continued, and the Incoherence of the Objections to the New Plan Exposed.",
-      "attributed_author": "Madison",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1788-01-12"
-      },
+      "authors": [
+        "Madison"
+      ],
+      "date": "1788-01-12",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "IT IS not a little remarkable that in every case reported by ancient history, in which government has been established with deliberation and consent, the task of framing it has not been committed to an assembly of men, but has been performed by some individual citizen of preeminent wisdom and approved integrity.",
@@ -1194,18 +1493,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 38,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "From The Independent Journal. Saturday, January 12, 1788."
+        }
+      }
     },
     {
-      "number": 39,
+      "id": "federalist:39",
+      "corpus": "federalist",
       "title": "The Conformity of the Plan to Republican Principles",
-      "attributed_author": "Madison",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1788-01-16"
-      },
+      "authors": [
+        "Madison"
+      ],
+      "date": "1788-01-16",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE last paper having concluded the observations which were meant to introduce a candid survey of the plan of government reported by the convention, we now proceed to the execution of that part of our undertaking.",
@@ -1227,18 +1534,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 39,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Wednesday, January 16, 1788"
+        }
+      }
     },
     {
-      "number": 40,
+      "id": "federalist:40",
+      "corpus": "federalist",
       "title": "On the Powers of the Convention to Form a Mixed Government Examined and Sustained",
-      "attributed_author": "Madison",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1788-01-18"
-      },
+      "authors": [
+        "Madison"
+      ],
+      "date": "1788-01-18",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE SECOND point to be examined is, whether the convention were authorized to frame and propose this mixed Constitution.",
@@ -1265,18 +1580,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 40,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "For the New York Packet. Friday, January 18, 1788."
+        }
+      }
     },
     {
-      "number": 41,
+      "id": "federalist:41",
+      "corpus": "federalist",
       "title": "General View of the Powers Conferred by The Constitution",
-      "attributed_author": "Madison",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1788-01-19"
-      },
+      "authors": [
+        "Madison"
+      ],
+      "date": "1788-01-19",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE Constitution proposed by the convention may be considered under two general points of view. The FIRST relates to the sum or quantity of power which it vests in the government, including the restraints imposed on the States. The SECOND, to the particular structure of the government, and the distribution of this power among its several branches.",
@@ -1308,18 +1631,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 41,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Saturday, January 19, 1788"
+        }
+      }
     },
     {
-      "number": 42,
+      "id": "federalist:42",
+      "corpus": "federalist",
       "title": "The Powers Conferred by the Constitution Further Considered",
-      "attributed_author": "Madison",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1788-01-22"
-      },
+      "authors": [
+        "Madison"
+      ],
+      "date": "1788-01-22",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE SECOND class of powers, lodged in the general government, consists of those which regulate the intercourse with foreign nations, to wit: to make treaties; to send and receive ambassadors, other public ministers, and consuls; to define and punish piracies and felonies committed on the high seas, and offenses against the law of nations; to regulate foreign commerce, including a power to prohibit, after the year 1808, the importation of slaves, and to lay an intermediate duty of ten dollars per head, as a discouragement to such importations.",
@@ -1345,18 +1676,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 42,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Tuesday, January 22, 1788."
+        }
+      }
     },
     {
-      "number": 43,
+      "id": "federalist:43",
+      "corpus": "federalist",
       "title": "The Same Subject Continued (The Powers Conferred by the Constitution Further Considered)",
-      "attributed_author": "Madison",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1788-01-23"
-      },
+      "authors": [
+        "Madison"
+      ],
+      "date": "1788-01-23",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE FOURTH class comprises the following miscellaneous powers:",
@@ -1393,18 +1732,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 43,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Wednesday, January 23, 1788"
+        }
+      }
     },
     {
-      "number": 44,
+      "id": "federalist:44",
+      "corpus": "federalist",
       "title": "Restrictions on the Authority of the Several States",
-      "attributed_author": "Madison",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1788-01-25"
-      },
+      "authors": [
+        "Madison"
+      ],
+      "date": "1788-01-25",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "A FIFTH class of provisions in favor of the federal authority consists of the following restrictions on the authority of the several States:",
@@ -1438,18 +1785,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 44,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Friday, January 25, 1788."
+        }
+      }
     },
     {
-      "number": 45,
+      "id": "federalist:45",
+      "corpus": "federalist",
       "title": "The Alleged Danger From the Powers of the Union to the State Governments. Considered",
-      "attributed_author": "Madison",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1788-01-26"
-      },
+      "authors": [
+        "Madison"
+      ],
+      "date": "1788-01-26",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "HAVING shown that no one of the powers transferred to the federal government is unnecessary or improper, the next question to be considered is, whether the whole mass of them will be dangerous to the portion of authority left in the several States.",
@@ -1466,18 +1821,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 45,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Saturday, January 26, 1788"
+        }
+      }
     },
     {
-      "number": 46,
+      "id": "federalist:46",
+      "corpus": "federalist",
       "title": "The Influence of the State and Federal Governments Compared",
-      "attributed_author": "Madison",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1788-01-29"
-      },
+      "authors": [
+        "Madison"
+      ],
+      "date": "1788-01-29",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "RESUMING the subject of the last paper, I proceed to inquire whether the federal government or the State governments will have the advantage with regard to the predilection and support of the people. Notwithstanding the different modes in which they are appointed, we must consider both of them as substantially dependent on the great body of the citizens of the United States. I assume this position here as it respects the first, reserving the proofs for another place. The federal and State governments are in fact but different agents and trustees of the people, constituted with different powers, and designed for different purposes. The adversaries of the Constitution seem to have lost sight of the people altogether in their reasonings on this subject; and to have viewed these different establishments, not only as mutual rivals and enemies, but as uncontrolled by any common superior in their efforts to usurp the authorities of each other. These gentlemen must here be reminded of their error. They must be told that the ultimate authority, wherever the derivative may be found, resides in the people alone, and that it will not depend merely on the comparative ambition or address of the different governments, whether either, or which of them, will be able to enlarge its sphere of jurisdiction at the expense of the other. Truth, no less than decency, requires that the event in every case should be supposed to depend on the sentiments and sanction of their common constituents.",
@@ -1494,18 +1857,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 46,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Tuesday, January 29, 1788."
+        }
+      }
     },
     {
-      "number": 47,
+      "id": "federalist:47",
+      "corpus": "federalist",
       "title": "The Particular Structure of the New Government and the Distribution of Power Among Its Different Parts.",
-      "attributed_author": "Madison",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1788-01-30"
-      },
+      "authors": [
+        "Madison"
+      ],
+      "date": "1788-01-30",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "HAVING reviewed the general form of the proposed government and the general mass of power allotted to it, I proceed to examine the particular structure of this government, and the distribution of this mass of power among its constituent parts.",
@@ -1532,18 +1903,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 47,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Wednesday, January 30, 1788."
+        }
+      }
     },
     {
-      "number": 48,
+      "id": "federalist:48",
+      "corpus": "federalist",
       "title": "These Departments Should Not Be So Far Separated as to Have No Constitutional Control Over Each Other.",
-      "attributed_author": "Madison",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1788-02-01"
-      },
+      "authors": [
+        "Madison"
+      ],
+      "date": "1788-02-01",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "IT WAS shown in the last paper that the political apothegm there examined does not require that the legislative, executive, and judiciary departments should be wholly unconnected with each other. I shall undertake, in the next place, to show that unless these departments be so far connected and blended as to give to each a constitutional control over the others, the degree of separation which the maxim requires, as essential to a free government, can never in practice be duly maintained.",
@@ -1565,18 +1944,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 48,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Friday, February 1, 1788."
+        }
+      }
     },
     {
-      "number": 49,
+      "id": "federalist:49",
+      "corpus": "federalist",
       "title": "Method of Guarding Against the Encroachments of Any One Department of Government by Appealing to the People Through a Convention.",
-      "attributed_author": "Madison",
-      "authorship_status": "disputed",
-      "authorship_note": "One of the disputed twelve (Federalist 49–58, 62, 63). Hamilton claimed authorship in his pre-duel memorandum (1804); Madison claimed it in his later annotations. Modern scholarly consensus, following Mosteller and Wallace (1964), assigns the paper to Madison. Source byline in Project Gutenberg #1404 reads \"MADISON\".",
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1788-02-02"
-      },
+      "authors": [
+        "Madison"
+      ],
+      "date": "1788-02-02",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE author of the \"Notes on the State of Virginia,\" quoted in the last paper, has subjoined to that valuable work the draught of a constitution, which had been prepared in order to be laid before a convention, expected to be called in 1783, by the legislature, for the establishment of a constitution for that commonwealth. The plan, like every thing from the same pen, marks a turn of thinking, original, comprehensive, and accurate; and is the more worthy of attention as it equally displays a fervent attachment to republican government and an enlightened view of the dangerous propensities against which it ought to be guarded. One of the precautions which he proposes, and on which he appears ultimately to rely as a palladium to the weaker departments of power against the invasions of the stronger, is perhaps altogether his own, and as it immediately relates to the subject of our present inquiry, ought not to be overlooked.",
@@ -1593,18 +1980,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 49,
+        "authorship_status": "disputed",
+        "authorship_note": "One of the disputed twelve (Federalist 49–58, 62, 63). Hamilton claimed authorship in his pre-duel memorandum (1804); Madison claimed it in his later annotations. Modern scholarly consensus, following Mosteller and Wallace (1964), assigns the paper to Madison. Source byline in Project Gutenberg #1404 reads \"MADISON\".",
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Saturday, February 2, 1788."
+        }
+      }
     },
     {
-      "number": 50,
+      "id": "federalist:50",
+      "corpus": "federalist",
       "title": "Periodical Appeals to the People Considered",
-      "attributed_author": "Madison",
-      "authorship_status": "disputed",
-      "authorship_note": "One of the disputed twelve (Federalist 49–58, 62, 63). Hamilton claimed authorship in his pre-duel memorandum (1804); Madison claimed it in his later annotations. Modern scholarly consensus, following Mosteller and Wallace (1964), assigns the paper to Madison. Source byline in Project Gutenberg #1404 reads \"MADISON\".",
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1788-02-05"
-      },
+      "authors": [
+        "Madison"
+      ],
+      "date": "1788-02-05",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "IT MAY be contended, perhaps, that instead of OCCASIONAL appeals to the people, which are liable to the objections urged against them, PERIODICAL appeals are the proper and adequate means of PREVENTING AND CORRECTING INFRACTIONS OF THE CONSTITUTION.",
@@ -1621,18 +2016,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 50,
+        "authorship_status": "disputed",
+        "authorship_note": "One of the disputed twelve (Federalist 49–58, 62, 63). Hamilton claimed authorship in his pre-duel memorandum (1804); Madison claimed it in his later annotations. Modern scholarly consensus, following Mosteller and Wallace (1964), assigns the paper to Madison. Source byline in Project Gutenberg #1404 reads \"MADISON\".",
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Tuesday, February 5, 1788."
+        }
+      }
     },
     {
-      "number": 51,
+      "id": "federalist:51",
+      "corpus": "federalist",
       "title": "The Structure of the Government Must Furnish the Proper Checks and Balances Between the Different Departments.",
-      "attributed_author": "Madison",
-      "authorship_status": "disputed",
-      "authorship_note": "One of the disputed twelve (Federalist 49–58, 62, 63). Hamilton claimed authorship in his pre-duel memorandum (1804); Madison claimed it in his later annotations. Modern scholarly consensus, following Mosteller and Wallace (1964), assigns the paper to Madison. Source byline in Project Gutenberg #1404 reads \"MADISON\".",
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1788-02-06"
-      },
+      "authors": [
+        "Madison"
+      ],
+      "date": "1788-02-06",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "TO WHAT expedient, then, shall we finally resort, for maintaining in practice the necessary partition of power among the several departments, as laid down in the Constitution? The only answer that can be given is, that as all these exterior provisions are found to be inadequate, the defect must be supplied, by so contriving the interior structure of the government as that its several constituent parts may, by their mutual relations, be the means of keeping each other in their proper places. Without presuming to undertake a full development of this important idea, I will hazard a few general observations, which may perhaps place it in a clearer light, and enable us to form a more correct judgment of the principles and structure of the government planned by the convention.",
@@ -1648,18 +2051,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 51,
+        "authorship_status": "disputed",
+        "authorship_note": "One of the disputed twelve (Federalist 49–58, 62, 63). Hamilton claimed authorship in his pre-duel memorandum (1804); Madison claimed it in his later annotations. Modern scholarly consensus, following Mosteller and Wallace (1964), assigns the paper to Madison. Source byline in Project Gutenberg #1404 reads \"MADISON\".",
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Wednesday, February 6, 1788."
+        }
+      }
     },
     {
-      "number": 52,
+      "id": "federalist:52",
+      "corpus": "federalist",
       "title": "The House of Representatives",
-      "attributed_author": "Madison",
-      "authorship_status": "disputed",
-      "authorship_note": "One of the disputed twelve (Federalist 49–58, 62, 63). Hamilton claimed authorship in his pre-duel memorandum (1804); Madison claimed it in his later annotations. Modern scholarly consensus, following Mosteller and Wallace (1964), assigns the paper to Madison. Source byline in Project Gutenberg #1404 reads \"MADISON\".",
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1788-02-08"
-      },
+      "authors": [
+        "Madison"
+      ],
+      "date": "1788-02-08",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "FROM the more general inquiries pursued in the four last papers, I pass on to a more particular examination of the several parts of the government. I shall begin with the House of Representatives.",
@@ -1674,18 +2085,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 52,
+        "authorship_status": "disputed",
+        "authorship_note": "One of the disputed twelve (Federalist 49–58, 62, 63). Hamilton claimed authorship in his pre-duel memorandum (1804); Madison claimed it in his later annotations. Modern scholarly consensus, following Mosteller and Wallace (1964), assigns the paper to Madison. Source byline in Project Gutenberg #1404 reads \"MADISON\".",
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Friday, February 8, 1788."
+        }
+      }
     },
     {
-      "number": 53,
+      "id": "federalist:53",
+      "corpus": "federalist",
       "title": "The Same Subject Continued (The House of Representatives)",
-      "attributed_author": "Madison",
-      "authorship_status": "disputed",
-      "authorship_note": "One of the disputed twelve (Federalist 49–58, 62, 63). Hamilton claimed authorship in his pre-duel memorandum (1804); Madison claimed it in his later annotations. Modern scholarly consensus, following Mosteller and Wallace (1964), assigns the paper to Madison. Source byline in Project Gutenberg #1404 reads \"MADISON\".",
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1788-02-09"
-      },
+      "authors": [
+        "Madison"
+      ],
+      "date": "1788-02-09",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "I SHALL here, perhaps, be reminded of a current observation, \"that where annual elections end, tyranny begins.\" If it be true, as has often been remarked, that sayings which become proverbial are generally founded in reason, it is not less true, that when once established, they are often applied to cases to which the reason of them does not extend. I need not look for a proof beyond the case before us. What is the reason on which this proverbial observation is founded? No man will subject himself to the ridicule of pretending that any natural connection subsists between the sun or the seasons, and the period within which human virtue can bear the temptations of power. Happily for mankind, liberty is not, in this respect, confined to any single point of time; but lies within extremes, which afford sufficient latitude for all the variations which may be required by the various situations and circumstances of civil society. The election of magistrates might be, if it were found expedient, as in some instances it actually has been, daily, weekly, or monthly, as well as annual; and if circumstances may require a deviation from the rule on one side, why not also on the other side? Turning our attention to the periods established among ourselves, for the election of the most numerous branches of the State legislatures, we find them by no means coinciding any more in this instance, than in the elections of other civil magistrates. In Connecticut and Rhode Island, the periods are half-yearly. In the other States, South Carolina excepted, they are annual. In South Carolina they are biennial--as is proposed in the federal government. Here is a difference, as four to one, between the longest and shortest periods; and yet it would be not easy to show, that Connecticut or Rhode Island is better governed, or enjoys a greater share of rational liberty, than South Carolina; or that either the one or the other of these States is distinguished in these respects, and by these causes, from the States whose elections are different from both.",
@@ -1702,18 +2121,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 53,
+        "authorship_status": "disputed",
+        "authorship_note": "One of the disputed twelve (Federalist 49–58, 62, 63). Hamilton claimed authorship in his pre-duel memorandum (1804); Madison claimed it in his later annotations. Modern scholarly consensus, following Mosteller and Wallace (1964), assigns the paper to Madison. Source byline in Project Gutenberg #1404 reads \"MADISON\".",
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Saturday, February 9, 1788."
+        }
+      }
     },
     {
-      "number": 54,
+      "id": "federalist:54",
+      "corpus": "federalist",
       "title": "The Apportionment of Members Among the States",
-      "attributed_author": "Madison",
-      "authorship_status": "disputed",
-      "authorship_note": "One of the disputed twelve (Federalist 49–58, 62, 63). Hamilton claimed authorship in his pre-duel memorandum (1804); Madison claimed it in his later annotations. Modern scholarly consensus, following Mosteller and Wallace (1964), assigns the paper to Madison. Source byline in Project Gutenberg #1404 reads \"MADISON\".",
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1788-02-12"
-      },
+      "authors": [
+        "Madison"
+      ],
+      "date": "1788-02-12",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE next view which I shall take of the House of Representatives relates to the appointment of its members to the several States which is to be determined by the same rule with that of direct taxes.",
@@ -1730,18 +2157,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 54,
+        "authorship_status": "disputed",
+        "authorship_note": "One of the disputed twelve (Federalist 49–58, 62, 63). Hamilton claimed authorship in his pre-duel memorandum (1804); Madison claimed it in his later annotations. Modern scholarly consensus, following Mosteller and Wallace (1964), assigns the paper to Madison. Source byline in Project Gutenberg #1404 reads \"MADISON\".",
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Tuesday, February 12, 1788."
+        }
+      }
     },
     {
-      "number": 55,
+      "id": "federalist:55",
+      "corpus": "federalist",
       "title": "The Total Number of the House of Representatives",
-      "attributed_author": "Madison",
-      "authorship_status": "disputed",
-      "authorship_note": "One of the disputed twelve (Federalist 49–58, 62, 63). Hamilton claimed authorship in his pre-duel memorandum (1804); Madison claimed it in his later annotations. Modern scholarly consensus, following Mosteller and Wallace (1964), assigns the paper to Madison. Source byline in Project Gutenberg #1404 reads \"MADISON\".",
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1788-02-13"
-      },
+      "authors": [
+        "Madison"
+      ],
+      "date": "1788-02-13",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE number of which the House of Representatives is to consist, forms another and a very interesting point of view, under which this branch of the federal legislature may be contemplated. Scarce any article, indeed, in the whole Constitution seems to be rendered more worthy of attention, by the weight of character and the apparent force of argument with which it has been assailed. The charges exhibited against it are, first, that so small a number of representatives will be an unsafe depositary of the public interests; secondly, that they will not possess a proper knowledge of the local circumstances of their numerous constituents; thirdly, that they will be taken from that class of citizens which will sympathize least with the feelings of the mass of the people, and be most likely to aim at a permanent elevation of the few on the depression of the many; fourthly, that defective as the number will be in the first instance, it will be more and more disproportionate, by the increase of the people, and the obstacles which will prevent a correspondent increase of the representatives.",
@@ -1756,18 +2191,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 55,
+        "authorship_status": "disputed",
+        "authorship_note": "One of the disputed twelve (Federalist 49–58, 62, 63). Hamilton claimed authorship in his pre-duel memorandum (1804); Madison claimed it in his later annotations. Modern scholarly consensus, following Mosteller and Wallace (1964), assigns the paper to Madison. Source byline in Project Gutenberg #1404 reads \"MADISON\".",
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Wednesday, February 13, 1788."
+        }
+      }
     },
     {
-      "number": 56,
+      "id": "federalist:56",
+      "corpus": "federalist",
       "title": "The Same Subject Continued (The Total Number of the House of Representatives)",
-      "attributed_author": "Madison",
-      "authorship_status": "disputed",
-      "authorship_note": "One of the disputed twelve (Federalist 49–58, 62, 63). Hamilton claimed authorship in his pre-duel memorandum (1804); Madison claimed it in his later annotations. Modern scholarly consensus, following Mosteller and Wallace (1964), assigns the paper to Madison. Source byline in Project Gutenberg #1404 reads \"MADISON\".",
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1788-02-16"
-      },
+      "authors": [
+        "Madison"
+      ],
+      "date": "1788-02-16",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE SECOND charge against the House of Representatives is, that it will be too small to possess a due knowledge of the interests of its constituents.",
@@ -1785,18 +2228,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 56,
+        "authorship_status": "disputed",
+        "authorship_note": "One of the disputed twelve (Federalist 49–58, 62, 63). Hamilton claimed authorship in his pre-duel memorandum (1804); Madison claimed it in his later annotations. Modern scholarly consensus, following Mosteller and Wallace (1964), assigns the paper to Madison. Source byline in Project Gutenberg #1404 reads \"MADISON\".",
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Saturday, February 16, 1788."
+        }
+      }
     },
     {
-      "number": 57,
+      "id": "federalist:57",
+      "corpus": "federalist",
       "title": "The Alleged Tendency of the New Plan to Elevate the Few at the Expense of the Many Considered in Connection with Representation.",
-      "attributed_author": "Madison",
-      "authorship_status": "disputed",
-      "authorship_note": "One of the disputed twelve (Federalist 49–58, 62, 63). Hamilton claimed authorship in his pre-duel memorandum (1804); Madison claimed it in his later annotations. Modern scholarly consensus, following Mosteller and Wallace (1964), assigns the paper to Madison. Source byline in Project Gutenberg #1404 reads \"MADISON\".",
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1788-02-19"
-      },
+      "authors": [
+        "Madison"
+      ],
+      "date": "1788-02-19",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE THIRD charge against the House of Representatives is, that it will be taken from that class of citizens which will have least sympathy with the mass of the people, and be most likely to aim at an ambitious sacrifice of the many to the aggrandizement of the few.",
@@ -1823,18 +2274,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 57,
+        "authorship_status": "disputed",
+        "authorship_note": "One of the disputed twelve (Federalist 49–58, 62, 63). Hamilton claimed authorship in his pre-duel memorandum (1804); Madison claimed it in his later annotations. Modern scholarly consensus, following Mosteller and Wallace (1964), assigns the paper to Madison. Source byline in Project Gutenberg #1404 reads \"MADISON\".",
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Tuesday, February 19, 1788."
+        }
+      }
     },
     {
-      "number": 58,
+      "id": "federalist:58",
+      "corpus": "federalist",
       "title": "Objection That The Number of Members Will Not Be Augmented as the Progress of Population Demands. Considered",
-      "attributed_author": "Madison",
-      "authorship_status": "disputed",
-      "authorship_note": "One of the disputed twelve (Federalist 49–58, 62, 63). Hamilton claimed authorship in his pre-duel memorandum (1804); Madison claimed it in his later annotations. Modern scholarly consensus, following Mosteller and Wallace (1964), assigns the paper to Madison. Source byline in Project Gutenberg #1404 reads \"MADISON\".",
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1788-02-20"
-      },
+      "authors": [
+        "Madison"
+      ],
+      "date": "1788-02-20",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE remaining charge against the House of Representatives, which I am to examine, is grounded on a supposition that the number of members will not be augmented from time to time, as the progress of population may demand.",
@@ -1855,18 +2314,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 58,
+        "authorship_status": "disputed",
+        "authorship_note": "One of the disputed twelve (Federalist 49–58, 62, 63). Hamilton claimed authorship in his pre-duel memorandum (1804); Madison claimed it in his later annotations. Modern scholarly consensus, following Mosteller and Wallace (1964), assigns the paper to Madison. Source byline in Project Gutenberg #1404 reads \"MADISON\".",
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal Wednesday, February 20, 1788."
+        }
+      }
     },
     {
-      "number": 59,
+      "id": "federalist:59",
+      "corpus": "federalist",
       "title": "Concerning the Power of Congress to Regulate the Election of Members",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1788-02-22"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-02-22",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE natural order of the subject leads us to consider, in this place, that provision of the Constitution which authorizes the national legislature to regulate, in the last resort, the election of its own members. It is in these words: \"The TIMES, PLACES, and MANNER of holding elections for senators and representatives shall be prescribed in each State by the legislature thereof; but the Congress may, at any time, by law, make or alter SUCH REGULATIONS, except as to the PLACES of choosing senators.\"(1) This provision has not only been declaimed against by those who condemn the Constitution in the gross, but it has been censured by those who have objected with less latitude and greater moderation; and, in one instance it has been thought exceptionable by a gentleman who has declared himself the advocate of every other part of the system.",
@@ -1883,18 +2350,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 59,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Friday, February 22, 1788."
+        }
+      }
     },
     {
-      "number": 60,
+      "id": "federalist:60",
+      "corpus": "federalist",
       "title": "The Same Subject Continued (Concerning the Power of Congress to Regulate the Election of Members)",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1788-02-23"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-02-23",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "WE HAVE seen, that an uncontrollable power over the elections to the federal government could not, without hazard, be committed to the State legislatures. Let us now see, what would be the danger on the other side; that is, from confiding the ultimate right of regulating its own elections to the Union itself. It is not pretended, that this right would ever be used for the exclusion of any State from its share in the representation. The interest of all would, in this respect at least, be the security of all. But it is alleged, that it might be employed in such a manner as to promote the election of some favorite class of men in exclusion of others, by confining the places of election to particular districts, and rendering it impracticable to the citizens at large to partake in the choice. Of all chimerical suppositions, this seems to be the most chimerical. On the one hand, no rational calculation of probabilities would lead us to imagine that the disposition which a conduct so violent and extraordinary would imply, could ever find its way into the national councils; and on the other, it may be concluded with certainty, that if so improper a spirit should ever gain admittance into them, it would display itself in a form altogether different and far more decisive.",
@@ -1913,18 +2388,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 60,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "From The Independent Journal. Saturday, February 23, 1788."
+        }
+      }
     },
     {
-      "number": 61,
+      "id": "federalist:61",
+      "corpus": "federalist",
       "title": "The Same Subject Continued (Concerning the Power of Congress to Regulate the Election of Members)",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1788-02-26"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-02-26",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE more candid opposers of the provision respecting elections, contained in the plan of the convention, when pressed in argument, will sometimes concede the propriety of that provision; with this qualification, however, that it ought to have been accompanied with a declaration, that all elections should be had in the counties where the electors resided. This, say they, was a necessary precaution against an abuse of the power. A declaration of this nature would certainly have been harmless; so far as it would have had the effect of quieting apprehensions, it might not have been undesirable. But it would, in fact, have afforded little or no additional security against the danger apprehended; and the want of it will never be considered, by an impartial and judicious examiner, as a serious, still less as an insuperable, objection to the plan. The different views taken of the subject in the two preceding papers must be sufficient to satisfy all dispassionate and discerning men, that if the public liberty should ever be the victim of the ambition of the national rulers, the power under examination, at least, will be guiltless of the sacrifice.",
@@ -1936,18 +2419,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 61,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Tuesday, February 26, 1788."
+        }
+      }
     },
     {
-      "number": 62,
+      "id": "federalist:62",
+      "corpus": "federalist",
       "title": "The Senate",
-      "attributed_author": "Madison",
-      "authorship_status": "disputed",
-      "authorship_note": "One of the disputed twelve (Federalist 49–58, 62, 63). Hamilton claimed authorship in his pre-duel memorandum (1804); Madison claimed it in his later annotations. Modern scholarly consensus, following Mosteller and Wallace (1964), assigns the paper to Madison. Source byline in Project Gutenberg #1404 reads \"MADISON\".",
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1788-02-27"
-      },
+      "authors": [
+        "Madison"
+      ],
+      "date": "1788-02-27",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "HAVING examined the constitution of the House of Representatives, and answered such of the objections against it as seemed to merit notice, I enter next on the examination of the Senate. The heads into which this member of the government may be considered are: I. The qualification of senators; II. The appointment of them by the State legislatures; III. The equality of representation in the Senate; IV. The number of senators, and the term for which they are to be elected; V. The powers vested in the Senate.",
@@ -1971,18 +2462,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 62,
+        "authorship_status": "disputed",
+        "authorship_note": "One of the disputed twelve (Federalist 49–58, 62, 63). Hamilton claimed authorship in his pre-duel memorandum (1804); Madison claimed it in his later annotations. Modern scholarly consensus, following Mosteller and Wallace (1964), assigns the paper to Madison. Source byline in Project Gutenberg #1404 reads \"MADISON\".",
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Wednesday, February 27, 1788"
+        }
+      }
     },
     {
-      "number": 63,
+      "id": "federalist:63",
+      "corpus": "federalist",
       "title": "The Senate Continued",
-      "attributed_author": "Madison",
-      "authorship_status": "disputed",
-      "authorship_note": "One of the disputed twelve (Federalist 49–58, 62, 63). Hamilton claimed authorship in his pre-duel memorandum (1804); Madison claimed it in his later annotations. Modern scholarly consensus, following Mosteller and Wallace (1964), assigns the paper to Madison. Source byline in Project Gutenberg #1404 reads \"MADISON\".",
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1788-03-01"
-      },
+      "authors": [
+        "Madison"
+      ],
+      "date": "1788-03-01",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "A FIFTH desideratum, illustrating the utility of a senate, is the want of a due sense of national character. Without a select and stable member of the government, the esteem of foreign powers will not only be forfeited by an unenlightened and variable policy, proceeding from the causes already mentioned, but the national councils will not possess that sensibility to the opinion of the world, which is perhaps not less necessary in order to merit, than it is to obtain, its respect and confidence.",
@@ -2009,18 +2508,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 63,
+        "authorship_status": "disputed",
+        "authorship_note": "One of the disputed twelve (Federalist 49–58, 62, 63). Hamilton claimed authorship in his pre-duel memorandum (1804); Madison claimed it in his later annotations. Modern scholarly consensus, following Mosteller and Wallace (1964), assigns the paper to Madison. Source byline in Project Gutenberg #1404 reads \"MADISON\".",
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Saturday, March 1, 1788"
+        }
+      }
     },
     {
-      "number": 64,
+      "id": "federalist:64",
+      "corpus": "federalist",
       "title": "The Powers of the Senate",
-      "attributed_author": "Jay",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1788-03-05"
-      },
+      "authors": [
+        "Jay"
+      ],
+      "date": "1788-03-05",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "IT IS a just and not a new observation, that enemies to particular persons, and opponents to particular measures, seldom confine their censures to such things only in either as are worthy of blame. Unless on this principle, it is difficult to explain the motives of their conduct, who condemn the proposed Constitution in the aggregate, and treat with severity some of the most unexceptionable articles in it.",
@@ -2041,18 +2548,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 64,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "From The Independent Journal. Wednesday, March 5, 1788."
+        }
+      }
     },
     {
-      "number": 65,
+      "id": "federalist:65",
+      "corpus": "federalist",
       "title": "The Powers of the Senate Continued",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1788-03-07"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-03-07",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE remaining powers which the plan of the convention allots to the Senate, in a distinct capacity, are comprised in their participation with the executive in the appointment to offices, and in their judicial character as a court for the trial of impeachments. As in the business of appointments the executive will be the principal agent, the provisions relating to it will most properly be discussed in the examination of that department. We will, therefore, conclude this head with a view of the judicial character of the Senate.",
@@ -2069,18 +2584,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 65,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Friday, March 7, 1788."
+        }
+      }
     },
     {
-      "number": 66,
+      "id": "federalist:66",
+      "corpus": "federalist",
       "title": "Objections to the Power of the Senate To Set as a Court for Impeachments Further Considered.",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1788-03-08"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-03-08",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "A REVIEW of the principal objections that have appeared against the proposed court for the trial of impeachments, will not improbably eradicate the remains of any unfavorable impressions which may still exist in regard to this matter.",
@@ -2100,18 +2623,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 66,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "From The Independent Journal. Saturday, March 8, 1788."
+        }
+      }
     },
     {
-      "number": 67,
+      "id": "federalist:67",
+      "corpus": "federalist",
       "title": "The Executive Department",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1788-03-11"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-03-11",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE constitution of the executive department of the proposed government, claims next our attention.",
@@ -2130,18 +2661,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 67,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Tuesday, March 11, 1788."
+        }
+      }
     },
     {
-      "number": 68,
+      "id": "federalist:68",
+      "corpus": "federalist",
       "title": "The Mode of Electing the President",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1788-03-12"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-03-12",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE mode of appointment of the Chief Magistrate of the United States is almost the only part of the system, of any consequence, which has escaped without severe censure, or which has received the slightest mark of approbation from its opponents. The most plausible of these, who has appeared in print, has even deigned to admit that the election of the President is pretty well guarded.(1) I venture somewhat further, and hesitate not to affirm, that if the manner of it be not perfect, it is at least excellent. It unites in an eminent degree all the advantages, the union of which was to be wished for.(E1)",
@@ -2160,18 +2699,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 68,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "From The Independent Journal. Wednesday, March 12, 1788."
+        }
+      }
     },
     {
-      "number": 69,
+      "id": "federalist:69",
+      "corpus": "federalist",
       "title": "The Real Character of the Executive",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1788-03-14"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-03-14",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "I PROCEED now to trace the real characters of the proposed Executive, as they are marked out in the plan of the convention. This will serve to place in a strong light the unfairness of the representations which have been made in regard to it.",
@@ -2191,18 +2738,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 69,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Friday, March 14, 1788."
+        }
+      }
     },
     {
-      "number": 70,
+      "id": "federalist:70",
+      "corpus": "federalist",
       "title": "The Executive Department Further Considered",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1788-03-15"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-03-15",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THERE is an idea, which is not without its advocates, that a vigorous Executive is inconsistent with the genius of republican government. The enlightened well-wishers to this species of government must at least hope that the supposition is destitute of foundation; since they can never admit its truth, without at the same time admitting the condemnation of their own principles. Energy in the Executive is a leading character in the definition of good government. It is essential to the protection of the community against foreign attacks; it is not less essential to the steady administration of the laws; to the protection of property against those irregular and high-handed combinations which sometimes interrupt the ordinary course of justice; to the security of liberty against the enterprises and assaults of ambition, of faction, and of anarchy. Every man the least conversant in Roman history, knows how often that republic was obliged to take refuge in the absolute power of a single man, under the formidable title of Dictator, as well against the intrigues of ambitious individuals who aspired to the tyranny, and the seditions of whole classes of the community whose conduct threatened the existence of all government, as against the invasions of external enemies who menaced the conquest and destruction of Rome.",
@@ -2237,18 +2792,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 70,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "From The Independent Journal. Saturday, March 15, 1788."
+        }
+      }
     },
     {
-      "number": 71,
+      "id": "federalist:71",
+      "corpus": "federalist",
       "title": "The Duration in Office of the Executive",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1788-03-18"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-03-18",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "DURATION in office has been mentioned as the second requisite to the energy of the Executive authority. This has relation to two objects: to the personal firmness of the executive magistrate, in the employment of his constitutional powers; and to the stability of the system of administration which may have been adopted under his auspices. With regard to the first, it must be evident, that the longer the duration in office, the greater will be the probability of obtaining so important an advantage. It is a general principle of human nature, that a man will be interested in whatever he possesses, in proportion to the firmness or precariousness of the tenure by which he holds it; will be less attached to what he holds by a momentary or uncertain title, than to what he enjoys by a durable or certain title; and, of course, will be willing to risk more for the sake of the one, than for the sake of the other. This remark is not less applicable to a political privilege, or honor, or trust, than to any article of ordinary property. The inference from it is, that a man acting in the capacity of chief magistrate, under a consciousness that in a very short time he MUST lay down his office, will be apt to feel himself too little interested in it to hazard any material censure or perplexity, from the independent exertion of his powers, or from encountering the ill-humors, however transient, which may happen to prevail, either in a considerable part of the society itself, or even in a predominant faction in the legislative body. If the case should only be, that he MIGHT lay it down, unless continued by a new choice, and if he should be desirous of being continued, his wishes, conspiring with his fears, would tend still more powerfully to corrupt his integrity, or debase his fortitude. In either case, feebleness and irresolution must be the characteristics of the station.",
@@ -2262,18 +2825,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 71,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Tuesday, March 18, 1788."
+        }
+      }
     },
     {
-      "number": 72,
+      "id": "federalist:72",
+      "corpus": "federalist",
       "title": "The Same Subject Continued, and Re-Eligibility of the Executive Considered.",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1788-03-19"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-03-19",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE administration of government, in its largest sense, comprehends all the operations of the body politic, whether legislative, executive, or judiciary; but in its most usual, and perhaps its most precise signification. it is limited to executive details, and falls peculiarly within the province of the executive department. The actual conduct of foreign negotiations, the preparatory plans of finance, the application and disbursement of the public moneys in conformity to the general appropriations of the legislature, the arrangement of the army and navy, the directions of the operations of war--these, and other matters of a like nature, constitute what seems to be most properly understood by the administration of government. The persons, therefore, to whose immediate management these different matters are committed, ought to be considered as the assistants or deputies of the chief magistrate, and on this account, they ought to derive their offices from his appointment, at least from his nomination, and ought to be subject to his superintendence. This view of the subject will at once suggest to us the intimate connection between the duration of the executive magistrate in office and the stability of the system of administration. To reverse and undo what has been done by a predecessor, is very often considered by a successor as the best proof he can give of his own capacity and desert; and in addition to this propensity, where the alteration has been the result of public choice, the person substituted is warranted in supposing that the dismission of his predecessor has proceeded from a dislike to his measures; and that the less he resembles him, the more he will recommend himself to the favor of his constituents. These considerations, and the influence of personal confidences and attachments, would be likely to induce every new President to promote a change of men to fill the subordinate stations; and these causes together could not fail to occasion a disgraceful and ruinous mutability in the administration of the government.",
@@ -2293,18 +2864,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 72,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "From The Independent Journal. Wednesday, March 19, 1788."
+        }
+      }
     },
     {
-      "number": 73,
+      "id": "federalist:73",
+      "corpus": "federalist",
       "title": "The Provision For The Support of the Executive, and the Veto Power",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1788-03-21"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-03-21",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE third ingredient towards constituting the vigor of the executive authority, is an adequate provision for its support. It is evident that, without proper attention to this article, the separation of the executive from the legislative department would be merely nominal and nugatory. The legislature, with a discretionary power over the salary and emoluments of the Chief Magistrate, could render him as obsequious to their will as they might think proper to make him. They might, in most cases, either reduce him by famine, or tempt him by largesses, to surrender at discretion his judgment to their inclinations. These expressions, taken in all the latitude of the terms, would no doubt convey more than is intended. There are men who could neither be distressed nor won into a sacrifice of their duty; but this stern virtue is the growth of few soils; and in the main it will be found that a power over a man's support is a power over his will. If it were necessary to confirm so plain a truth by facts, examples would not be wanting, even in this country, of the intimidation or seduction of the Executive by the terrors or allurements of the pecuniary arrangements of the legislative body.",
@@ -2326,18 +2905,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 73,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Friday, March 21, 1788."
+        }
+      }
     },
     {
-      "number": 74,
+      "id": "federalist:74",
+      "corpus": "federalist",
       "title": "The Command of the Military and Naval Forces, and the Pardoning Power of the Executive.",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1788-03-25"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-03-25",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE President of the United States is to be \"commander-in-chief of the army and navy of the United States, and of the militia of the several States when called into the actual service of the United States.\" The propriety of this provision is so evident in itself, and it is, at the same time, so consonant to the precedents of the State constitutions in general, that little need be said to explain or enforce it. Even those of them which have, in other respects, coupled the chief magistrate with a council, have for the most part concentrated the military authority in him alone. Of all the cares or concerns of government, the direction of war most peculiarly demands those qualities which distinguish the exercise of power by a single hand. The direction of war implies the direction of the common strength; and the power of directing and employing the common strength, forms a usual and essential part in the definition of the executive authority.",
@@ -2347,18 +2934,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 74,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Tuesday, March 25, 1788."
+        }
+      }
     },
     {
-      "number": 75,
+      "id": "federalist:75",
+      "corpus": "federalist",
       "title": "The Treaty-Making Power of the Executive",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1788-03-26"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-03-26",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE President is to have power, \"by and with the advice and consent of the Senate, to make treaties, provided two thirds of the senators present concur.\" Though this provision has been assailed, on different grounds, with no small degree of vehemence, I scruple not to declare my firm persuasion, that it is one of the best digested and most unexceptionable parts of the plan. One ground of objection is the trite topic of the intermixture of powers; some contending that the President ought alone to possess the power of making treaties; others, that it ought to have been exclusively deposited in the Senate. Another source of objection is derived from the small number of persons by whom a treaty may be made. Of those who espouse this objection, a part are of opinion that the House of Representatives ought to have been associated in the business, while another part seem to think that nothing more was necessary than to have substituted two thirds of all the members of the Senate, to two thirds of the members present. As I flatter myself the observations made in a preceding number upon this part of the plan must have sufficed to place it, to a discerning eye, in a very favorable light, I shall here content myself with offering only some supplementary remarks, principally with a view to the objections which have been just stated.",
@@ -2371,18 +2966,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 75,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "For the Independent Journal. Wednesday, March 26, 1788"
+        }
+      }
     },
     {
-      "number": 76,
+      "id": "federalist:76",
+      "corpus": "federalist",
       "title": "The Appointing Power of the Executive",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "New York Packet",
-        "date": "1788-04-01"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-04-01",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE President is \"to nominate, and, by and with the advice and consent of the Senate, to appoint ambassadors, other public ministers and consuls, judges of the Supreme Court, and all other officers of the United States whose appointments are not otherwise provided for in the Constitution. But the Congress may by law vest the appointment of such inferior officers as they think proper, in the President alone, or in the courts of law, or in the heads of departments. The President shall have power to fill up all vacancies which may happen during the recess of the Senate, by granting commissions which shall expire at the end of their next session.\"",
@@ -2398,18 +3001,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 76,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "New York Packet",
+          "raw_dateline": "From the New York Packet. Tuesday, April 1, 1788."
+        }
+      }
     },
     {
-      "number": 77,
+      "id": "federalist:77",
+      "corpus": "federalist",
       "title": "The Appointing Power Continued and Other Powers of the Executive Considered.",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "Independent Journal",
-        "date": "1788-04-02"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-04-02",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "IT HAS been mentioned as one of the advantages to be expected from the co-operation of the Senate, in the business of appointments, that it would contribute to the stability of the administration. The consent of that body would be necessary to displace as well as to appoint. A change of the Chief Magistrate, therefore, would not occasion so violent or so general a revolution in the officers of the government as might be expected, if he were the sole disposer of offices. Where a man in any station had given satisfactory evidence of his fitness for it, a new President would be restrained from attempting a change in favor of a person more agreeable to him, by the apprehension that a discountenance of the Senate might frustrate the attempt, and bring some degree of discredit upon himself. Those who can best estimate the value of a steady administration, will be most disposed to prize a provision which connects the official existence of public men with the approbation or disapprobation of that body which, from the greater permanency of its own composition, will in all probability be less subject to inconstancy than any other member of the government.",
@@ -2427,18 +3038,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 77,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "Independent Journal",
+          "raw_dateline": "From The Independent Journal. Wednesday, April 2, 1788."
+        }
+      }
     },
     {
-      "number": 78,
+      "id": "federalist:78",
+      "corpus": "federalist",
       "title": "The Judiciary Department",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "McLEAN'S Edition, New York",
-        "date": "1788-05-28"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-05-28",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "WE PROCEED now to an examination of the judiciary department of the proposed government.",
@@ -2469,18 +3088,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 78,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "McLEAN'S Edition, New York",
+          "raw_dateline": "From McLEAN'S Edition, New York. Wednesday, May 28, 1788"
+        }
+      }
     },
     {
-      "number": 79,
+      "id": "federalist:79",
+      "corpus": "federalist",
       "title": "The Judiciary Continued",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "MCLEAN's Edition, New York",
-        "date": "1788-05-28"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-05-28",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "NEXT to permanency in office, nothing can contribute more to the independence of the judges than a fixed provision for their support. The remark made in relation to the President is equally applicable here. In the general course of human nature, a power over a man's subsistence amounts to a power over his will. And we can never hope to see realized in practice, the complete separation of the judicial from the legislative power, in any system which leaves the former dependent for pecuniary resources on the occasional grants of the latter. The enlightened friends to good government in every State, have seen cause to lament the want of precise and explicit precautions in the State constitutions on this head. Some of these indeed have declared that permanent(1) salaries should be established for the judges; but the experiment has in some instances shown that such expressions are not sufficiently definite to preclude legislative evasions. Something still more positive and unequivocal has been evinced to be requisite. The plan of the convention accordingly has provided that the judges of the United States \"shall at stated times receive for their services a compensation which shall not be diminished during their continuance in office.\"",
@@ -2493,18 +3120,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 79,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "MCLEAN's Edition, New York",
+          "raw_dateline": "From MCLEAN's Edition, New York. Wednesday, May 28, 1788"
+        }
+      }
     },
     {
-      "number": 80,
+      "id": "federalist:80",
+      "corpus": "federalist",
       "title": "The Powers of the Judiciary",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "McLEAN's Edition, New York",
-        "date": "1788-05-28"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-05-28",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "TO JUDGE with accuracy of the proper extent of the federal judicature, it will be necessary to consider, in the first place, what are its proper objects.",
@@ -2532,18 +3167,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 80,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "McLEAN's Edition, New York",
+          "raw_dateline": "From McLEAN's Edition, New York. Wednesday, May 28, 1788."
+        }
+      }
     },
     {
-      "number": 81,
+      "id": "federalist:81",
+      "corpus": "federalist",
       "title": "The Judiciary Continued, and the Distribution of the Judicial Authority.",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "McLEAN's Edition, New York",
-        "date": "1788-05-28"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-05-28",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "LET US now return to the partition of the judiciary authority between different courts, and their relations to each other.",
@@ -2576,18 +3219,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 81,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "McLEAN's Edition, New York",
+          "raw_dateline": "From McLEAN's Edition, New York. Wednesday, May 28, 1788."
+        }
+      }
     },
     {
-      "number": 82,
+      "id": "federalist:82",
+      "corpus": "federalist",
       "title": "The Judiciary Continued.",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "McLEAN's Edition, New York",
-        "date": "1788-05-28"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-05-28",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE erection of a new government, whatever care or wisdom may distinguish the work, cannot fail to originate questions of intricacy and nicety; and these may, in a particular manner, be expected to flow from the establishment of a constitution founded upon the total or partial incorporation of a number of distinct sovereignties. 'Tis time only that can mature and perfect so compound a system, can liquidate the meaning of all the parts, and can adjust them to each other in a harmonious and consistent WHOLE.",
@@ -2602,18 +3253,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 82,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "McLEAN's Edition, New York",
+          "raw_dateline": "From McLEAN's Edition, New York. Wednesday, May 28, 1788"
+        }
+      }
     },
     {
-      "number": 83,
+      "id": "federalist:83",
+      "corpus": "federalist",
       "title": "The Judiciary Continued in Relation to Trial by Jury",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "MCLEAN's Edition, New York",
-        "date": "1788-05-28"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-05-28",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "THE objection to the plan of the convention, which has met with most success in this State, and perhaps in several of the other States, is that relative to the want of a constitutional provision for the trial by jury in civil cases. The disingenuous form in which this objection is usually stated has been repeatedly adverted to and exposed, but continues to be pursued in all the conversations and writings of the opponents of the plan. The mere silence of the Constitution in regard to civil causes, is represented as an abolition of the trial by jury, and the declamations to which it has afforded a pretext are artfully calculated to induce a persuasion that this pretended abolition is complete and universal, extending not only to every species of civil, but even to criminal causes. To argue with respect to the latter would, however, be as vain and fruitless as to attempt the serious proof of the existence of matter, or to demonstrate any of those propositions which, by their own internal evidence, force conviction, when expressed in language adapted to convey their meaning.",
@@ -2660,18 +3319,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 83,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "MCLEAN's Edition, New York",
+          "raw_dateline": "From MCLEAN's Edition, New York. Wednesday, May 28, 1788"
+        }
+      }
     },
     {
-      "number": 84,
+      "id": "federalist:84",
+      "corpus": "federalist",
       "title": "Certain General and Miscellaneous Objections to the Constitution Considered and Answered.",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "McLEAN's Edition, New York",
-        "date": "1788-05-28"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-05-28",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "IN THE course of the foregoing review of the Constitution, I have taken notice of, and endeavored to answer most of the objections which have appeared against it. There, however, remain a few which either did not fall naturally under any particular head or were forgotten in their proper places. These shall now be discussed; but as the subject has been drawn into great length, I shall so far consult brevity as to comprise all my observations on these miscellaneous points in a single paper.",
@@ -2705,18 +3372,26 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 84,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "McLEAN's Edition, New York",
+          "raw_dateline": "From McLEAN's Edition, New York. Wednesday, May 28, 1788"
+        }
+      }
     },
     {
-      "number": 85,
+      "id": "federalist:85",
+      "corpus": "federalist",
       "title": "Concluding Remarks",
-      "attributed_author": "Hamilton",
-      "authorship_status": "undisputed",
-      "authorship_note": null,
-      "publication": {
-        "venue": "MCLEAN's Edition, New York",
-        "date": "1788-05-28"
-      },
+      "authors": [
+        "Hamilton"
+      ],
+      "date": "1788-05-28",
+      "language": "en",
       "paragraphs": [
         "To the People of the State of New York:",
         "ACCORDING to the formal division of the subject of these papers, announced in my first number, there would appear still to remain for discussion two points: \"the analogy of the proposed government to your own State constitution,\" and \"the additional security which its adoption will afford to republican government, to liberty, and to property.\" But these heads have been so fully anticipated and exhausted in the progress of the work, that it would now scarcely be possible to do any thing more than repeat, in a more dilated form, what has been heretofore said, which the advanced stage of the question, and the time already spent upon it, conspire to forbid.",
@@ -2791,7 +3466,16 @@
       ],
       "plain_english": null,
       "constitutional_section": null,
-      "topic_tags": []
+      "topic_tags": [],
+      "federalist": {
+        "number": 85,
+        "authorship_status": "undisputed",
+        "authorship_note": null,
+        "publication": {
+          "venue": "MCLEAN's Edition, New York",
+          "raw_dateline": "From MCLEAN's Edition, New York. Wednesday, May 28, 1788"
+        }
+      }
     }
   ]
 }

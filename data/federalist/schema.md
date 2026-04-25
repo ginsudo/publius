@@ -1,74 +1,50 @@
-# Federalist corpus — schema
+# Federalist corpus — schema notes
 
-Top-level shape of `federalist.json`:
+The cross-corpus base schema is defined in [`data/SCHEMA.md`](../SCHEMA.md). This file documents only the Federalist-specific extension and the editorial calls that govern how PG #1404 is mapped into it.
 
-```json
-{
-  "source": {
-    "edition": "Project Gutenberg eBook #1404 — The Federalist Papers",
-    "url": "https://www.gutenberg.org/ebooks/1404",
-    "sha256": "...",
-    "fetched": "YYYY-MM-DD",
-    "notes": "..."
-  },
-  "count": 85,
-  "papers": [ /* Paper objects, ordered by number 1..85 */ ]
-}
-```
+## Federalist extension
 
-Each paper:
+Each item in `federalist.json` carries the universal base fields plus a `federalist` extension:
 
 ```json
-{
-  "number": 10,
-  "title": "The Same Subject Continued (The Union as a Safeguard Against Domestic Faction and Insurrection)",
-  "attributed_author": "Madison",
-  "authorship_status": "undisputed",
-  "authorship_note": null,
+"federalist": {
+  "number": 51,
+  "authorship_status": "disputed",
+  "authorship_note": "One of the disputed twelve...",
   "publication": {
-    "venue": "Daily Advertiser",
-    "date": "1787-11-22"
-  },
-  "paragraphs": ["...", "..."],
-  "plain_english": null,
-  "constitutional_section": null,
-  "topic_tags": []
+    "venue": "Independent Journal",
+    "raw_dateline": "For the Independent Journal. Wednesday, February 6, 1788."
+  }
 }
 ```
 
-## Field semantics
-
-- **`number`** — Federalist paper number, 1 through 85, matching the McLean's bound edition numbering used universally in modern scholarship.
-
-- **`title`** — Title as it appears in PG #1404, normalized to a single line. Many papers in the original carry the form *"The Same Subject Continued (Subtopic)"* — preserved verbatim rather than rewritten to scholarly conventions.
-
-- **`attributed_author`** — Modern scholarly attribution. One of `"Hamilton"`, `"Madison"`, `"Jay"`, or `"Hamilton and Madison"`. For the disputed twelve, attribution follows the Mosteller-Wallace (1964) consensus assigning all twelve to Madison.
-
-- **`authorship_status`** — One of:
+- **`number`** — paper number, 1–85, matching the McLean's bound edition numbering used universally in modern scholarship.
+- **`authorship_status`** — one of:
   - `"undisputed"` — single attributed author with no significant historical dispute
   - `"disputed"` — one of the disputed twelve (49–58, 62, 63), historically claimed by both Hamilton and Madison; modern consensus assigns to Madison
   - `"joint"` — papers 18, 19, 20, jointly authored by Madison (principal) and Hamilton
+- **`authorship_note`** — `null` for undisputed; for disputed and joint papers, prose context explaining the historical claim and the basis for the modern attribution. Identical across all disputed papers and across all joint papers.
+- **`publication.venue`** — newspaper or edition: `"Independent Journal"`, `"New York Packet"`, `"Daily Advertiser"`, `"McLEAN'S Edition, New York"` (papers 78–85 first appeared in McLean's bound edition rather than a newspaper).
+- **`publication.raw_dateline`** — verbatim dateline from PG #1404 (whitespace collapsed to single spaces). Preserved to make any discrepancy with the parsed `date` field auditable.
 
-- **`authorship_note`** — `null` for undisputed papers. For disputed and joint papers, a short prose note explaining the historical claim and the basis for the modern attribution. The note is identical across all disputed papers and across all joint papers; per-paper detail is not encoded.
+ID format: `federalist:<number>`, e.g. `"federalist:51"`.
 
-- **`publication.venue`** — The newspaper or edition in which the paper first appeared. Values seen in PG #1404: `"Independent Journal"`, `"New York Packet"`, `"Daily Advertiser"`, `"McLEAN'S Edition, New York"` (papers 78–85 first appeared in McLean's bound edition rather than a newspaper).
+## How universal-base fields map for Federalist
 
-- **`publication.date`** — ISO `YYYY-MM-DD` date of first publication. Stored exactly as the dateline in PG #1404 reads, even where the dateline is a known transcription artifact (see `data_quality_issues.md`). The papers were *not* published in strict numerical order — McLean's bound edition reordered some papers (notably 29 and 30) relative to their original newspaper appearance.
+- **`authors`** — modern-consensus attribution as an array of canonical surnames. For disputed papers: `["Madison"]` (the dispute is recorded in `federalist.authorship_status` and `_note`, not erased). For joint papers: `["Madison", "Hamilton"]`, in PG byline order ("MADISON, with HAMILTON" → Madison principal, Hamilton with). For undisputed: a single-name array.
+- **`date`** — first publication date, ISO `YYYY-MM-DD`. Note: papers were not published in strict numerical order (papers 29 and 30 were reordered by McLean relative to their original newspaper appearance — see editorial calls below).
+- **`language`** — `"en"` for every Federalist item.
+- **`paragraphs`** — see editorial calls below.
+- **`plain_english`**, **`constitutional_section`**, **`topic_tags`** — universal stubs as defined in `data/SCHEMA.md`. All `null`/`[]` in Phase 0.
 
-- **`paragraphs`** — Body of the paper, in source order. The opening salutation `"To the People of the State of New York:"` is included as the first paragraph. Closing `PUBLIUS` signature lines are stripped. Footnotes that appear after the signature in PG #1404 are preserved as additional paragraphs at the end of the array (a future schema revision may separate them into a dedicated field once the editorial standard is set). Internal line wrapping is collapsed to single spaces.
+## Editorial calls in the parse
 
-- **`plain_english`** — `null` in the Phase 0 corpus. Reserved for the plain-English rendering that is the project's central editorial work, generated in a later phase via Claude Batch API and reviewed by the project owner.
+These reflect calls made during Phase 0; if they need to change, change the parser and regenerate.
 
-- **`constitutional_section`** — `null` in the Phase 0 corpus. Reserved for a later phase that maps each paper to the constitutional provisions it argues about (e.g., Article I §8, Tenth Amendment).
-
-- **`topic_tags`** — `[]` in the Phase 0 corpus. Reserved for a later phase.
-
-## What is intentionally NOT in this schema
-
-- **No per-paper `source` field.** Every paper in this corpus comes from the same edition; the `source` block is held once at the top level. The originally-discussed schema put `source` on each paper — that was redundant and dropped before parser implementation.
-
-- **No `byline_in_source` field.** What PG #1404 prints as the byline ("HAMILTON" / "MADISON" / "JAY" / "MADISON, with HAMILTON") is preserved in the raw source file; it is not duplicated into the structured corpus. The structured fields (`attributed_author`, `authorship_status`) carry the modern scholarly attribution.
-
-- **No separate footnotes field.** Footnote text appears as trailing paragraphs. Splitting it out is deferred until the editorial standard for footnote presentation is decided.
-
-- **No paragraph IDs.** Paragraphs are addressed by array index. If stable cross-edition citation becomes necessary, IDs can be added later.
+1. **Salutation as first paragraph.** `"To the People of the State of New York:"` appears as `paragraphs[0]` on every paper. It is part of each paper as originally published; not stripped.
+2. **`PUBLIUS` signature stripped.** The closing signature is metadata, not body text. Removed during parse.
+3. **Footnotes preserved inline as trailing paragraphs.** Where PG #1404 prints footnotes after the `PUBLIUS` signature (e.g. paper 78), they remain in `paragraphs` at the end. Not split into a dedicated field. To revisit when the footnote presentation standard is set.
+4. **Title and dateline disambiguation.** A handful of papers (18, 39, 45, 58) merge the title with the dateline on one line in PG. Parser splits these by locating the dateline regex first; everything before is title, everything after is body.
+5. **Disputed twelve attributed to Madison.** Following Mosteller and Wallace (1964). The PG #1404 byline for each of these twelve also reads `"MADISON"`. The dispute is recorded in `federalist.authorship_note`, not erased.
+6. **Joint papers (18, 19, 20).** Universal `authors` carries `["Madison", "Hamilton"]`; `federalist.authorship_status` is `"joint"`. PG byline `"MADISON, with HAMILTON"` is preserved in the raw file and acknowledged in the note.
+7. **Known historical reordering.** Papers 29 and 30 are excluded from the date-monotonicity anomaly check because Federalist 29 was originally numbered 35 and inserted at position 29 by McLean — the date labels are genuinely out of monotonic order, not transcription typos.

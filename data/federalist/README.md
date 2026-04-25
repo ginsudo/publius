@@ -7,8 +7,8 @@ This directory holds the structured Federalist Papers corpus for Publius.
 - `raw/pg1404.txt` — verbatim text from Project Gutenberg eBook #1404, fetched 2026-04-25. Untouched.
 - `raw/pg1404.sha256` — SHA-256 of the raw file, for drift detection on future re-fetch.
 - `parse.ts` — one-shot parser. Reads the raw file, emits `federalist.json`. Idempotent. Re-runnable.
-- `federalist.json` — structured corpus, all 85 papers. See `schema.md`.
-- `schema.md` — schema documentation.
+- `federalist.json` — structured corpus, all 85 papers. Conforms to the cross-corpus base schema in [`data/SCHEMA.md`](../SCHEMA.md); Federalist-specific extension is documented in `schema.md`.
+- `schema.md` — Federalist-specific schema notes (extension fields and editorial calls). For the universal base, see [`data/SCHEMA.md`](../SCHEMA.md).
 - `data_quality_issues.md` — anomalies found during parsing, surfaced for editorial review. Regenerated each parser run.
 - `README.md` — this file.
 

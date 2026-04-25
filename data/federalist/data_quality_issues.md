@@ -8,7 +8,7 @@ The editorial standard is: do not silently overwrite the source. Any deviation b
 
 These are values where `federalist.json` differs from PG #1404. The `from` value is what PG #1404 contains; the `to` value is what the JSON now stores. The parser refuses to apply a correction unless the `from` value matches what it actually parsed — so if PG #1404 is ever updated upstream and the typo is fixed there, this script will fail loudly rather than re-corrupt the data.
 
-- **Paper 26, `publication.date`**: corrected from `1788-12-22` to `1787-12-22`.
+- **Paper 26, `date`**: corrected from `1788-12-22` to `1787-12-22`.
   - Reason: PG #1404 dateline reads "Saturday, December 22, 1788" — a year transcription typo. Federalist 26 was published December 22, 1787.
   - Sources verified by project owner:
     - Founders Online (National Archives): https://founders.archives.gov/documents/Hamilton/01-04-02-0183

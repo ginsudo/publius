@@ -37,12 +37,20 @@ const MONTHS: Record<string, string> = {
 const DISPUTED = new Set([49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 62, 63]);
 const JOINT = new Set([18, 19, 20]);
 
+const DISPUTED_NOTE =
+  'One of the disputed twelve (Federalist 49–58, 62, 63). Hamilton claimed authorship in his pre-duel memorandum (1804); Madison claimed it in his later annotations. Modern scholarly consensus, following Mosteller and Wallace (1964), assigns the paper to Madison. Source byline in Project Gutenberg #1404 reads "MADISON".';
+const JOINT_NOTE =
+  'Jointly authored. The Project Gutenberg #1404 byline reads "MADISON, with HAMILTON", reflecting Madison as principal author with Hamilton contributing.';
+
 // Editorial corrections to PG #1404 transcription errors. Each correction names
 // the field, the parsed value, the corrected value, the reason, and the external
 // sources verified by the project owner. Applied after extraction so the raw
 // file remains untouched and the override is auditable in one place.
+//
+// Field codes follow the universal schema: bare names address universal fields
+// (`date`, `title`); dotted names address extension fields (`federalist.publication.venue`).
 type Correction = {
-  field: 'publication.date' | 'publication.venue' | 'title';
+  field: 'date' | 'title' | 'federalist.publication.venue';
   from: string;
   to: string;
   reason: string;
@@ -51,7 +59,7 @@ type Correction = {
 const CORRECTIONS: Record<number, Correction[]> = {
   26: [
     {
-      field: 'publication.date',
+      field: 'date',
       from: '1788-12-22',
       to: '1787-12-22',
       reason: 'PG #1404 dateline reads "Saturday, December 22, 1788" — a year transcription typo. Federalist 26 was published December 22, 1787.',
@@ -65,26 +73,30 @@ const CORRECTIONS: Record<number, Correction[]> = {
   ],
 };
 
-const DISPUTED_NOTE =
-  'One of the disputed twelve (Federalist 49–58, 62, 63). Hamilton claimed authorship in his pre-duel memorandum (1804); Madison claimed it in his later annotations. Modern scholarly consensus, following Mosteller and Wallace (1964), assigns the paper to Madison. Source byline in Project Gutenberg #1404 reads "MADISON".';
-const JOINT_NOTE =
-  'Jointly authored. The Project Gutenberg #1404 byline reads "MADISON, with HAMILTON", reflecting Madison as principal author with Hamilton contributing.';
-
-type Paper = {
-  number: number;
+type Item = {
+  id: string;
+  corpus: 'federalist';
   title: string;
-  attributed_author: string;
-  authorship_status: 'undisputed' | 'disputed' | 'joint';
-  authorship_note: string | null;
-  publication: { venue: string | null; date: string | null };
+  authors: string[];
+  date: string | null;
+  language: 'en';
   paragraphs: string[];
   plain_english: null;
   constitutional_section: null;
   topic_tags: never[];
+  federalist: {
+    number: number;
+    authorship_status: 'undisputed' | 'disputed' | 'joint';
+    authorship_note: string | null;
+    publication: {
+      venue: string | null;
+      raw_dateline: string;
+    };
+  };
 };
 
 const issues: string[] = [];
-const papers: Paper[] = [];
+const items: Item[] = [];
 
 for (let i = 0; i < headings.length; i++) {
   const h = headings[i];
@@ -111,10 +123,7 @@ for (let i = 0; i < headings.length; i++) {
   const day = dateMatch[5].padStart(2, '0');
   const year = dateMatch[6];
   const date = `${year}-${month}-${day}`;
-  const yearNum = parseInt(year, 10);
-  if (yearNum < 1787 || yearNum > 1788) {
-    issues.push(`- Paper ${h.num}: dateline year is ${year} (${dateMatch[0].trim()}). Expected 1787 or 1788. Likely PG #1404 transcription typo. Date stored as parsed; flag for editorial review.`);
-  }
+  const rawDateline = dateMatch[0].replace(/\s+/g, ' ').trim();
 
   const afterDate = block.slice(dateEnd);
   const bylineMatch = afterDate.match(BYLINE_RE);
@@ -126,22 +135,23 @@ for (let i = 0; i < headings.length; i++) {
   const bodyRaw = afterDate.slice(bylineEnd);
 
   const sourceByline = bylineMatch[0];
-  let attributed_author: string;
-  let authorship_status: Paper['authorship_status'];
+  let authors: string[];
+  let authorship_status: Item['federalist']['authorship_status'];
   let authorship_note: string | null;
   if (DISPUTED.has(h.num)) {
-    attributed_author = 'Madison';
+    authors = ['Madison'];
     authorship_status = 'disputed';
     authorship_note = DISPUTED_NOTE;
   } else if (JOINT.has(h.num)) {
-    attributed_author = 'Hamilton and Madison';
+    // PG byline order "MADISON, with HAMILTON" preserved in array order.
+    authors = ['Madison', 'Hamilton'];
     authorship_status = 'joint';
     authorship_note = JOINT_NOTE;
   } else {
-    if (sourceByline === 'HAMILTON') attributed_author = 'Hamilton';
-    else if (sourceByline === 'MADISON') attributed_author = 'Madison';
-    else if (sourceByline === 'JAY') attributed_author = 'Jay';
-    else attributed_author = sourceByline;
+    if (sourceByline === 'HAMILTON') authors = ['Hamilton'];
+    else if (sourceByline === 'MADISON') authors = ['Madison'];
+    else if (sourceByline === 'JAY') authors = ['Jay'];
+    else authors = [sourceByline];
     authorship_status = 'undisputed';
     authorship_note = null;
   }
@@ -158,24 +168,30 @@ for (let i = 0; i < headings.length; i++) {
     throw new Error(`Paper ${h.num}: zero paragraphs parsed`);
   }
 
-  papers.push({
-    number: h.num,
+  items.push({
+    id: `federalist:${h.num}`,
+    corpus: 'federalist',
     title,
-    attributed_author,
-    authorship_status,
-    authorship_note,
-    publication: { venue, date },
+    authors,
+    date,
+    language: 'en',
     paragraphs,
     plain_english: null,
     constitutional_section: null,
     topic_tags: [],
+    federalist: {
+      number: h.num,
+      authorship_status,
+      authorship_note,
+      publication: { venue, raw_dateline: rawDateline },
+    },
   });
 }
 
-papers.sort((a, b) => a.number - b.number);
+items.sort((a, b) => a.federalist.number - b.federalist.number);
 for (let i = 0; i < 85; i++) {
-  if (papers[i].number !== i + 1) {
-    throw new Error(`Missing or duplicate paper at position ${i}: got ${papers[i].number}`);
+  if (items[i].federalist.number !== i + 1) {
+    throw new Error(`Missing or duplicate paper at position ${i}: got ${items[i].federalist.number}`);
   }
 }
 
@@ -185,19 +201,19 @@ for (let i = 0; i < 85; i++) {
 const correctionsApplied: Array<{ number: number } & Correction> = [];
 for (const [numStr, list] of Object.entries(CORRECTIONS)) {
   const num = parseInt(numStr, 10);
-  const paper = papers[num - 1];
+  const item = items[num - 1];
   for (const c of list) {
     let actual: string;
-    if (c.field === 'publication.date') actual = paper.publication.date ?? '';
-    else if (c.field === 'publication.venue') actual = paper.publication.venue ?? '';
-    else if (c.field === 'title') actual = paper.title;
+    if (c.field === 'date') actual = item.date ?? '';
+    else if (c.field === 'title') actual = item.title;
+    else if (c.field === 'federalist.publication.venue') actual = item.federalist.publication.venue ?? '';
     else throw new Error(`Unknown correction field: ${c.field}`);
     if (actual !== c.from) {
       throw new Error(`Correction precondition failed for paper ${num}.${c.field}: expected "${c.from}", got "${actual}". Source may have been updated upstream — review before re-applying.`);
     }
-    if (c.field === 'publication.date') paper.publication.date = c.to;
-    else if (c.field === 'publication.venue') paper.publication.venue = c.to;
-    else if (c.field === 'title') paper.title = c.to;
+    if (c.field === 'date') item.date = c.to;
+    else if (c.field === 'title') item.title = c.to;
+    else if (c.field === 'federalist.publication.venue') item.federalist.publication.venue = c.to;
     correctionsApplied.push({ number: num, ...c });
   }
 }
@@ -210,17 +226,18 @@ for (const [numStr, list] of Object.entries(CORRECTIONS)) {
 // Flag papers whose dateline year disagrees with both immediate neighbors,
 // excluding documented historical reorderings.
 const KNOWN_REORDERED = new Set([29, 30]);
-for (let i = 1; i < papers.length - 1; i++) {
-  if (KNOWN_REORDERED.has(papers[i].number)) continue;
-  const prev = papers[i - 1].publication.date?.slice(0, 4);
-  const cur = papers[i].publication.date?.slice(0, 4);
-  const next = papers[i + 1].publication.date?.slice(0, 4);
+for (let i = 1; i < items.length - 1; i++) {
+  if (KNOWN_REORDERED.has(items[i].federalist.number)) continue;
+  const prev = items[i - 1].date?.slice(0, 4);
+  const cur = items[i].date?.slice(0, 4);
+  const next = items[i + 1].date?.slice(0, 4);
   if (cur && prev && next && cur !== prev && cur !== next) {
-    issues.push(`- Paper ${papers[i].number}: dateline year ${cur} disagrees with both neighbors (paper ${papers[i - 1].number}: ${prev}, paper ${papers[i + 1].number}: ${next}). Likely PG #1404 transcription typo. Date stored as parsed; flag for editorial review.`);
+    issues.push(`- Paper ${items[i].federalist.number}: dateline year ${cur} disagrees with both neighbors (paper ${items[i - 1].federalist.number}: ${prev}, paper ${items[i + 1].federalist.number}: ${next}). Likely PG #1404 transcription typo. Date stored as parsed; flag for editorial review.`);
   }
 }
 
 const corpus = {
+  corpus: 'federalist' as const,
   source: {
     edition: 'Project Gutenberg eBook #1404 — The Federalist Papers',
     url: 'https://www.gutenberg.org/ebooks/1404',
@@ -228,8 +245,8 @@ const corpus = {
     fetched: new Date().toISOString().slice(0, 10),
     notes: 'Single-source, single-edition. CRLF line endings normalized to LF before parsing. Closing PUBLIUS signature lines stripped. Paragraphs preserve order including any footnote material that appears after the signature in the source.',
   },
-  count: papers.length,
-  papers,
+  count: items.length,
+  items,
 };
 
 writeFileSync(OUT_PATH, JSON.stringify(corpus, null, 2) + '\n');
@@ -263,7 +280,7 @@ Anomalies parsed faithfully from PG #1404 and surfaced here for editorial review
 ${issuesSection}`;
 writeFileSync(ISSUES_PATH, issuesDoc);
 
-console.log(`Wrote ${papers.length} papers to ${OUT_PATH}`);
+console.log(`Wrote ${items.length} items to ${OUT_PATH}`);
 console.log(`Source SHA256: ${sha256}`);
 console.log(`Disputed: ${[...DISPUTED].sort((a, b) => a - b).join(', ')}`);
 console.log(`Joint: ${[...JOINT].sort((a, b) => a - b).join(', ')}`);
