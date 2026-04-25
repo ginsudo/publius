@@ -43,6 +43,7 @@ Every item, regardless of corpus, has these fields:
   "date": "1788-02-06",
   "language": "en",
   "paragraphs": ["...", "..."],
+  "footnotes": [],
   "plain_english": null,
   "constitutional_section": null,
   "topic_tags": [],
@@ -65,7 +66,19 @@ Every item, regardless of corpus, has these fields:
 
 - **`language`** — IETF language tag for `paragraphs` content. `"en"` for Federalist and SCOTUS (English source); `"fr"` for Tocqueville (French source). Independent of `plain_english`, which is always English.
 
-- **`paragraphs`** — body of the item in source order, as an array of strings. Internal line wrapping collapsed; structural paragraph breaks preserved. Salutations, headings, and footnotes that appear in the source are preserved as paragraphs unless the corpus extension specifies different handling.
+- **`paragraphs`** — body of the item in source order, as an array of strings. Internal line wrapping collapsed; structural paragraph breaks preserved. Salutations and headings that appear in the source are preserved as paragraphs unless the corpus extension specifies different handling. Footnote bodies are *not* in `paragraphs` — they live in the `footnotes` field; the inline marker that references each footnote stays in `paragraphs` exactly as printed.
+
+- **`footnotes`** — array of footnote objects in source order. Empty array (`[]`) when the item has no footnotes. Each footnote has the shape:
+  ```json
+  {
+    "marker": "(1)",
+    "paragraphs": ["Vide Constitution of Massachusetts, Chapter 2, Section 1, Article 13."]
+  }
+  ```
+  - **`marker`** — the marker as it appears *inline in the body*, preserving the source's marker style: `"(1)"` (Federalist), `"1"` (typical SCOTUS), `"A"` (Tocqueville end-note reference). String, not number — corpora vary in marker style and a string accommodates all. **Markers must be unique within a single item's `footnotes` array** — this invariant is what makes inline marker → footnote lookup by string equality reliable.
+  - **`paragraphs`** — body of the footnote in source order, as an array of strings. Same paragraph treatment as the item-level `paragraphs` field. A single-paragraph footnote has a one-element array.
+
+  Inline references stay in the item's `paragraphs` exactly as printed — e.g., body text reads `…permanent(1) salaries should be established…` or `…tyranny of the majority.*` Retrieval, citation, and rendering layers resolve marker → footnote within the same item by string equality on `marker`.
 
 - **`plain_english`** — modern English rendering of the item's substance, generated via Claude Batch API and reviewed by the project owner. `null` until generated. Always English regardless of source `language`.
 
@@ -74,6 +87,14 @@ Every item, regardless of corpus, has these fields:
 - **`topic_tags`** — array of free-form topical tags assigned editorially. `[]` until populated.
 
 - **Corpus extension** — exactly one of `federalist`, `tocqueville`, `court` is populated per item, matching the item's `corpus` value. See per-corpus extensions below.
+
+### Footnotes — corpus-specific expectations
+
+- **Federalist:** Most papers carry no footnotes (`footnotes: []`). A handful (notably 78, plus shorter notes elsewhere) have authorial footnotes that PG #1404 prints after the closing `PUBLIUS` signature, formatted as `N. Footnote text…` blocks. These populate the `footnotes` array; the inline reference form `(N)` is preserved verbatim in `paragraphs`. The marker stored on each footnote is the inline form `"(N)"`, not the bare `"N"` from the trailing label, so string equality on the marker resolves the lookup directly.
+- **Tocqueville:** Heavy footnote use. In-chapter authorial footnotes populate `footnotes`. The lettered end-notes (Vol I "Notes du premier volume" and the Vol II equivalent) are substantive enough to be **standalone items** — IDs `tocqueville:vol1.notes.A`, `tocqueville:vol1.notes.B`, etc. — not entries in any chapter's `footnotes` array. A chapter that references an end-note preserves the marker (`[A]`, `(A)`, etc., as printed) inline in its `paragraphs[]`; the end-note item lives separately and is independently retrievable. This is the only case where a footnote-shaped reference resolves to a different item rather than to the same item's `footnotes` field.
+- **SCOTUS:** Each opinion's footnote sequence populates that opinion's `footnotes` array. Footnotes carry independent argumentative weight (Carolene Products n.4 being the canonical example) and must remain first-class addressable. A footnote in the majority and a footnote in the dissent are in *different items*; marker uniqueness is per-item, not per-case.
+
+When a chapter title or opinion heading itself carries a footnote (rare in Federalist, occasional in Tocqueville and SCOTUS), the marker is preserved in `title` (or `tocqueville.chapter_title`); the footnote sits in `footnotes` like any other.
 
 ### Optional per-item override
 
@@ -151,6 +172,7 @@ The author of the opinion appears in the universal `authors` field. Joining just
 - **No paragraph IDs.** Paragraphs are addressed by `(item_id, array_index)`. Stable cross-edition IDs can be added later if citation needs require it.
 - **No nested opinions for SCOTUS.** Each opinion is a separate item, joined by `case_id`. A dissent is its own argumentative voice and warrants first-class addressability.
 - **No `chunks` field.** Vector-store chunking is a downstream concern produced from `paragraphs`, not a corpus-storage concern.
+- **No back-reference field on footnotes.** Each footnote does not store the paragraph index that references it. The link is the marker, preserved inline in `paragraphs`. If the editorial workflow later needs precomputed back-references, they can be derived; storing them in source data introduces a brittle redundancy.
 
 ## Versioning
 

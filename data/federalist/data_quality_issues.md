@@ -20,4 +20,6 @@ These are values where `federalist.json` differs from PG #1404. The `from` value
 
 Anomalies parsed faithfully from PG #1404 and surfaced here for editorial review. These have NOT been corrected; they remain as the source has them.
 
-_No open issues._
+- Paper 11: PG #1404 malformed PUBLIUS block — signature is followed inline by trailing text `"Recherches philosophiques sur les Americains."`. Likely a footnote citation that should follow the signature on its own line. Trailing text was NOT parsed into `footnotes` because the corresponding citation requires owner verification before encoding as an editorial correction. The inline marker will surface as an orphan in the next check.
+- Paper 24: footnote 1 in PG #1404 is missing the period after the marker (rendered as `1 ` rather than the canonical `1. `). Footnote stored as parsed; flag for editorial review.
+- Paper 37: closing `PUBLIUS` signature is missing in PG #1404 (no separator block matches). Body parsed in full; `footnotes` left empty. Flag for editorial review.

@@ -10,7 +10,21 @@ const ISSUES_PATH = join(here, 'data_quality_issues.md');
 
 const rawBytes = readFileSync(RAW_PATH);
 const sha256 = createHash('sha256').update(rawBytes).digest('hex');
-const text = rawBytes.toString('utf8').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+const rawText = rawBytes.toString('utf8').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+
+// Trim PG #1404 license boilerplate. The body of the work sits between the
+// `*** START …` and `*** END …` markers; outside is PG metadata and the
+// Project Gutenberg license. Trimming at load time keeps boilerplate out of
+// every downstream consideration (heading scan, paper 85 trailing material,
+// etc.) without touching the raw file.
+const PG_START_RE = /^\*\*\* ?START OF (?:THE|THIS) PROJECT GUTENBERG EBOOK[^\n]*\*\*\*$/m;
+const PG_END_RE = /^\*\*\* ?END OF (?:THE|THIS) PROJECT GUTENBERG EBOOK[^\n]*\*\*\*$/m;
+const startMatch = rawText.match(PG_START_RE);
+const endMatch = rawText.match(PG_END_RE);
+if (!startMatch || !endMatch) {
+  throw new Error('PG #1404 START/END boilerplate markers not found — file may have been replaced upstream.');
+}
+const text = rawText.slice(startMatch.index! + startMatch[0].length, endMatch.index!);
 
 const HEADING_RE = /^FEDERALIST No\. (\d{1,2})$/gm;
 const headings: { num: number; index: number; lineEnd: number }[] = [];
@@ -73,6 +87,11 @@ const CORRECTIONS: Record<number, Correction[]> = {
   ],
 };
 
+type Footnote = {
+  marker: string;
+  paragraphs: string[];
+};
+
 type Item = {
   id: string;
   corpus: 'federalist';
@@ -81,6 +100,7 @@ type Item = {
   date: string | null;
   language: 'en';
   paragraphs: string[];
+  footnotes: Footnote[];
   plain_english: null;
   constitutional_section: null;
   topic_tags: never[];
@@ -156,16 +176,108 @@ for (let i = 0; i < headings.length; i++) {
     authorship_note = null;
   }
 
-  const paragraphs: string[] = [];
-  for (const block of bodyRaw.split(/\n\s*\n/)) {
-    const para = block.split('\n').map((l) => l.trim()).filter(Boolean).join(' ').replace(/\s+/g, ' ').trim();
-    if (!para) continue;
-    if (para === 'PUBLIUS') continue;
-    paragraphs.push(para);
+  // Split body into blocks; locate the PUBLIUS signature; everything before it
+  // is body paragraphs, everything after is footnote material formatted as
+  // `N. Footnote text` blocks (PG #1404 convention).
+  const allBlocks = bodyRaw.split(/\n\s*\n/);
+  const collapse = (b: string) => b.split('\n').map((l) => l.trim()).filter(Boolean).join(' ').replace(/\s+/g, ' ').trim();
+
+  // Locate PUBLIUS. PG #1404 normally puts it on its own line.
+  //   - Paper 11 has a transcription quirk where the signature is mashed
+  //     onto the same line as a trailing footnote citation.
+  //   - Paper 37 has no closing PUBLIUS at all in PG #1404.
+  // Detect each case; surface the anomaly for editorial review rather than
+  // guessing how to split or fabricate.
+  let publiusIdx = -1;
+  for (let j = 0; j < allBlocks.length; j++) {
+    const stripped = collapse(allBlocks[j]);
+    if (stripped === 'PUBLIUS') {
+      publiusIdx = j;
+      break;
+    }
+    const malformed = stripped.match(/^PUBLIUS\s+(.+)$/);
+    if (malformed) {
+      publiusIdx = j;
+      issues.push(`- Paper ${h.num}: PG #1404 malformed PUBLIUS block — signature is followed inline by trailing text \`${malformed[1].slice(0, 80)}\`. Likely a footnote citation that should follow the signature on its own line. Trailing text was NOT parsed into \`footnotes\` because the corresponding citation requires owner verification before encoding as an editorial correction. The inline marker will surface as an orphan in the next check.`);
+      break;
+    }
+  }
+  if (publiusIdx === -1) {
+    // No PUBLIUS at all (paper 37). Treat the whole body as paragraphs;
+    // no footnote section to extract. Surface the missing signature so the
+    // discrepancy with PG #1404 isn't silent.
+    issues.push(`- Paper ${h.num}: closing \`PUBLIUS\` signature is missing in PG #1404 (no separator block matches). Body parsed in full; \`footnotes\` left empty. Flag for editorial review.`);
+    publiusIdx = allBlocks.length;
   }
 
+  const paragraphs: string[] = [];
+  for (const b of allBlocks.slice(0, publiusIdx)) {
+    const para = collapse(b);
+    if (para) paragraphs.push(para);
+  }
   if (paragraphs.length === 0) {
     throw new Error(`Paper ${h.num}: zero paragraphs parsed`);
+  }
+
+  // Footnotes: each trailing block starts with a marker token. PG #1404 uses
+  // two marker styles:
+  //   - authorial footnotes: `N.` (e.g. `1.`) — Hamilton/Madison/Jay's notes
+  //   - editorial annotations: `EN.` (e.g. `E1.`) — PG transcriber notes on
+  //     variant readings between editions
+  // Both flow into `footnotes` keyed by their inline-reference form (`(N)`
+  // or `(E1)`). PG #1404 occasionally drops the period after the marker
+  // (paper 24); the optional-period variant is accepted and logged.
+  const FOOTNOTE_HEAD_RE = /^([A-Za-z]*\d+)(\.?)\s+([\s\S]+)$/;
+  const footnotes: Footnote[] = [];
+  for (const b of allBlocks.slice(publiusIdx + 1)) {
+    const para = collapse(b);
+    if (!para) continue;
+    const m = para.match(FOOTNOTE_HEAD_RE);
+    if (!m) {
+      throw new Error(`Paper ${h.num}: trailing material after PUBLIUS does not match footnote pattern: "${para.slice(0, 80)}"`);
+    }
+    if (m[2] === '') {
+      issues.push(`- Paper ${h.num}: footnote ${m[1]} in PG #1404 is missing the period after the marker (rendered as \`${m[1]} \` rather than the canonical \`${m[1]}. \`). Footnote stored as parsed; flag for editorial review.`);
+    }
+    footnotes.push({ marker: `(${m[1]})`, paragraphs: [m[3]] });
+  }
+
+  // Marker uniqueness within an item is the schema invariant that makes
+  // inline-marker lookup reliable. Note: PG #1404 interleaves authorial and
+  // editorial marker classes (1, E1, 2, E2…), so a strict monotonic check
+  // across the combined sequence would be wrong. Uniqueness is the load-
+  // bearing invariant; sequence ordering is corpus-source dependent.
+  const seenMarkers = new Set<string>();
+  for (const fn of footnotes) {
+    if (seenMarkers.has(fn.marker)) {
+      throw new Error(`Paper ${h.num}: duplicate footnote marker "${fn.marker}"`);
+    }
+    seenMarkers.add(fn.marker);
+  }
+
+  // Soft cross-checks: surface (don't throw) when footnote markers don't
+  // appear inline, or when an inline `(X)` has no matching footnote. Either
+  // suggests a transcription quirk worth editorial review.
+  const bodyJoined = paragraphs.join(' ');
+  for (const fn of footnotes) {
+    if (!bodyJoined.includes(fn.marker)) {
+      issues.push(`- Paper ${h.num}: footnote ${fn.marker} has no matching inline reference in body. Footnote stored as parsed; flag for editorial review.`);
+    }
+  }
+  const INLINE_MARKER_RE = /\(([A-Za-z]*\d+)\)/g;
+  const inlineMarkers = new Set<string>();
+  for (const m of bodyJoined.matchAll(INLINE_MARKER_RE)) inlineMarkers.add(m[1]);
+  const footnoteKeys = new Set(footnotes.map((fn) => fn.marker.slice(1, -1)));
+  for (const k of inlineMarkers) {
+    if (!footnoteKeys.has(k)) {
+      // False positives: parenthesized digits in body that aren't footnote
+      // refs (e.g., enumerations like "(1)" used as a list bullet inline).
+      // Only flag when the paper has at least one real footnote — otherwise
+      // this is almost certainly enumeration, not a missing footnote.
+      if (footnotes.length > 0) {
+        issues.push(`- Paper ${h.num}: inline reference (${k}) has no matching footnote. May be enumeration rather than footnote ref; flag for editorial review.`);
+      }
+    }
   }
 
   items.push({
@@ -176,6 +288,7 @@ for (let i = 0; i < headings.length; i++) {
     date,
     language: 'en',
     paragraphs,
+    footnotes,
     plain_english: null,
     constitutional_section: null,
     topic_tags: [],
@@ -243,7 +356,7 @@ const corpus = {
     url: 'https://www.gutenberg.org/ebooks/1404',
     sha256,
     fetched: new Date().toISOString().slice(0, 10),
-    notes: 'Single-source, single-edition. CRLF line endings normalized to LF before parsing. Closing PUBLIUS signature lines stripped. Paragraphs preserve order including any footnote material that appears after the signature in the source.',
+    notes: 'Single-source, single-edition. CRLF line endings normalized to LF before parsing. Closing PUBLIUS signature lines stripped. Footnotes that PG #1404 prints after the signature (formatted as `N. Footnote text…` blocks) are extracted into the universal `footnotes` field per data/SCHEMA.md; inline reference form `(N)` is preserved verbatim in `paragraphs`.',
   },
   count: items.length,
   items,
@@ -286,3 +399,6 @@ console.log(`Disputed: ${[...DISPUTED].sort((a, b) => a - b).join(', ')}`);
 console.log(`Joint: ${[...JOINT].sort((a, b) => a - b).join(', ')}`);
 console.log(`Corrections applied: ${correctionsApplied.length}`);
 console.log(`Open issues: ${issues.length}`);
+const papersWithFootnotes = items.filter((it) => it.footnotes.length > 0);
+const totalFootnotes = items.reduce((acc, it) => acc + it.footnotes.length, 0);
+console.log(`Papers with footnotes: ${papersWithFootnotes.length} (${totalFootnotes} footnotes total)`);

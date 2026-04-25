@@ -156,12 +156,46 @@ The local-model variant (self-host to avoid API costs) was considered. The cross
 **Editorial calls in the parse:**
 - Salutation ("To the People of the State of New York:") is preserved as `paragraphs[0]` on every paper. It is part of each paper as published.
 - Closing `PUBLIUS` signature is stripped — metadata, not body.
-- Footnotes that appear after the signature (paper 1, 78, etc.) are preserved as trailing paragraphs in the same array. Splitting them into a dedicated field is deferred until the footnote presentation standard is set.
+- Footnotes are structured in the universal `footnotes` field per `data/SCHEMA.md` (see "Footnotes: universal schema field" decision below). PG #1404's trailing-after-PUBLIUS blocks are split out by the parser. Three PG #1404 transcription quirks surface during this split — paper 11 (malformed PUBLIUS line), paper 24 (missing-period marker), paper 37 (missing PUBLIUS) — left as parsed and logged in `data_quality_issues.md` rather than silently fixed up.
 - One transcription typo found in PG #1404 (paper 26's dateline reads "1788" instead of "1787"). Corrected to "1787-12-22" after the project owner verified the correct date against Founders Online (https://founders.archives.gov/documents/Hamilton/01-04-02-0183), Teaching American History, Ballotpedia, and Wikipedia. The correction is encoded in a `CORRECTIONS` map in `parse.ts` keyed by paper number, and logged in `data/federalist/data_quality_issues.md` with the cited sources. The parser refuses to apply a correction unless the `from` value matches what it actually parsed, so an upstream fix to PG #1404 will fail loudly rather than re-corrupt the data. The verbatim PG dateline (with the typo) is preserved per-item in `federalist.publication.raw_dateline` so any reader can see the discrepancy without consulting the raw source file.
 
 **Editorial standard for source deviations:** Do not silently overwrite the source. Any deviation between the structured corpus and the raw source must either (a) be applied as a logged correction with cited external sources verified by the project owner, or (b) be left as-is and surfaced as an open issue for editorial review. The diagnosis discipline in CLAUDE.md applies — own the call, document the reasoning, make the deviation auditable.
 
 **Revisit if:** A different source edition becomes preferable (e.g., a critically-edited digital edition with stable paragraph IDs); footnote handling needs to be split out; cross-paper citation IDs become necessary.
+
+---
+
+## Footnotes: universal schema field
+
+**Decision:** `footnotes` is a universal base-schema field on every item, not a per-corpus extension. Each footnote is `{ marker: string, paragraphs: string[] }`. Marker is preserved exactly as it appears inline in the body (`"(1)"`, `"E1"`, `"A"`, etc.); body uses `paragraphs[]` for consistency with item-level body shape. Empty array (`[]`) when the item has no footnotes — matches the `topic_tags: []` empty-collection pattern. Marker uniqueness within an item is the load-bearing invariant; sequence ordering is corpus-source dependent and not enforced. Inline marker → footnote lookup is direct string equality on `marker`; no precomputed back-references stored.
+
+**Why now (rather than per-corpus):**
+- SCOTUS especially makes footnotes non-flatten-able: Carolene Products n.4 is the canonical example of a footnote that carries independent argumentative weight and must remain first-class addressable.
+- Tocqueville footnote use is heavy and substantive; some end-notes (lettered A, B, C…) are substantive enough to be standalone items.
+- Federalist had been treating trailing-after-PUBLIUS footnotes as additional `paragraphs` entries, with the split into a dedicated field deferred until "the footnote presentation standard is set." This is that decision.
+- Deciding at the schema level now means the retrieval, Q&A, and citation layers are written against the universal shape from day one. Per-corpus retrofits later would multiply the surface area.
+
+**Standalone-item exception (Tocqueville end-notes):** Tocqueville's lettered "Notes du premier volume" essays are substantive enough to be addressable items, IDs `tocqueville:vol1.notes.A` etc., not entries in any chapter's `footnotes` array. The chapter that references an end-note preserves the marker (`[A]`, `(A)`, etc.) inline in `paragraphs[]`; the end-note item lives separately. This is the only case where a footnote-shaped reference resolves to a different item rather than to the same item's `footnotes` field.
+
+**Patterns considered and rejected:**
+- `footnotes: null` for "no footnotes here" vs `[]` for "concept applies but empty." Rejected the `null` form: there's no "footnotes pending generation" state analogous to `plain_english: null` — either the source has them or it doesn't, and `[]` keeps consumer code simpler and the empty pattern consistent with `topic_tags: []`.
+- Numeric marker field. Rejected: corpora vary (Federalist `(1)`, SCOTUS `1`, Tocqueville lettered `A`, occasional `*`/`†`). String accommodates all.
+- Single string for footnote body. Rejected: SCOTUS and Tocqueville footnotes regularly run multiple paragraphs of analysis; the `paragraphs[]` shape mirrors the item-level body and a single-paragraph footnote is a one-element array.
+- Back-reference field on each footnote (paragraph index that references it). Rejected: derivable from inline marker; storing introduces a brittle redundancy that can drift from the canonical source.
+
+**Federalist migration shipped with this decision:** `data/federalist/parse.ts` regenerated; trailing-after-PUBLIUS blocks moved from `paragraphs[]` into `footnotes[]`; inline `(N)` markers preserved verbatim; PG #1404 transcription quirks (papers 11, 24, 37) surfaced as data-quality issues rather than auto-fixed.
+
+**Revisit if:** A new corpus brings a footnote pattern these primitives can't express (e.g., footnotes that themselves contain structured citation metadata worth typing). Until then, additive — no version bump.
+
+---
+
+## Tocqueville: edition verification deferred to Phase 4
+
+**Decision:** Pull the French original of *De la démocratie en Amérique* (1835/1840) from Project Gutenberg's French eBooks for Phase 0 corpus acquisition. Verifying which 19th-century edition PG follows (Michel Lévy, Pagnerre, or other) and whether that edition is the right source of record for the eventual translation is deferred to Phase 4 (Tocqueville translation work).
+
+**Reasoning:** Phase 0 stores French as source-of-record; the English translation is the project owner's intellectual work, deferred. Edition choice doesn't shape the Phase 0 ingestion pipeline — the schema, IDs, and structural verification work the same regardless of which 19th-century edition PG transcribed. By Phase 4, when actual translation work begins, edition fidelity matters in earnest: differences in chapter numbering, paragraph breaks, or end-note assignments between editions could affect the editorial calls baked into the translation. At that point, verify PG's edition against Pagnerre (or whichever scholarly edition is canonical for the translator's purpose) and document any divergence as a data-quality issue or correction in the established pattern.
+
+**Revisit at:** Phase 4 — verify edition and document divergence (or confirm fidelity) before any translation begins.
 
 ---
 

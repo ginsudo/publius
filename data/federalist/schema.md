@@ -35,6 +35,7 @@ ID format: `federalist:<number>`, e.g. `"federalist:51"`.
 - **`date`** — first publication date, ISO `YYYY-MM-DD`. Note: papers were not published in strict numerical order (papers 29 and 30 were reordered by McLean relative to their original newspaper appearance — see editorial calls below).
 - **`language`** — `"en"` for every Federalist item.
 - **`paragraphs`** — see editorial calls below.
+- **`footnotes`** — populated from PG #1404 trailing-after-PUBLIUS blocks per the universal schema; see editorial calls below. `[]` for papers with no footnotes.
 - **`plain_english`**, **`constitutional_section`**, **`topic_tags`** — universal stubs as defined in `data/SCHEMA.md`. All `null`/`[]` in Phase 0.
 
 ## Editorial calls in the parse
@@ -43,7 +44,7 @@ These reflect calls made during Phase 0; if they need to change, change the pars
 
 1. **Salutation as first paragraph.** `"To the People of the State of New York:"` appears as `paragraphs[0]` on every paper. It is part of each paper as originally published; not stripped.
 2. **`PUBLIUS` signature stripped.** The closing signature is metadata, not body text. Removed during parse.
-3. **Footnotes preserved inline as trailing paragraphs.** Where PG #1404 prints footnotes after the `PUBLIUS` signature (e.g. paper 78), they remain in `paragraphs` at the end. Not split into a dedicated field. To revisit when the footnote presentation standard is set.
+3. **Footnotes structured in the `footnotes` field per the universal schema.** PG #1404 prints footnotes after the closing `PUBLIUS` signature, formatted as `N. Footnote text…` (or `EN. Editorial annotation…` for PG-transcriber notes on edition variants). The parser splits the body at `PUBLIUS`, extracts trailing blocks into `footnotes`, and stores each marker as `(N)` / `(EN)` to match the inline reference form preserved in `paragraphs`. Three PG #1404 transcription quirks surface during this split — paper 11 (malformed PUBLIUS line concatenated with a footnote citation), paper 24 (footnote 1 missing the period after the marker), paper 37 (closing PUBLIUS missing entirely) — and are logged in `data_quality_issues.md` for editorial review rather than silently fixed up.
 4. **Title and dateline disambiguation.** A handful of papers (18, 39, 45, 58) merge the title with the dateline on one line in PG. Parser splits these by locating the dateline regex first; everything before is title, everything after is body.
 5. **Disputed twelve attributed to Madison.** Following Mosteller and Wallace (1964). The PG #1404 byline for each of these twelve also reads `"MADISON"`. The dispute is recorded in `federalist.authorship_note`, not erased.
 6. **Joint papers (18, 19, 20).** Universal `authors` carries `["Madison", "Hamilton"]`; `federalist.authorship_status` is `"joint"`. PG byline `"MADISON, with HAMILTON"` is preserved in the raw file and acknowledged in the note.
