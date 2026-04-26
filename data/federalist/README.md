@@ -33,7 +33,7 @@ The parser is dependency-free: standard library only (`node:fs`, `node:crypto`, 
 - Exactly 85 papers parsed (`FEDERALIST No. N` headings, N = 1..85, no gaps or duplicates).
 - Every paper has a parsed dateline, a byline, and a non-empty body.
 - Authorship distribution matches the canonical scholarly count: 51 Hamilton, 14 Madison, 5 Jay, 3 joint, 12 disputed (Madison by modern consensus). Total: 85.
-- Footnotes extracted from trailing-after-PUBLIUS blocks: 33 papers carry footnotes (70 footnotes total). Markers are unique within each item; inline reference markers in `paragraphs` resolve to the corresponding footnote by string equality.
+- Footnotes extracted from trailing-after-PUBLIUS blocks: 34 papers carry footnotes (71 footnotes total). Markers are unique within each item; inline reference markers in `paragraphs` resolve to the corresponding footnote by string equality.
 
 **Spot-check (manual, against canonical incipits):**
 - Federalist 1 — opens "AFTER an unequivocal experience of the inefficacy of the subsisting federal government..." ✓
