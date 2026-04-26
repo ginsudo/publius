@@ -52,7 +52,7 @@ async function main() {
   `);
   db.exec(`
     CREATE VIRTUAL TABLE chunks_vec USING vec0(
-      embedding float[${EMBEDDING_DIM}]
+      embedding float[${EMBEDDING_DIM}] distance_metric=cosine
     );
   `);
 
