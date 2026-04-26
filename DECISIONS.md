@@ -288,6 +288,22 @@ A failure in any of these surfaces in `data/tocqueville/data_quality_issues.md` 
 
 ---
 
+## Embedding model: Voyage `voyage-4-large`
+
+**Decision:** Use Voyage AI's `voyage-4-large` for embeddings, accessed via the Voyage HTTP API directly (no Voyage SDK). `VOYAGE_API_KEY` in `.env.local` locally; environment variable in Vercel for production.
+
+**Why Voyage:** Anthropic does not offer a first-party embedding model. Their own documentation (https://docs.claude.com/en/docs/build-with-claude/embeddings) explicitly recommends Voyage AI as the third-party path, and Anthropic uses Voyage in their official RAG cookbook. Adopting Voyage is following Anthropic's documented routing, not vendor shopping. Confirmed against the docs at the start of Phase 1.1 planning before committing.
+
+**Why `voyage-4-large` specifically:** Latest generation (Jan 2026 release), 32K context, 1024-dim default, best general retrieval quality in the Voyage lineup. Multilingual capability is not exercised in Phase 1.1 (Federalist-only) or Phase 5 (Tocqueville will be embedded from its English `translation` field once populated, not the French source) but is on the table at zero marginal cost if a multilingual case ever arises.
+
+**Considered and deferred — `voyage-law-2`:** A legal-domain specialized model, 16K context, released April 2024. Tempting given Federalist's constitutional-argument register and SCOTUS later. Deferred because (a) it's an older model and Voyage's own docs note the 4-series flagship "improved performance across all domains," meaning it likely beats law-2 even on legal text, and (b) maintaining two indexes for comparison is post-Phase 1.1 work. **Concrete trigger to revisit:** if `voyage-4-large` results on the Phase 1.1 probe set disappoint, run `voyage-law-2` against the same probe set as a comparison before any other tuning.
+
+**Pricing context:** ~$0.18 per 1M tokens at current pricing. Building the Federalist index (~2,500 chunks × ~150 tokens) is sub-dollar. Per-probe cost is sub-cent. Trivial at this stage.
+
+**Revisit if:** `voyage-4-large` probe results are substandard (run `voyage-law-2` comparison first); a multilingual query path becomes required (already supported in 4-large, no model switch needed); a non-API path becomes necessary (vendor failure, sanctions, etc. — open-weight `voyage-4-nano` on Hugging Face is the documented fallback).
+
+---
+
 ## Monetization: deferred
 
 **Decision:** Do not decide monetization model until after launch and first real user cohort.

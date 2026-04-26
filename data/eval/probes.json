@@ -1,0 +1,182 @@
+{
+  "version": 1,
+  "description": "Phase 1.1 retrieval-test probe set. Federalist-only active probes plus Phase 5 cross-corpus placeholders (phase_5_only: true items skipped by the Phase 1.1 runner; recorded now to lock the design intent so the cross-corpus epistemic test isn't an afterthought when Tocqueville rejoins the index in Phase 5). The set is the test: passing means the project owner reviews the runner's output and signs off on the hits, not that an automated metric clears a threshold.",
+  "categories": {
+    "body_substance": "Answer lives in body text of a single canonical paper.",
+    "body_multi": "Answer is distributed across multiple papers — tests retrieval doesn't collapse to a single paper, and surfaces internal disagreement when present.",
+    "footnote": "Answer lives in a specific footnote, not the body. Tests whether the footnote-as-chunk decision is doing real work.",
+    "authorship_edge": "Answer comes from a disputed-authorship paper. Tests retrieval is authorship-blind and that result rows reflect modern-consensus attribution from federalist.json.",
+    "negative_space": "Question whose best answer is not in the corpus. Tests whether retrieval signals low confidence rather than returning confident wrong answers — a calibration probe rather than a recall probe.",
+    "cross_corpus_placeholder": "Phase 5 only — anticipates Federalist + Tocqueville comparison. phase_5_only: true means the Phase 1.1 runner skips this probe but the design intent is recorded now.",
+    "endnote_placeholder": "Phase 5 only — tests that Tocqueville end-notes are independently retrievable as standalone items per the standalone-item schema exception."
+  },
+  "must_include_semantics": "Each must_include entry is an item or item-chunk that should appear within the runner's top-K hits. For body items, item_id alone is enough. For footnote-targeted probes, kind: \"footnote\" and the marker pin the specific chunk. For adversarial probes, must_include may be empty — pass criteria are described in the probe's rationale.",
+  "probes": [
+    {
+      "id": "P01",
+      "category": "body_substance",
+      "phase_5_only": false,
+      "question": "What is Madison's argument for why a large republic better controls the effects of faction than a small one?",
+      "must_include": [
+        { "item_id": "federalist:10" }
+      ],
+      "rationale": "Federalist 10's central thesis. Canonical retrieval baseline — if top-K doesn't include paper 10, retrieval is broken."
+    },
+    {
+      "id": "P02",
+      "category": "body_substance",
+      "phase_5_only": false,
+      "question": "Why does Madison argue that 'ambition must be made to counteract ambition' in the structure of government?",
+      "must_include": [
+        { "item_id": "federalist:51" }
+      ],
+      "rationale": "The phrase is unique to Federalist 51. Tests phrase-level semantic retrieval, not just topical."
+    },
+    {
+      "id": "P03",
+      "category": "body_substance",
+      "phase_5_only": false,
+      "question": "What argument does Hamilton make for the power of courts to declare acts of the legislature void when they conflict with the Constitution?",
+      "must_include": [
+        { "item_id": "federalist:78" }
+      ],
+      "rationale": "Federalist 78 is the canonical pre-Marbury text on judicial review. Tests retrieval of constitutional doctrine framed in pre-modern terminology."
+    },
+    {
+      "id": "P04",
+      "category": "body_substance",
+      "phase_5_only": false,
+      "question": "Why does Hamilton argue that adding a Bill of Rights to the Constitution is unnecessary or even dangerous?",
+      "must_include": [
+        { "item_id": "federalist:84" }
+      ],
+      "rationale": "Federalist 84 is Hamilton's principal argument against a Bill of Rights. Tests retrieval can find a position the founders explicitly opposed — the body of the corpus is not pro-rights-enumeration."
+    },
+    {
+      "id": "P05",
+      "category": "footnote",
+      "phase_5_only": false,
+      "question": "Which state constitutions in 1788 explicitly addressed standing armies in peacetime, and what did they actually say about whether such armies could be kept?",
+      "must_include": [
+        { "item_id": "federalist:24", "kind": "footnote", "marker": "(1)" }
+      ],
+      "rationale": "The literal quoted text from Pennsylvania, North Carolina, New Hampshire, Massachusetts, Delaware, and Maryland constitutions lives in paper 24's footnote 1. The body of paper 24 argues against the standing-army objection abstractly and never names specific states. Pass: the footnote chunk appears in top-5; ideally ranks above the body chunks of the same paper that argue the topic abstractly. This is the probe that most directly tests whether footnote-as-chunk is doing real work."
+    },
+    {
+      "id": "P06",
+      "category": "footnote",
+      "phase_5_only": false,
+      "question": "How does Hamilton respond to the argument that the federal government's power of taxation could be used to suppress freedom of the press?",
+      "must_include": [
+        { "item_id": "federalist:84", "kind": "footnote", "marker": "(3)" }
+      ],
+      "rationale": "Hamilton extends his anti-Bill-of-Rights argument with a specific anti-press-tax response in paper 84's footnote 3 — arguing that state-constitution press-freedom declarations don't prevent press-suppressing taxation, so the federal silence is no worse. The body of paper 84 discusses Bill of Rights more abstractly. Second footnote-as-chunk test."
+    },
+    {
+      "id": "P07",
+      "category": "footnote",
+      "phase_5_only": false,
+      "question": "How does Hamilton respond to the pseudonymous writer 'TAMONY' on the source of the British king's prerogative as commander-in-chief?",
+      "must_include": [
+        { "item_id": "federalist:69", "kind": "footnote", "marker": "(1)" }
+      ],
+      "rationale": "TAMONY is mentioned only in paper 69's footnote 1, where Hamilton refutes the claim that the king's commander-in-chief prerogative comes from an annual mutiny bill, citing Blackstone and 13 Car. II c. 6. Specific historical/textual probe — TAMONY does not appear anywhere in the body. Third footnote-as-chunk test, narrower than P05/P06."
+    },
+    {
+      "id": "P08",
+      "category": "body_multi",
+      "phase_5_only": false,
+      "question": "What is the scope of the federal government's 'necessary and proper' power, and how is it constrained?",
+      "must_include": [
+        { "item_id": "federalist:33" },
+        { "item_id": "federalist:44" }
+      ],
+      "rationale": "Hamilton (33) and Madison (44) both defend the necessary-and-proper clause but frame the constraint differently — Hamilton via structural redundancy and the supremacy clause, Madison via interpretive necessity and the alternative drafting choices the convention rejected. Pass: both papers in top-K. The no-flattening discipline is met if the retrieval surfaces both rather than collapsing to one — tests complementary-but-distinct argumentation across authors."
+    },
+    {
+      "id": "P09",
+      "category": "body_substance",
+      "phase_5_only": false,
+      "question": "Why does the Federalist defend a six-year term for senators rather than something shorter?",
+      "must_include": [
+        { "item_id": "federalist:62" }
+      ],
+      "rationale": "Senate term length and the role of the Senate as a stabilizing body. Standard body_substance retrieval test — paper 62 in top-K. The disputed-authorship test is carried by P10 alone, not duplicated here."
+    },
+    {
+      "id": "P10",
+      "category": "authorship_edge",
+      "phase_5_only": false,
+      "question": "Why does the Federalist warn against frequent appeals to the people to resolve constitutional disputes between the branches of government?",
+      "must_include": [
+        { "item_id": "federalist:49" }
+      ],
+      "rationale": "Federalist 49 is the canonical argument against constitutional-revision plebiscites. Disputed-authorship paper, attributed to Madison by Mosteller-Wallace consensus, with Hamilton's historical claim preserved in authorship_note. Tests: (a) retrieval finds it, (b) the row carries authors: [\"Madison\"] not Hamilton, (c) authorship_status: \"disputed\" and authorship_note are visible to whatever consumes the result row."
+    },
+    {
+      "id": "P11",
+      "category": "body_substance",
+      "phase_5_only": false,
+      "question": "What objections to a peacetime standing army does the Federalist consider, and how does it answer them at the level of constitutional design rather than by citing existing state constitutions?",
+      "must_include": [
+        { "item_id": "federalist:24" },
+        { "item_id": "federalist:25" },
+        { "item_id": "federalist:26" }
+      ],
+      "rationale": "Counterpoint to P05: this question targets the body-text argument about standing armies, where P05 targets the footnote with state-constitution citations. If both probes return the same chunks, the chunking didn't discriminate. Ideally P11 surfaces body chunks from 24/25/26 and P05 surfaces the paper 24 footnote — the same source material, two different argumentative roles."
+    },
+    {
+      "id": "P12",
+      "category": "body_substance",
+      "phase_5_only": false,
+      "question": "How does the Federalist describe the role of the Senate in approving treaties, and why is the Senate involved rather than the executive alone?",
+      "must_include": [
+        { "item_id": "federalist:75" }
+      ],
+      "rationale": "Federalist 75 is Hamilton on the treaty power and the structural reasoning for joint executive-legislative involvement. Tests retrieval of a specific structural-design argument."
+    },
+    {
+      "id": "P13",
+      "category": "negative_space",
+      "phase_5_only": false,
+      "question": "How does the Federalist describe the role of political parties in nominating presidential candidates, and what process governs party nominations under the Constitution?",
+      "must_include": [],
+      "rationale": "Negative-space probe: political parties as nominating institutions are post-Federalist (the modern party system formed during the 1790s; the convention/primary system is 19th- and 20th-century). The Federalist explicitly argues against faction (Madison, 10) but never describes a nomination process, because no such institution existed at ratification. Tempting wrong-answer targets in the corpus: paper 10 (factions are dangerous), 68 (electoral mechanism), 70-72 (executive structure). Pass criteria: top-K similarity scores should be visibly lower than for in-corpus probes — the runner's report should make this score gap legible. If retrieval returns confident-looking high scores on tangential papers, the test has surfaced a calibration issue, not a retrieval bug per se. The signal informs Phase 1.2+ system-prompt work: the Q&A layer must learn to distinguish weak retrieval from real grounding rather than confabulating from tangentially relevant hits. Replaces the prior adversarial 'democratic vs. anti-democratic' probe, which is properly a Q&A-layer test rather than a retrieval-layer test (Phase 3, system prompt design)."
+    },
+    {
+      "id": "P14",
+      "category": "cross_corpus_placeholder",
+      "phase_5_only": true,
+      "question": "How do Madison and Tocqueville differ on the dangers of majority rule, and what remedies does each propose?",
+      "must_include": [
+        { "item_id": "federalist:10" },
+        { "item_id": "federalist:51" },
+        { "item_id": "tocqueville:vol1.part2.ch7", "note": "DE L'OMNIPOTENCE DE LA MAJORITÉ AUX ÉTATS-UNIS ET DE SES EFFETS" },
+        { "item_id": "tocqueville:vol1.part2.ch8", "note": "DE CE QUI TEMPÈRE AUX ÉTATS-UNIS LA TYRANNIE DE LA MAJORITÉ" }
+      ],
+      "rationale": "The core epistemic test for cross-corpus retrieval. Madison argues structural remedies (large republic, separated powers) for majority faction; Tocqueville observes a social tyranny of the majority that Madison's structural remedies do not reach, then surveys what does temper it in practice. Pass requires: (a) both corpora in top-K, (b) result rows preserve corpus discriminator, (c) the consumer of these rows can tell from metadata alone that one is argument and the other is observation. Skipped by Phase 1.1 runner; recorded now to lock the design intent."
+    },
+    {
+      "id": "P15",
+      "category": "cross_corpus_placeholder",
+      "phase_5_only": true,
+      "question": "Did Tocqueville's observations of American federalism in practice align with the Federalist's structural arguments for it, or did he see federalism doing something the founders did not anticipate?",
+      "must_include": [
+        { "item_id": "federalist:39" },
+        { "item_id": "federalist:46" },
+        { "item_id": "tocqueville:vol1.part1.ch8", "note": "DE LA CONSTITUTION FÉDÉRALE" }
+      ],
+      "rationale": "Federalism as designed (39 on the federal/national distinction, 46 on state vs. federal allegiance) vs. federalism as observed (Vol I tome 1 ch. 8). Same epistemic test as P14, on a different topic. Skipped by Phase 1.1 runner."
+    },
+    {
+      "id": "P16",
+      "category": "endnote_placeholder",
+      "phase_5_only": true,
+      "question": "What does Tocqueville report from Charlevoix's account of the first war between the French of Canada and the Iroquois in 1610, and what does he infer from it about the contrast between European and Native conceptions of honor?",
+      "must_include": [
+        { "item_id": "tocqueville:vol1.t1.notes.D", "kind": "end_note" }
+      ],
+      "rationale": "End-note D (Vol I tome 1, page 58) summarizes Charlevoix's account of the 1610 French-Iroquois war and uses it to contrast European and Native moral codes around honor. As a substantive standalone item under the schema's standalone-item exception for lettered end-notes, this probe tests that Tocqueville end-notes are independently retrievable — retrieval should surface the end-note item itself, not the chapter that references it. Skipped by Phase 1.1 runner; recorded now to lock the design intent for end-note-as-chunk. Note: the Phase 0 session notes referred informally to a 'note on Indian removal,' but Tocqueville's most substantive Indian-policy material is in chapter vol1.part2.ch10 (a chapter, not an end-note); end-note D is the closest thematic end-note. If the Phase 4 editorial chapter→end-note mapping reveals a more appropriate end-note target, swap the must_include here."
+    }
+  ]
+}
