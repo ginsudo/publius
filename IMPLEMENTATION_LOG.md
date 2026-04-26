@@ -104,6 +104,7 @@ Both are in the code; mention here only so an advisor reading the source isn't s
 - Add a UI ahead of the system prompt being tested.
 - Change the chunk format without re-running the probe set and re-getting owner sign-off.
 - Strip retrieval metadata before passing to the model. The Q&A layer needs `corpus`, `kind`, `authorship_status`, paper number, and authors to do its job.
+- Propose generalizing Publius into a meta-product (configurable for any base text + corpora). Refused per `DECISIONS.md` ("Meta-product generalization: refused; two architectural seams kept open"). Two seams are intentionally preserved: parameterized modes of authority in the Phase 3.2 system prompt, and Constitution-as-first-class-corpus at Phase 6 with `constitutional_section` migrating to an ID reference. The corresponding `data/SCHEMA.md` migration is deferred until Phase 6 begins — flagged in `DECISIONS.md` so it does not fall off the radar.
 
 **Do consider:**
 - How citations should appear in the model's answer. The frozen results artifact shows the metadata we have; the Q&A interface needs to decide which subset is shown to the user and which is system-internal.
