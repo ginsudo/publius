@@ -304,6 +304,33 @@ A failure in any of these surfaces in `data/tocqueville/data_quality_issues.md` 
 
 ---
 
+## Phase 1.1 retrieval test: passed (2026-04-26)
+
+**Decision:** Phase 1.1 retrieval over the Federalist corpus is signed off by the project owner. The mandatory retrieval test required by `CLAUDE.md` ("the retrieval test is mandatory before any UI is built — do not skip it") is complete. The frozen results artifact is `data/eval/results-phase1-1.md`.
+
+**Configuration that passed:**
+- **Embedding model:** `voyage-4-large` (1024-dim, normalized).
+- **Chunking:** paragraph-level for body text, one chunk per footnote. Each chunk is prefixed with a header — `Federalist No. {N} — {title}\nAuthor: {authors}\n\n{paragraph}` — so paper-number, title, and authorship metadata are present in the embedded text and not just in adjacent metadata columns.
+- **Distance metric:** cosine. The `vec0` virtual table is created with `distance_metric=cosine`. This is documented here because `vec0`'s default is L2; the initial build used L2 and produced identical rankings for normalized vectors but uninterpretable scores. Cosine was chosen so future debugging reads scores directly as cosine similarity.
+- **Storage:** `node:sqlite` (Node 22.5+ built-in) with the `sqlite-vec` extension binary (`vec0.dylib`) loaded at runtime from `data/eval/vendor/`. Zero npm dependencies in the retrieval path.
+- **Probe set:** 13 active probes (7 body-substance, 3 footnote, 1 body-multi, 1 authorship-edge, 1 negative-space) plus 3 phase_5_only probes recorded for design intent (Tocqueville cross-corpus + end-note, deferred to Phase 5).
+
+**Results summary:**
+- 13/13 probes signed off `pass`.
+- 13/13 must-include items found inside top-10 (sanity signal — not the pass criterion).
+- Negative-space probe (P13, "modern political parties") top-1 cosine = 0.373; in-corpus top-1 range = 0.411–0.667. The embedding space separates in-domain from out-of-domain cleanly. No need to fall back to `voyage-law-2`.
+
+**What's deliberately deferred to later phases:**
+- Tocqueville retrieval — Phase 5, after the `translation` field is populated.
+- Reranking — not used; `voyage-4-large` raw similarity ranking is adequate per the probe set.
+- Production storage migration (Turso vs. Pinecone) — Phase 5 per the existing "Vector store" decision.
+- Q&A / generation layer — Phase 1.2+; the no-flattening discipline is a Phase 3 system-prompt concern.
+- Observability (Helicone / Langfuse) — Phase 1.4 per the existing decision.
+
+**Revisit if:** the corpus regenerates and re-running the probes flips any judgment from `pass`; the chunk format in `lib.ts` changes (each format change should re-run the probe set before merge); a fourth corpus or a new chunking strategy is introduced. Adding a probe to the active set in those cases is preferred over loosening the existing pass bar.
+
+---
+
 ## Monetization: deferred
 
 **Decision:** Do not decide monetization model until after launch and first real user cohort.
