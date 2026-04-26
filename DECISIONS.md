@@ -366,3 +366,21 @@ A failure in any of these surfaces in `data/tocqueville/data_quality_issues.md` 
 - Configurable taxonomies as a product feature (epistemic modes exposed as configuration to anyone other than the project owner)
 
 **Revisit if:** Publius itself has shipped, has real users, and a concrete external request for the meta-product surfaces from someone whose judgment the project owner trusts. Until then, the two seams above are sufficient — they require no product-surface changes and add no operator-facing concepts.
+
+---
+
+## Q&A System Prompt v0.1 (Phase 1.2)
+
+Adopted role-as-tool framing over persona, on the reasoning that persona
+prompts bias toward sounding-like rather than behaving-like. Modes of
+authority parameterized as a list (extensibility commitment from project
+plan §3.2). Explicit rules for attribution, disputed authorship, surfacing
+disagreement, retrieval quality handling, out-of-corpus material, and
+answering the better version of the question. No exemplars; no length
+guidance; no humor handling (deferred to Phase 6 when SCOTUS corpus exists).
+Closing "what you are not" section included in v0.1 with explicit ablation
+planned in v0.2 to test whether it reinforces rules, is redundant, or
+weakens the prompt.
+
+Full design reasoning, predicted failure modes, and open questions:
+`prompts/system-prompt.md`.
