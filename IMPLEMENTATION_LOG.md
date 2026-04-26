@@ -30,7 +30,7 @@ These are patterns, not session notes — they constrain how Phases 1.2 onward s
 
 Every item across every corpus shares a base schema (id, corpus, item type, authors, dates, text, paragraphs, footnotes). Each corpus then adds a single namespaced extension object — `federalist: { ... }`, `tocqueville: { ... }`, eventually `court: { ... }` — for fields specific to that corpus. New corpora must conform, not introduce one-off structures. `data/SCHEMA.md` is the authority.
 
-`plain_english` (a Phase 4 register-modernization field for English-source corpora, generated via Claude Batch API) and `translation` (a Phase 4 cross-language field for Tocqueville, owner-authored) are intentionally separate fields with different workflows. Don't merge them. The `translation` field on Tocqueville items currently sits as `null` placeholder across all 124 items; populating it is the editorial gate before Tocqueville enters the index.
+`plain_english` (a Phase 4 register-modernization field for English-source corpora, generated via Claude Batch API) and `translation` (a Phase 4 cross-language field for Tocqueville, owner-authored) are intentionally separate fields with different workflows. These were originally a single field and were split during Phase 0 implementation — do not propose merging them. The `translation` field on Tocqueville items currently sits as `null` placeholder across all 124 items; populating it is the editorial gate before Tocqueville enters the index.
 
 ### Chunking is paragraph-level body + one chunk per footnote, with header context embedded in the chunk text
 
