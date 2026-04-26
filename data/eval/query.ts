@@ -29,7 +29,7 @@ export async function queryIndex(question: string, k: number = 10): Promise<Hit[
   const db = openDb();
   try {
     const { embeddings } = await voyageEmbed([question], 'query');
-    const queryEmbedding = new Float32Array(embeddings[0]).buffer;
+    const queryEmbedding = new Uint8Array(new Float32Array(embeddings[0]).buffer);
 
     const rows = db
       .prepare(

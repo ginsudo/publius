@@ -87,7 +87,7 @@ async function main() {
         c.paper_number, c.title, c.authors_json,
         c.authorship_status, c.date,
       );
-      insertVec.run(rowid, new Float32Array(embeddings[i]).buffer);
+      insertVec.run(BigInt(rowid), new Uint8Array(new Float32Array(embeddings[i]).buffer));
     }
     db.exec('COMMIT');
 
