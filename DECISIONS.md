@@ -216,7 +216,52 @@ Keeping them as parallel layers (rather than merging into one) makes it explicit
 
 **Reasoning:** Phase 0 stores French as source-of-record; the English translation is the project owner's intellectual work, deferred. Edition choice doesn't shape the Phase 0 ingestion pipeline — the schema, IDs, and structural verification work the same regardless of which 19th-century edition PG transcribed. By Phase 4, when actual translation work begins, edition fidelity matters in earnest: differences in chapter numbering, paragraph breaks, or end-note assignments between editions could affect the editorial calls baked into the translation. At that point, verify PG's edition against Pagnerre (or whichever scholarly edition is canonical for the translator's purpose) and document any divergence as a data-quality issue or correction in the established pattern.
 
-**Revisit at:** Phase 4 — verify edition and document divergence (or confirm fidelity) before any translation begins.
+**Phase 0 outcome:** PG #30513–#30516 are transcribed from the **Pagnerre 1848 edition** (12th edition for Vol I, 5th for Vol II), per the BnF/Gallica copies PG cites. This is the edition the Phase 0 corpus stores. It is also the edition that adds the Vol I "Avertissement de la dixième édition" (a forward Tocqueville composed for the 1848 reprint) and the "Examen comparatif de la Démocratie aux États-Unis et en Suisse" appendix (also 1848). Both augmentations are captured as standalone items in the corpus and dated `1848-01-01` rather than 1835/1840, so a downstream consumer can distinguish original-volume content from Pagnerre additions by `date` alone. Edition-fidelity verification (paragraphing, chapter-end punctuation, end-note assignment) against a scholarly Pagnerre transcription remains deferred to Phase 4.
+
+**Revisit at:** Phase 4 — verify edition fidelity and document divergence (or confirm fidelity) before any translation begins.
+
+---
+
+## Tocqueville corpus: source, schema, and editorial calls
+
+**Decision:** Tocqueville Phase 0 corpus is sourced from Project Gutenberg eBooks #30513–#30516 (the four Pagnerre 1848 *tomes* of *De la démocratie en Amérique*; SHA-256s recorded in `data/tocqueville/raw/tomes.sha256` and embedded per-tome in `tocqueville.json`). Parsed by `data/tocqueville/parse.ts` into a single `data/tocqueville/tocqueville.json`, conforming to the cross-corpus base schema with a `tocqueville` extension namespace.
+
+**Volume↔tome mapping:** The Pagnerre 1848 edition splits each *volume* of the work into two physical *tomes*. Tomes 1+2 are Vol I (1835); tomes 3+4 are Vol II (1840). The corpus surfaces both: `volume` is the work-level division (1 or 2; what scholars cite as "Volume I" or "Volume II"), and `tome` is the physical-source division (1, 2, 3, or 4; which PG file the item came from). Both are carried per-item so downstream code can address either.
+
+**Item kinds — what's an item:**
+- `chapter` — the smallest addressable narrative unit. 93 total: Vol I has 8 chapters in Part I and 10 in Part II (totals 18); Vol II has 21 + 20 + 26 + 8 across its four parts (75). The four-part subdivision of Vol II is canonical.
+- `avertissement` — Vol I's "Avertissement de la dixième édition" (Pagnerre 1848 addition, dated 1848-01-01) and Vol II's original "Avertissement" (1840).
+- `introduction` — Vol I's introduction (tome 1) plus the unmarked authorial preamble that opens Vol I Part II (tome 2). The Part II preamble has no section heading in the source — it sits between the inner header "EN AMÉRIQUE." and the first chapter and is captured as a standalone item with `id: "tocqueville:vol1.preamble.part2"`. Vol II has no introduction (it goes straight from avertissement into chapters).
+- `end_note` — the lettered end-notes printed at the back of each tome ("Notes du premier volume", etc.). Substantive enough to be standalone items per the standalone-item exception in `data/SCHEMA.md`. 26 in total: Vol I tome 1 has 20 (A..U), Vol I tome 2 has 6 (A..F), Vol II tome 3 has 0, Vol II tome 4 has 8 (TN-A..TN-H, prefixed because the PG transcriber added them as a navigation aid for that tome).
+- `appendix` — the "Examen comparatif de la Démocratie aux États-Unis et en Suisse" essay, a Pagnerre 1848 addition attached to Vol I, dated 1848-01-01.
+
+**End-note ID scoping (per-tome, not per-volume):** The Pagnerre 1848 edition resets end-note lettering per tome. Vol I tome 1 has note "A" (on civilization); Vol I tome 2 has its own note "A" (on the Indian removal). To keep IDs globally unique without renumbering, the ID format includes the tome segment: `tocqueville:vol1.t1.notes.A` and `tocqueville:vol1.t2.notes.A` are distinct items. Vol II tome 4 uses `TN-` prefixed letters (`TN-A`..`TN-H`), preserved verbatim in the ID: `tocqueville:vol2.t4.notes.TN-A`. This ID format also makes provenance ("which physical book") readable from the ID alone.
+
+**Markers in chapter titles:** Vol II (tomes 3 and 4) chapters occasionally carry an inline footnote marker (`[5]`) or end-note marker (`[TN-C]`) inside the chapter's *title text*, not the body — Tocqueville and the PG transcriber attach a marker to a word in the title when the note glosses the title's wording. The parser preserves these markers in the universal `title` field; the parser's cross-reference invariant scans both `title` and `paragraphs` so the marker → footnote / end-note link is verified regardless of where the marker sits.
+
+**Vol I tome 1 chapter summaries:** The Pagnerre 1848 Vol I tome 1 prints a brief bullet-style summary block between each chapter's title and its body — Tocqueville's own navigational summary. These are captured in `tocqueville.chapter_summary` as a single string (with `--` separators normalized to spaces), populated only on Vol I tome 1 chapters; `null` everywhere else, including Vol I tome 2 chapters (the source carries no summaries there).
+
+**`end_notes_referenced` populated editorially in Phase 4:** The schema reserves an `end_notes_referenced: string[]` field on every item, but Phase 0 leaves it empty (`[]`). Tocqueville's chapter→end-note references are prose ("voyez la note A"), not a uniform inline marker pattern, so the mapping cannot be reliably auto-derived from the source text. Hand-mapping it is editorial work that belongs to Phase 4 (translation), and shipping the field shape now keeps the schema stable across Phase 0 → Phase 4. This was added at the project owner's explicit request mid-implementation, before the parser was first run.
+
+**Editorial calls in the parse:**
+- Tome 1 has a subtitle line "DE LA DIXIÈME ÉDITION." beneath the AVERTISSEMENT heading; the parser skips it so the avertissement title resolves cleanly to "Avertissement de la dixième édition".
+- The Vol I Part II preamble (tome 2) has no marker in the source — it's identified by locating the inner "EN AMÉRIQUE." heading and capturing the prose between it and the first `CHAPITRE I.` marker.
+- Chapter and end-note text are kept in the source language (`language: "fr"`); no translation in Phase 0.
+- Pagnerre 1848 augmentations (Vol I avertissement and appendix) carry their composition date `1848-01-01`, not the original-volume date 1835. Original-volume items (chapters, introductions, original Vol II avertissement) carry `1835-01-01` or `1840-01-01`.
+- The four `node:` standard-library imports keep the parser dependency-free, matching the Federalist parser's invariants.
+
+**Cross-reference invariants enforced by `parse.ts`:**
+- Every item ID is unique.
+- Every footnote marker is unique within its containing item.
+- Chapter counts per (volume, part) match the canonical 8/10/21/20/26/8 distribution.
+- Every inline `[N]` marker (in `title` or `paragraphs`) resolves to a footnote in the same item; every footnote has at least one inline reference.
+- Every `[TN-X]` marker in a Vol II tome 4 chapter resolves to a standalone end-note item with the matching ID.
+
+A failure in any of these surfaces in `data/tocqueville/data_quality_issues.md` rather than crashing the parse — same auditability discipline as Federalist.
+
+**Editorial standard for source deviations:** Same as Federalist — do not silently overwrite the source. Phase 0 final state: zero source-text fixups, zero field corrections, zero acknowledged quirks, zero open issues. The `SOURCE_FIXUPS` and `CORRECTIONS` mechanisms remain the model if a deviation is discovered later.
+
+**Revisit if:** Edition verification in Phase 4 surfaces a scholarly Pagnerre transcription that diverges meaningfully from PG #30513–#30516; the standalone-end-note pattern proves wrong for downstream retrieval; `end_notes_referenced` needs richer structure than `string[]` (e.g., per-paragraph indices) once editorial mapping begins.
 
 ---
 

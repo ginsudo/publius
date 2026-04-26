@@ -91,10 +91,10 @@ Every item, regardless of corpus, has these fields:
 ### Footnotes — corpus-specific expectations
 
 - **Federalist:** Most papers carry no footnotes (`footnotes: []`). A handful (notably 78, plus shorter notes elsewhere) have authorial footnotes that PG #1404 prints after the closing `PUBLIUS` signature, formatted as `N. Footnote text…` blocks. These populate the `footnotes` array; the inline reference form `(N)` is preserved verbatim in `paragraphs`. The marker stored on each footnote is the inline form `"(N)"`, not the bare `"N"` from the trailing label, so string equality on the marker resolves the lookup directly.
-- **Tocqueville:** Heavy footnote use. In-chapter authorial footnotes populate `footnotes`. The lettered end-notes (Vol I "Notes du premier volume" and the Vol II equivalent) are substantive enough to be **standalone items** — IDs `tocqueville:vol1.notes.A`, `tocqueville:vol1.notes.B`, etc. — not entries in any chapter's `footnotes` array. A chapter that references an end-note preserves the marker (`[A]`, `(A)`, etc., as printed) inline in its `paragraphs[]`; the end-note item lives separately and is independently retrievable. This is the only case where a footnote-shaped reference resolves to a different item rather than to the same item's `footnotes` field.
+- **Tocqueville:** Heavy footnote use. In-chapter authorial footnotes populate `footnotes` with markers like `"[1]"`. The lettered end-notes (Vol I tome 1 notes A..U; Vol I tome 2 notes A..F; Vol II tome 4 notes TN-A..TN-H) are substantive enough to be **standalone items** — IDs `tocqueville:vol1.t1.notes.A`, `tocqueville:vol1.t2.notes.A`, `tocqueville:vol2.t4.notes.TN-A`, etc. — not entries in any chapter's `footnotes` array. End-note IDs scope by *tome* because the Pagnerre 1848 edition resets the lettering per tome, so a globally unique ID needs the tome segment. The chapter that references an end-note preserves the marker (`[A]`, `[TN-A]`, etc., as printed) inline in its `paragraphs[]` or `title`; the end-note item lives separately and is independently retrievable. This is the only case where a footnote-shaped reference resolves to a different item rather than to the same item's `footnotes` field.
 - **SCOTUS:** Each opinion's footnote sequence populates that opinion's `footnotes` array. Footnotes carry independent argumentative weight (Carolene Products n.4 being the canonical example) and must remain first-class addressable. A footnote in the majority and a footnote in the dissent are in *different items*; marker uniqueness is per-item, not per-case.
 
-When a chapter title or opinion heading itself carries a footnote (rare in Federalist, occasional in Tocqueville and SCOTUS), the marker is preserved in `title` (or `tocqueville.chapter_title`); the footnote sits in `footnotes` like any other.
+When a chapter title or opinion heading itself carries a footnote (rare in Federalist, occasional in Tocqueville and SCOTUS), the marker is preserved in the universal `title` field; the footnote sits in `footnotes` like any other (or, for Tocqueville end-note references, resolves to the standalone end-note item).
 
 ### Optional per-item override
 
@@ -131,18 +131,33 @@ ID format: `federalist:<number>`, e.g., `"federalist:51"`.
   "volume": 1,
   "part": 2,
   "chapter": 7,
-  "chapter_title": "De l'omnipotence de la majorité aux États-Unis et de ses effets"
+  "kind": "chapter",
+  "chapter_summary": "Comment l'omnipotence de la majorité augmente, en Amérique, l'instabilité législative...",
+  "references_page": null,
+  "tome": 2,
+  "end_notes_referenced": []
 }
 ```
 
 - **`volume`** — 1 (1835) or 2 (1840).
-- **`part`** — part number within the volume.
-- **`chapter`** — chapter number within the part.
-- **`chapter_title`** — chapter title in the source language.
+- **`part`** — part number within the volume. `null` for items that don't belong to a part (avertissements, the Vol I introduction, end-notes, the appendix).
+- **`chapter`** — chapter number within the part. `null` for non-chapter items.
+- **`kind`** — one of `"avertissement"` | `"introduction"` | `"chapter"` | `"end_note"` | `"appendix"`. Discriminates the item shape; the universal `title` field carries the source-language label.
+- **`chapter_summary`** — the bullet-summary block that the Pagnerre 1848 edition prints between each Vol I tome 1 chapter title and its body. Populated only on Vol I tome 1 chapters; `null` everywhere else, including Vol I tome 2 chapters where the source carries no such block. The block is a navigational summary in Tocqueville's own hand and is preserved as a single string with the `--` separators normalized to spaces.
+- **`references_page`** — for `kind: "end_note"` items only, the page number in the source-edition body that the end-note glosses (e.g., `81` for Tome 4 note TN-A "NOTE PAGE 81."). `null` for all other kinds.
+- **`tome`** — 1, 2, 3, or 4. Identifies the PG source file the item came from (PG #30513–#30516). Vol I = tomes 1+2; Vol II = tomes 3+4. Carried per-item so end-note ID disambiguation (next bullet) is auditable and so source provenance is retrievable without re-deriving from `volume` + `part`.
+- **`end_notes_referenced`** — array of end-note IDs (e.g., `["tocqueville:vol1.t1.notes.A"]`) that this item references. Populated editorially in Phase 4 once the inline-text → end-note mapping has been hand-verified. Empty array (`[]`) in Phase 0; not derivable from the source by pattern alone (the Pagnerre 1848 edition uses prose references like "voyez la note A" rather than a uniform inline marker), so this stays a deliberate editorial field rather than an auto-generated one.
 
 The smallest addressable unit is the chapter. Sub-sections (where a chapter has internal headings) are flattened into `paragraphs`. The internal heading appears as its own paragraph in the array if it appears in the source.
 
-ID format: `tocqueville:vol<volume>.part<part>.ch<chapter>`, e.g., `"tocqueville:vol1.part2.ch7"`.
+ID format depends on `kind`:
+- **Chapters:** `tocqueville:vol<volume>.part<part>.ch<chapter>`, e.g., `"tocqueville:vol1.part2.ch7"`.
+- **Avertissements:** `tocqueville:vol<volume>.avertissement` — Vol I's "Avertissement de la dixième édition" (composed for the Pagnerre 1848 reprint) and Vol II's original "Avertissement" both fit this pattern.
+- **Introductions:** `tocqueville:vol<volume>.introduction` — Vol I's introduction. Vol I's Part II opens (in tome 2) with an unmarked authorial preamble that is captured as `tocqueville:vol1.preamble.part2` with `kind: "introduction"`; it has no equivalent in Vol II.
+- **End-notes:** `tocqueville:vol<volume>.t<tome>.notes.<letter>` — letters in the Pagnerre 1848 edition reset per *tome* (not per volume), so Vol I tome 1 carries notes A..U and Vol I tome 2 carries its own A..F. The `t<tome>` segment in the ID disambiguates them. Vol II tome 4 uses `TN-` prefixed letters (`TN-A` through `TN-H`) per the PG transcriber convention; the ID preserves the prefix: `tocqueville:vol2.t4.notes.TN-A`.
+- **Appendix:** `tocqueville:vol<volume>.appendix` — the "Examen comparatif de la Démocratie aux États-Unis et en Suisse" essay, also added in the Pagnerre 1848 reprint and attached to Vol I.
+
+Markers in chapter titles: Vol II (tomes 3 and 4) chapters occasionally carry an inline footnote or end-note marker as part of the chapter's title text (e.g., tome 4 ch. XVI ends "...que celle des Anglais[TN-C]."). These markers are preserved verbatim in the universal `title` field and resolve to the same item's `footnotes` array (numeric markers) or to a standalone end-note item (TN markers) by string equality, identical to in-body markers.
 
 ### Court (`court`)
 
