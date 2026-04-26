@@ -116,4 +116,4 @@ Both are in the code; mention here only so an advisor reading the source isn't s
 - `data/SCHEMA.md` — the cross-corpus data schema.
 - `data/eval/RETRIEVAL_TEST.md` — what the retrieval test proves and what is deliberately out of scope.
 - `data/eval/results-phase1-1.md` — the frozen sign-off artifact.
-- `publius_project_plan.docx` — the long-form project plan.
+- `publius_project_plan.md` — the long-form project plan.

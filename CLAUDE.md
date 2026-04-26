@@ -6,7 +6,7 @@ This file is read automatically at the start of every Claude Code session. It en
 
 ## Core Design Principles
 
-**The corpus is designed to be extensible and the user controls dialogue composition. These are first-class design principles, not later additions. Every architectural decision should preserve them.** See the Long-Term Architecture section of the project plan (`publius_project_plan.docx`) for the full rationale.
+**The corpus is designed to be extensible and the user controls dialogue composition. These are first-class design principles, not later additions. Every architectural decision should preserve them.** See the Long-Term Architecture section of the project plan (`publius_project_plan.md`) for the full rationale.
 
 The three-corpus structure (Federalist Papers, Tocqueville, Supreme Court opinions) is the foundation. Future corpora — critical legal theory, political philosophy, dissenting traditions — will be added by the user's choice, not the developer's. The corpus pipeline must be parameterized by corpus from day one, with consistent metadata schemas, so adding a new body of work never requires rebuilding the retrieval layer.
 

@@ -130,6 +130,8 @@ This is the most important single piece of work in the project. Spend real time 
 - Do not synthesize a false consensus where genuine disagreement exists
 - Response format: structured JSON — author positions, each with quotes and citations
 
+*Construct the prompt so its modes of authority are a parameterized list the prompt operates over, not named things baked into prose. The discipline (no flattening across modes, surface disagreement, attribute precisely) is durable; the specific modes (argument / observation / holding / eventual fourth) are configuration. Phase 3 has only argument; Phases 5 and 6 add observation and holding to the same list.*
+
 *Test the system prompt against 10–15 questions spanning easy and hard cases before considering it done.*
 
 ### 3.3  Ask UI
@@ -206,6 +208,8 @@ Structural categories:
 - Alternatively: Justia — full text to founding era, reasonably clean HTML
 - Structure: case name, year, constitutional provision(s) at issue, majority author, concurrences, dissents, holding summary
 
+**Constitution as first-class corpus.** Acquire the U.S. Constitution and its amendments and structure them as a `constitution:` corpus conforming to the cross-corpus base schema (`data/SCHEMA.md`). At the same time, migrate the universal `constitutional_section` field from a free-text string label to an ID reference into the `constitution:` corpus. SCOTUS items reference the constitutional provisions they interpret by ID; Federalist items already organized around constitutional structure get the same treatment. This makes the base-text-plus-corpora-in-conversation relationship latent in the data without requiring any product surface change. The schema migration is deferred until this Phase 6 work begins — recorded in `DECISIONS.md`, not pre-emptively applied to existing corpora.
+
 ### 6.3  Chunking Strategy — Different from Essays
 
 Court opinions require semantic chunking, not paragraph chunking. Each opinion has: syllabus, factual background, legal question, majority reasoning (may have numbered sections), holding, concurrences, dissents. Each chunk carries: case, year, author, opinion type (majority/concurrence/dissent), constitutional provisions, interpretive method where determinable.
@@ -227,6 +231,8 @@ The three-corpus structure of Phases 1–6 is the foundation, not the ceiling. T
 This design principle has two important implications that must be carried forward into every subsequent phase. First, the corpus pipeline built in Phases 1–6 must be architected for extensibility from the start — parameterized by corpus, with consistent metadata schemas across sources, so that adding a new body of work does not require rebuilding the retrieval layer. Second, the epistemic taxonomy that governs the Q&A layer — argument (Federalist), observation (Tocqueville), holding and reasoning (Court) — is adequate for the first three corpora but will require extension as the corpus expands. Critical legal theorists, political philosophers, and dissenting traditions do not fit cleanly into these three modes. What the fourth category is called, and how the system prompt handles incommensurable frameworks rather than merely disagreeing positions within a shared framework, is an open design question to be resolved before any fourth corpus enters the product. Do not add a new corpus without first resolving how it will be epistemically tagged.
 
 The user-composition model also changes the nature of the tool's influence. Rather than the developer deciding which voices speak to each other, the tool encodes curatorial judgment at the level of corpus quality and epistemic tagging, while leaving dialogue composition to the user. This is the structural implementation of the interpretive neutrality commitment — not just an aspiration but a design property.
+
+Two distinctions worth being explicit about. **Extensible corpus** means more corpora can be added to *Publius* — additional bodies of work that join the same dialogue alongside the founders, Tocqueville, and the Court. It does not mean Publius is reconfigurable as a different product around a different base text. **User-composed dialogue** means the user of Publius selects which voices from the curated corpora participate in any given inquiry; it does not mean the user defines new corpora, new epistemic modes, or stages a Publius-shaped tool around a different intellectual tradition. A meta-product that takes any base text and stages a curated dialogue with corpora in conversation with it — Talmud with its commentary tradition, Shakespeare with sources and criticism, scientific papers with citation networks — is explicitly out of scope. The curatorial and prompt-design judgment that makes Publius rigorous comes from a specific intellectual formation, Murphy / George / Dworkin constitutional interpretation, and is not a generic capability to be exposed as configuration. See the corresponding entry in `DECISIONS.md` for the architectural seams kept open without committing to this generalization.
 
 ## Phase 7 — Polish and Launch
 

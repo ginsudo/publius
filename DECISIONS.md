@@ -341,3 +341,28 @@ A failure in any of these surfaces in `data/tocqueville/data_quality_issues.md` 
 - Freemium (limited queries free, paid tier for heavy use)
 
 **Reasoning:** The project plan is explicit: "decide after you see who's using it." The Princeton ConInterp hypothesis suggests institutional licensing as the natural path if that audience materializes, but this is a hypothesis, not a fact. Monetization decisions made before there are real users are speculation. Revisit after Phase 7 launch with actual usage data.
+
+---
+
+## Meta-product generalization: refused; two architectural seams kept open
+
+**Decision:** Publius is not generalized into a meta-product. The product's identity is constituted by the specific intellectual tradition it serves — Murphy / George / Dworkin constitutional interpretation — and the curatorial and prompt-design judgment that makes it rigorous comes from that specific formation. Two architectural choices preserve the option to generalize later without committing to it now.
+
+**The speculation considered:** A meta-product that takes any base text and stages a curated dialogue with other corpora in conversation with it — Talmud with its commentary tradition, Shakespeare with sources and criticism, scientific papers with citation networks, etc. The pattern Publius implements (a base constitutional text + corpora in dialogue, epistemically tagged, with no flattening across modes and user-composed dialogue) is structurally generic. Generalizing it as configuration is a coherent product idea.
+
+**Why refused:** Publius is Publius. The specific intellectual tradition is not incidental decoration on a generic engine; it is what makes the curation rigorous. A meta-product would expose taxonomies, tags, and modes as configuration, which means the operator of any instance — not Publius's owner — would make the curatorial calls. That dilutes the artifact rather than scaling it. The Murphy / George / Dworkin formation cannot be replicated by configuration.
+
+**Two architectural seams kept open** (cheap now, expensive to retrofit):
+
+1. **Phase 3.2 system prompt: parameterized modes.** Author the Q&A system prompt so its modes of authority are a list the prompt operates over, not three named things baked into prose. The discipline (no flattening, surface disagreement, attribute precisely) is durable. The specific modes (argument / observation / holding / eventual fourth) are configuration. Phase 3 ships with one mode (argument); Phase 5 adds observation; Phase 6 adds holding. This change is structural to the prompt, not to the product surface. Recorded in the Phase 3.2 directive in `publius_project_plan.md`.
+
+2. **Phase 6 Constitution-as-corpus.** Model the U.S. Constitution as a first-class `constitution:` corpus conforming to the cross-corpus base schema. Migrate the universal `constitutional_section` field from a free-text string label to an ID reference into that corpus. SCOTUS items reference the constitutional provisions they interpret by ID; Federalist items get the same treatment. This makes the base-text-plus-corpora-in-conversation relationship latent in the data without requiring any product surface change. Recorded in the Phase 6.2 directive in `publius_project_plan.md`. **The actual `data/SCHEMA.md` edit and the data migration are deferred until Phase 6 work begins** — flagged here so it doesn't fall off the radar; not pre-emptively applied to Federalist or Tocqueville.
+
+**Explicitly refused (not designed before Publius itself ships):**
+- Instance infrastructure (multi-instance hosting, isolation, deployment per tenant)
+- Multi-tenancy (multiple operators sharing one deployment)
+- Curator permissioning (roles, ACLs, contributor workflows)
+- Instance templating (cloning Publius into a Talmud-shaped or Shakespeare-shaped instance)
+- Configurable taxonomies as a product feature (epistemic modes exposed as configuration to anyone other than the project owner)
+
+**Revisit if:** Publius itself has shipped, has real users, and a concrete external request for the meta-product surfaces from someone whose judgment the project owner trusts. Until then, the two seams above are sufficient — they require no product-surface changes and add no operator-facing concepts.
