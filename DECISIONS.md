@@ -265,6 +265,29 @@ A failure in any of these surfaces in `data/tocqueville/data_quality_issues.md` 
 
 ---
 
+## Translation vs plain-English: separate fields for distinct workflows
+
+**Decision:** Split modern-English rendering into two schema fields. `plain_english` (universal base) carries register-shifted modern English for items whose source `language` is `"en"` — Federalist papers, and SCOTUS opinions when acquired. `translation` (corpus extension field, currently on `tocqueville`) carries the cross-language English rendering of foreign-language source items. The two are not interchangeable.
+
+**Why split:**
+- **Different editorial workflows.** `plain_english` is register modernization — Claude Batch API generation with owner review is appropriate. `translation` is intellectual authorship — the project owner is translator of record, with a distinct review process, multiple revision passes, and the defensible-original-translation copyright posture documented in "Tocqueville: French original as source of record." Conflating them forces the editorial pipeline to special-case based on `language`, the smell of a missing distinction.
+- **Different copyright status.** A Claude-generated register shift of a public-domain English text is a derivative of public-domain material. An owner-authored translation of public-domain French is the owner's copyrighted intellectual work. These should not share a field name, a generation pipeline, or a review workflow.
+- **The split surfaced from Phase 1.1 retrieval planning.** The embedding-model choice depends on which language is being embedded; pretending both fields were the same would have reintroduced the language ambiguity at the retrieval layer.
+
+**Field placement:**
+- `plain_english` stays universal — every English-source item in any current or future corpus needs the same shape.
+- `translation` lives on the corpus extension. Federalist and SCOTUS items will never have a translation, so a universal `translation: null` would be a speculative field on most items, which the cross-corpus schema decision rejects.
+
+**Shape (resolved with this decision):** Both fields are `string[]` aligned with the item's `paragraphs` field — same length, same paragraph order. This enables side-by-side rendering, paragraph-level retrieval over modernized/translated text, and stable per-paragraph citation pinning. The editor works against an array of paragraph translations rather than a single document blob.
+
+**Phase 0 outcome (no JSON migration):** Tocqueville's `plain_english` is `null` everywhere from Phase 0 — nothing to migrate. The `translation` field is added as `null` on every Tocqueville item, locked-shape but unpopulated until Phase 4. Federalist is unaffected.
+
+**SCOTUS deferred:** Currently-anticipated SCOTUS opinions are English-source, so `plain_english` is the right field. If a non-English legal corpus ever joins (comparative-law work, ECtHR), that corpus's extension gets its own `translation` field at acquisition time. Not a decision to make now.
+
+**Revisit if:** A new corpus brings a pattern these primitives can't express (e.g., translation between two non-English languages, or a parallel-text edition where source and target are both first-class).
+
+---
+
 ## Monetization: deferred
 
 **Decision:** Do not decide monetization model until after launch and first real user cohort.

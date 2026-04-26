@@ -27,6 +27,7 @@ type TocquevilleExt = {
   references_page: number | null;
   tome: TomeNum;
   end_notes_referenced: string[];
+  translation: string[] | null;
 };
 
 type Item = {
@@ -264,6 +265,7 @@ function buildChapter(lines: string[], start: number, end: number, config: TomeC
       references_page: null,
       tome: config.tome,
       end_notes_referenced: [],
+      translation: null,
     },
   };
 }
@@ -305,6 +307,7 @@ function buildAvertissement(lines: string[], start: number, end: number, config:
       references_page: null,
       tome: config.tome,
       end_notes_referenced: [],
+      translation: null,
     },
   };
 }
@@ -335,6 +338,7 @@ function buildIntroduction(lines: string[], start: number, end: number, config: 
       references_page: null,
       tome: config.tome,
       end_notes_referenced: [],
+      translation: null,
     },
   };
 }
@@ -365,6 +369,7 @@ function buildAppendix(lines: string[], start: number, end: number, config: Tome
       references_page: null,
       tome: config.tome,
       end_notes_referenced: [],
+      translation: null,
     },
   };
 }
@@ -399,6 +404,7 @@ function buildEndNote(lines: string[], start: number, end: number, config: TomeC
       references_page: page,
       tome: config.tome,
       end_notes_referenced: [],
+      translation: null,
     },
   };
 }
@@ -437,6 +443,7 @@ function buildTome2Preamble(lines: string[], end: number, config: TomeConfig): I
       references_page: null,
       tome: 2,
       end_notes_referenced: [],
+      translation: null,
     },
   };
 }

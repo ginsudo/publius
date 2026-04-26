@@ -80,7 +80,7 @@ Every item, regardless of corpus, has these fields:
 
   Inline references stay in the item's `paragraphs` exactly as printed — e.g., body text reads `…permanent(1) salaries should be established…` or `…tyranny of the majority.*` Retrieval, citation, and rendering layers resolve marker → footnote within the same item by string equality on `marker`.
 
-- **`plain_english`** — modern English rendering of the item's substance, generated via Claude Batch API and reviewed by the project owner. `null` until generated. Always English regardless of source `language`.
+- **`plain_english`** — modern-English rendering of an English-source item, register-shifted (archaic / formal → readable contemporary English) but **not** translated. `string[]` aligned with `paragraphs` — same length, same paragraph order. Generated via Claude Batch API and reviewed by the project owner. Always `null` on items whose `language` is not `"en"` — cross-language rendering is editorial intellectual work with distinct copyright and review workflows, and lives in the corpus extension's `translation` field, not here. `null` on English-source items until generated. See DECISIONS.md, "Translation vs plain-English."
 
 - **`constitutional_section`** — string identifying the constitutional provision this item argues about, observes, or interprets (e.g., `"Article I, §8"`, `"Tenth Amendment"`, `"Article III, §2"`). `null` where the connection is not editorially asserted. Universal field, but coverage is uneven by corpus: Federalist and SCOTUS items are organized around constitutional structure and are expected to populate this field densely; Tocqueville is organized by observed pattern, not by provision, and coverage will be sparse and editorially discretionary. Do not use this field as a cross-corpus filter or retrieval key until after editorial review of every corpus is complete (see DECISIONS.md).
 
@@ -135,7 +135,8 @@ ID format: `federalist:<number>`, e.g., `"federalist:51"`.
   "chapter_summary": "Comment l'omnipotence de la majorité augmente, en Amérique, l'instabilité législative...",
   "references_page": null,
   "tome": 2,
-  "end_notes_referenced": []
+  "end_notes_referenced": [],
+  "translation": null
 }
 ```
 
@@ -147,6 +148,7 @@ ID format: `federalist:<number>`, e.g., `"federalist:51"`.
 - **`references_page`** — for `kind: "end_note"` items only, the page number in the source-edition body that the end-note glosses (e.g., `81` for Tome 4 note TN-A "NOTE PAGE 81."). `null` for all other kinds.
 - **`tome`** — 1, 2, 3, or 4. Identifies the PG source file the item came from (PG #30513–#30516). Vol I = tomes 1+2; Vol II = tomes 3+4. Carried per-item so end-note ID disambiguation (next bullet) is auditable and so source provenance is retrievable without re-deriving from `volume` + `part`.
 - **`end_notes_referenced`** — array of end-note IDs (e.g., `["tocqueville:vol1.t1.notes.A"]`) that this item references. Populated editorially in Phase 4 once the inline-text → end-note mapping has been hand-verified. Empty array (`[]`) in Phase 0; not derivable from the source by pattern alone (the Pagnerre 1848 edition uses prose references like "voyez la note A" rather than a uniform inline marker), so this stays a deliberate editorial field rather than an auto-generated one.
+- **`translation`** — English translation of the item's body. `string[]` aligned with `paragraphs` — same length, same paragraph order. `null` until populated in Phase 4. Distinct from the universal `plain_english`: translation is cross-language work, authored by the project owner under the editorial standard in DECISIONS.md ("Tocqueville: French original as source of record"), with copyright and review implications that same-language register modernization in `plain_english` does not have. Tocqueville items always carry `plain_english: null`; the modern-English rendering of a Tocqueville item lives here. Footnote-body translation shape is additive when the Phase 4 pipeline is built. See DECISIONS.md, "Translation vs plain-English."
 
 The smallest addressable unit is the chapter. Sub-sections (where a chapter has internal headings) are flattened into `paragraphs`. The internal heading appears as its own paragraph in the array if it appears in the source.
 
