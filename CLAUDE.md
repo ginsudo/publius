@@ -47,7 +47,7 @@ Do not revisit these without a concrete reason from the project owner:
 - **Hosting:** Vercel (web); Electron build pipeline (desktop)
 - **DNS/CDN:** Cloudflare
 - **Observability:** Helicone or Langfuse — wired from day one, not added later
-- **The Mac Studio is the build and development machine, not a production server**
+- **Dev environment:** Development happens on a MacBook Air (macOS arm64). The project does not depend on any specific local machine — any macOS arm64 machine running Node 22.5+ can build and run the dev environment. The `data/eval/vendor/vec0.dylib` is platform-specific; non-Apple-Silicon machines would require a different binary build. Vercel deployment requires a Linux binary per the deferred decision in DECISIONS.md.
 
 ---
 
