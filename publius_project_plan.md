@@ -2,6 +2,8 @@
 
 *April 2026*
 
+*Phase numbering reconciled 2026-04-27.* The plan now reflects the de facto sequence in `IMPLEMENTATION_LOG.md`: Q&A moved from Phase 3 to Phase 1.2, observability from Phase 7 to Phase 1.3, and UI sub-phases consolidated into a new Phase 2. Phase 1 was renamed from "Federalist Papers — Core Product" to "Federalist Q&A Boundary"; the new Phase 2 is "Federalist Web UI." Content within each sub-phase is unchanged; only numbers, titles, and ordering shifted. Rationale in `DECISIONS.md` ("Phase numbering reconciliation").
+
 ## Product Vision
 
 Publius is the first serious digital tool for constitutional interpretation as an intellectual discipline — not a civics app, not a legal research tool, but something that sits at the intersection of political theory, legal history, and constitutional practice. The target audience is people who think seriously about constitutional interpretation: students and alumni of courses in the tradition of Murphy and George at Princeton, Dworkin's seminars on legal rights, constitutional law clerks, legal scholars, and serious practitioners.
@@ -54,11 +56,11 @@ Each corpus is available in original and modern English. The Q&A layer respects 
 - Confirm both 1835 and 1840 volumes are complete
 - Store raw French as source of record before any translation work begins
 
-*Decision point before leaving Phase 0: Confirm translation workflow. Recommended: do Federalist Papers product end-to-end first, then run Tocqueville translation as a parallel workstream from Phase 3 onward.*
+*Decision point before leaving Phase 0: Confirm translation workflow. Recommended: do Federalist Papers product end-to-end first, then run Tocqueville translation as a parallel workstream from Phase 1.2 onward.*
 
-## Phase 1 — Federalist Papers — Core Product
+## Phase 1 — Federalist Q&A Boundary
 
-*Duration: 1–2 weeks  ·  Goal: Working web app: browse, read, dual-mode. No Q&A yet.*
+*Duration: 1–2 weeks  ·  Goal: Q&A boundary live over the Federalist corpus, observability wired, first Vercel deploy.*
 
 ### 1.1  Data Layer
 
@@ -69,56 +71,15 @@ Each corpus is available in original and modern English. The Q&A layer respects 
 
 *Do not skip the retrieval test. Everything else rests on this foundation.*
 
-### 1.2  Browse UI
+### 1.2  Q&A Layer
 
-- Homepage: filterable list of all 85 papers
-- Filters: author, constitutional section (Article I–VII), sort by number
-- Each list item: number, title, author, date, one-line summary (generate via Batch API — 85 summaries, trivial cost)
-- Click navigates to paper reader
-
-### 1.3  Paper Reader
-
-- Full text, paragraph by paragraph
-- Toggle: Original / Plain English (plain English stubbed — placeholder state for now)
-- Header: paper number, title, author, date, constitutional section tag
-- Previous/Next navigation; deep link /paper/51 works directly
-
-### 1.4  First Vercel Deploy — Milestone 1
-
-Deploy what exists. Real URL, works on web and mobile. First thing you can show someone.
-
-## Phase 2 — Plain English — Federalist Papers
-
-*Duration: 3–5 days  ·  Goal: Dual-mode reading fully functional.*
-
-### 2.1  Batch Generation
-
-- Write batch API script
-- System prompt: render in contemporary American English, preserve every argument and logical step, no editorializing, flag any passage where meaning is genuinely ambiguous in the original
-- Run it — costs ~$5, takes an hour; store as parallel JSON alongside originals
-
-### 2.2  Editorial Review
-
-This is your work, not Claude Code's. Read through flagged passages. Set exact wording on anything that feels off. Papers most likely to require attention: Federalist 10, 51, 78, 79 — these do precise legal and philosophical work where rendering matters.
-
-### 2.3  Wire Up the Toggle
-
-- Plain English mode pulls from parallel corpus
-- Toggle state persists in localStorage
-- Clear visual indicator when in plain English mode
-- Both modes deep-linkable
-
-## Phase 3 — Q&A — Single Corpus
-
-*Duration: 1 week  ·  Goal: Ask interface working against Federalist Papers corpus.*
-
-### 3.1  API Route — /api/ask
+#### API Route — /api/ask
 
 - Server-side only — API key never touches client
 - Accept question + optional filters (author, paper range, constitutional section)
 - Retrieve top 8 chunks from vector store; call Claude API with retrieval context
 
-### 3.2  System Prompt Design
+#### System Prompt Design
 
 This is the most important single piece of work in the project. Spend real time on it.
 
@@ -134,20 +95,67 @@ This is the most important single piece of work in the project. Spend real time 
 
 *Test the system prompt against 10–15 questions spanning easy and hard cases before considering it done.*
 
-### 3.3  Ask UI
+### 1.3  Observability
+
+- Wire Helicone or Langfuse — every query, latency, and cost visible from day one of real traffic
+
+### 1.4  First Vercel Deploy — Milestone 1
+
+Deploy what exists. Real URL, works on web and mobile. First thing you can show someone.
+
+## Phase 2 — Federalist Web UI
+
+*Duration: 1–2 weeks  ·  Goal: Web UI over the Phase 1 boundary — browse, read, ask.*
+
+### 2.1  Browse UI
+
+- Homepage: filterable list of all 85 papers
+- Filters: author, constitutional section (Article I–VII), sort by number
+- Each list item: number, title, author, date, one-line summary (generate via Batch API — 85 summaries, trivial cost)
+- Click navigates to paper reader
+
+### 2.2  Paper Reader
+
+- Full text, paragraph by paragraph
+- Toggle: Original / Plain English (plain English stubbed — placeholder state for now)
+- Header: paper number, title, author, date, constitutional section tag
+- Previous/Next navigation; deep link /paper/51 works directly
+
+### 2.3  Ask UI
 
 - Top-level nav item: Ask
 - Text input, submit; response rendered as structured output: author positions, quoted passages, paper citations
 - Each citation links to paper reader at the correct paragraph
 - Loading state (calls take 3–8 seconds)
 
-### 3.4  Second Vercel Deploy — Milestone 2
+### 2.4  Second Vercel Deploy — Milestone 2
 
 Full working product: browse, read dual-mode, ask. This is the second milestone.
 
+## Phase 3 — Plain English — Federalist Papers
+
+*Duration: 3–5 days  ·  Goal: Dual-mode reading fully functional.*
+
+### 3.1  Batch Generation
+
+- Write batch API script
+- System prompt: render in contemporary American English, preserve every argument and logical step, no editorializing, flag any passage where meaning is genuinely ambiguous in the original
+- Run it — costs ~$5, takes an hour; store as parallel JSON alongside originals
+
+### 3.2  Editorial Review
+
+This is your work, not Claude Code's. Read through flagged passages. Set exact wording on anything that feels off. Papers most likely to require attention: Federalist 10, 51, 78, 79 — these do precise legal and philosophical work where rendering matters.
+
+### 3.3  Wire Up the Toggle
+
+- Plain English mode pulls from parallel corpus
+- Toggle state persists in localStorage
+- Clear visual indicator when in plain English mode
+- Both modes deep-linkable
+
 ## Phase 4 — Tocqueville Translation
 
-*Duration: Ongoing — parallel with Phase 3+  ·  Goal: Complete Democracy in America in your English.*
+*Duration: Ongoing — parallel with Phase 1.2 onward  ·  Goal: Complete Democracy in America in your English.*
 
 This runs as a separate workstream from the product build. Structure:
 
@@ -238,7 +246,7 @@ Two distinctions worth being explicit about. **Extensible corpus** means more co
 
 *Duration: 1 week  ·  Goal: Observability, performance, and first real users.*
 
-- Wire Helicone or Langfuse — every query, latency, and cost visible from day one of real traffic
+- Verify Phase 1.3 observability is still capturing production traffic
 - Verify Q&A cold start latency under 8 seconds; confirm retrieval is fast at production corpus sizes
 - Register domain via Cloudflare Registrar
 - Write about page: what it is, what it's for, who the audience is — no hedging
@@ -251,7 +259,7 @@ Things to decide before each phase. Your call on all of them.
 
 | Decision | When | Options / Notes |
 | --- | --- | --- |
-| Tocqueville translation pace | Before Phase 2 | Parallel workstream recommended; do not let it block product phases |
+| Tocqueville translation pace | Before Phase 3 | Parallel workstream recommended; do not let it block product phases |
 | Volume I only vs. both at launch | Phase 4 | Volume I first is cleaner; Vol II as subsequent release |
 | Case list curation | Phase 6 start | Your judgment — no one else can make it |
 | Interpretive method tagging | Phase 6 | Only where unambiguous; leave contested cases untagged |

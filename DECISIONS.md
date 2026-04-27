@@ -487,3 +487,13 @@ Ten sequential invocations of `node --experimental-strip-types data/eval/query.t
 ## Vercel env vars are not loaded from .env.local
 
 **Decision:** Vercel deployment requires explicit env var configuration. `loadEnv()` was dropped from the route handlers in Phase 1.2 because Next's automatic `.env.local` loading suffices for development. On Vercel deploy (Phase 1.4), `ANTHROPIC_API_KEY` and `VOYAGE_API_KEY` must be set in Vercel's project environment-variable settings; `.env.local` does not deploy. Worth verifying as part of the Phase 1.4 pre-deploy checklist.
+
+---
+
+## Phase numbering reconciliation
+
+**Decision:** `publius_project_plan.md` phase numbering has been updated to match the de facto sequence in `IMPLEMENTATION_LOG.md`. Q&A moved from old Phase 3 to new Phase 1.2; observability moved from old Phase 7 to new Phase 1.3; UI sub-phases consolidated into a new Phase 2 between the headless boundary and the plain-English work that was old Phase 2 / new Phase 3.
+
+**Reasoning:** The plan as originally sequenced put reading UI before Q&A. Once Phase 1.1 retrieval signed off, it became clear the Q&A boundary — not the reading UI — was the demonstrable artifact worth shipping first, and observability was a "wired from day one" requirement (CLAUDE.md), not polish.
+
+**Revisit if:** A subsequent restructuring requires a similar reconciliation. The lesson is that plan and log can drift in either direction, and reconciling early — before drift compounds across more phases — is cheaper than reconciling late.
