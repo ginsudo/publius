@@ -452,7 +452,7 @@ Decision is deferred to Phase 1.4 start. Do not pre-resolve. Owner's lean is Opt
 
 ## Voyage embeddings are not bit-stable across API calls
 
-**Decision:** Voyage embeddings are not bit-stable across API calls. Observed during the Phase 1.2 smoke test (commit `d84e75e`): the same Q7 query, same corpus, same model produced 8/10 overlapping hits with scores ~0.14 lower when run hours after runC, vs. sub-0.01 float noise when the harness and the route were run within the same minute. The pattern is consistent with within-session variance on the order of ±0.02 and larger cross-session drift, possibly from load-balancing across model replicas, possibly from undocumented model updates.
+**Decision:** Voyage embeddings are not bit-stable across API calls. Observed during the Phase 1.2 smoke test (commit `d84e75e`): the same Q7 query, same corpus, same model produced 8/10 overlapping hits with scores ~0.14 lower when run hours after runC, vs. sub-0.01 float noise when the harness and the route were run within the same minute. **Cross-session drift is a working hypothesis from a single observation**, not an established phenomenon — yesterday's runC-vs.-route delta is one data point and could be a transient (replica routing, brief model deploy, network-timing artifact) as easily as a stable regime. Within-session variance is characterized below.
 
 **Three implications:**
 
@@ -460,7 +460,27 @@ Decision is deferred to Phase 1.4 start. Do not pre-resolve. Owner's lean is Opt
 - Future automated tests asserting retrieval behavior need tolerance bands, not exact equality.
 - Phase 5 production-store migration comparison ("are the new store's results equivalent to the old?") must account for embedding-side variation, not just attribute differences to the new store.
 
-Within-session variance has not been characterized empirically. First task of the next session is to run a single query (Q7) through the harness 3–4 times in succession, log the result spread, and append the actual variance numbers to this entry.
+**Within-session variance characterized (2026-04-27, commit pending):**
+
+Ten sequential invocations of `node --experimental-strip-types data/eval/query.ts "<Q7>" --json` between 09:59:33 and 09:59:37 EDT (≤4s wall clock). Run-level artifacts at `/tmp/publius-variance/run-{1..10}.json`; analysis at `/tmp/publius-variance/report.md` (uncommitted; numbers below are the load-bearing record).
+
+- **Top-10 hit set:** identical across all 10 runs. Zero boundary churn — every hit that appeared in any run appeared in all 10.
+- **Top-10 ordering:** 2 distinct orderings observed. 9/10 runs identical; run 3 reshuffled ranks 8/9/10. In the typical ordering, ranks 8/9/10 are fed:39 ¶15 / fed:39 ¶7 / fed:85 ¶15. In run 3, fed:85 ¶15 moved up to rank 8, pushing fed:39 ¶15 to 9 and fed:39 ¶7 to 10. The mechanism is visible in the per-hit scores: fed:85 ¶15 has near-zero score variance (range 0.0007), while both fed:39 hits scored at the low end of their ranges in run 3, dropping below fed:85's near-mean score. The score gap at rank 8 in run 3 was 0.0004 (0.2853 vs 0.2849); the three hits cluster within ~0.005 of each other across all 10 runs, so any per-call noise of comparable magnitude can rotate them.
+- **Per-hit score statistics:** max observed stddev = 0.0012 (rank-9 hit); max observed range = 0.0040 (rank-9 hit); top-1 hit range = 0.0015. All ten hits had stddev ≤ 0.0012 and range ≤ 0.0040.
+- **Magnitude vs. earlier hypothesis:** the entry's prior "within-session variance on the order of ±0.02" guess overstated the regime by roughly a factor of 5. Actual Q7 within-session range is ≤0.004 across every top-10 hit.
+
+**What this implies (updated):**
+
+- The within-session regime is, for retrieval purposes, effectively deterministic on Q7. Ranking is stable; the one swap observed sat between two hits with a sub-0.002 score gap — exactly the boundary case where score-noise and ranking interact, but with no impact on what the Q&A layer would see qualitatively.
+- The cross-session/within-session distinction is operationally meaningful. Within-session, no embedding cache is needed; identical-query/identical-process runs produce essentially identical hits. Cross-session, an automated test asserting hit equality across days would fail under yesterday's observed delta.
+- Cross-session non-determinism is still untested as a regime. A second cross-session repeat (24h, 1wk) would distinguish monotonic drift (silent model update — serious; would require re-indexing) from oscillation (replica routing — benign; tolerance bands suffice) from one-off transient (yesterday's delta was noise).
+- Q7 was the larger-drift question of the two smoke-tested yesterday; if Q7 is within-session-stable to ≤0.004, easier queries (Q11 had ~0.02 cross-session delta and only a top-2 swap) are likely at least as stable in-process. Worth confirming on a second query before generalizing.
+
+**Followups (not Phase 1.3 blockers):**
+
+- Repeat the characterization on Q11 to confirm within-session stability is not query-shape-dependent.
+- Cross-session repeats of Q7 in ~24h and ~1wk to test whether yesterday's delta was a regime or a transient.
+- Consider scheduling the cross-session repeats as low-cost background tasks rather than blocking Phase 1.3 on them.
 
 ---
 
