@@ -36,7 +36,8 @@ export function loadEnv(): void {
     if (!trimmed || trimmed.startsWith('#')) continue;
     const m = trimmed.match(/^([A-Z_][A-Z0-9_]*)=(.*)$/);
     if (m && process.env[m[1]] === undefined) {
-      process.env[m[1]] = m[2];
+      // Strip optional matching surrounding single/double quotes (dotenv convention)
+      process.env[m[1]] = m[2].replace(/^(["'])(.*)\1$/, '$2');
     }
   }
 }

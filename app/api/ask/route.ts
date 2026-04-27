@@ -2,7 +2,13 @@ import { resolve } from 'node:path';
 import { createHash } from 'node:crypto';
 
 import { queryIndex, toCitation, type Citation } from '../../../data/eval/query.ts';
-import { askClaude, extractPrompt, formatHits } from '../../../prompts/eval/lib.ts';
+import { askClaude, extractPrompt, formatHits, QA_MODEL } from '../../../prompts/eval/lib.ts';
+import {
+  classifyError,
+  withAskTrace,
+  withGenerationSpan,
+  withRetrievalSpan,
+} from '../../../lib/observability.ts';
 
 export const runtime = 'nodejs';
 
@@ -24,22 +30,10 @@ function errorResponse(status: number, error: string, code?: string): Response {
 }
 
 function mapError(e: Error): Response {
-  const msg = e.message ?? 'unknown error';
-  const upstream = msg.match(/Anthropic API (\d{3})/);
-  if (upstream) {
-    const code = parseInt(upstream[1], 10);
-    if (code === 401) return errorResponse(401, 'Authentication failed upstream', 'unauthorized');
-    if (code === 429) return errorResponse(429, 'Rate limited upstream', 'rate_limit');
-    if (code === 529) return errorResponse(529, 'Service overloaded upstream', 'overload');
-    return errorResponse(502, msg, 'upstream_error');
-  }
-  if (msg.includes('ANTHROPIC_API_KEY not set')) {
-    return errorResponse(500, 'ANTHROPIC_API_KEY not set', 'missing_anthropic_key');
-  }
-  if (msg.includes('VOYAGE_API_KEY not set')) {
-    return errorResponse(500, 'VOYAGE_API_KEY not set', 'missing_voyage_key');
-  }
-  return errorResponse(500, msg, 'unexpected_error');
+  // Classification logic lives in lib/observability.ts so the trace's
+  // error.code/error.status match what the client receives.
+  const c = classifyError(e);
+  return errorResponse(c.status, c.message, c.code);
 }
 
 export async function POST(request: Request): Promise<Response> {
@@ -61,20 +55,24 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   try {
-    const hits = await queryIndex(question, k);
-    const userMessage = `${question}\n\n---\n\nRetrieved passages:\n\n${formatHits(hits)}`;
-    const result = await askClaude(SYSTEM_PROMPT, userMessage);
-
-    const response: AskResponse = {
-      answer: result.text,
-      citations: hits.map(toCitation),
-      usage: {
-        inputTokens: result.inputTokens,
-        outputTokens: result.outputTokens,
-        stopReason: result.stopReason,
+    const response = await withAskTrace(
+      { question, k, promptSha256: PROMPT_SHA256, source: 'route' },
+      async () => {
+        const hits = await withRetrievalSpan(question, k, () => queryIndex(question, k));
+        const userMessage = `${question}\n\n---\n\nRetrieved passages:\n\n${formatHits(hits)}`;
+        const result = await withGenerationSpan(QA_MODEL, () => askClaude(SYSTEM_PROMPT, userMessage));
+        return {
+          answer: result.text,
+          citations: hits.map(toCitation),
+          usage: {
+            inputTokens: result.inputTokens,
+            outputTokens: result.outputTokens,
+            stopReason: result.stopReason,
+          },
+          promptSha256: PROMPT_SHA256,
+        } satisfies AskResponse;
       },
-      promptSha256: PROMPT_SHA256,
-    };
+    );
     return Response.json(response);
   } catch (e) {
     return mapError(e instanceof Error ? e : new Error(String(e)));
