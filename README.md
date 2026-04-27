@@ -39,3 +39,9 @@ In active development. See `CLAUDE.md` for project conventions and current archi
 ## What this is not
 
 Not a civics education tool. Not a legal research database. Not politically aligned with any interpretive school. Not a product for a mass audience.
+
+## Operations
+
+Observability is wired through Langfuse Cloud (https://us.cloud.langfuse.com). Each `/api/ask` call emits a `publius-ask` trace with `retrieval` (top-K hits, hash, latency) and `generation` (model, tokens, stop reason) child spans; the harness emits the same shape under `source: "harness"` when run with `LANGFUSE_TRACING=1`. Filter by `source` in the project's traces view to separate route traffic from harness runs.
+
+`LANGFUSE_PUBLIC_KEY` / `LANGFUSE_SECRET_KEY` / `LANGFUSE_BASE_URL` configure the connection; the dev server picks them up from `.env.local`, Vercel reads them from project env vars (per the Phase 1.4 deploy checklist in `DECISIONS.md`). If traces stop appearing without `[observability]` errors in server logs, suspect credential rotation first — see "Phase 1.3 OTel error hooks: known limitation on bad credentials" in `DECISIONS.md`.

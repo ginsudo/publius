@@ -497,3 +497,29 @@ Ten sequential invocations of `node --experimental-strip-types data/eval/query.t
 **Reasoning:** The plan as originally sequenced put reading UI before Q&A. Once Phase 1.1 retrieval signed off, it became clear the Q&A boundary — not the reading UI — was the demonstrable artifact worth shipping first, and observability was a "wired from day one" requirement (CLAUDE.md), not polish.
 
 **Revisit if:** A subsequent restructuring requires a similar reconciliation. The lesson is that plan and log can drift in either direction, and reconciling early — before drift compounds across more phases — is cheaper than reconciling late.
+
+---
+
+## Phase 1.3 observability — Langfuse via OTel
+
+**Decision:** Phase 1.3 wires observability against Langfuse Cloud through OpenTelemetry. SDK init lives in `lib/observability.ts` (`initObservability()`), shared between Next.js (`instrumentation.ts`'s `register()` hook) and the Phase 1.2 test harness (env-gated by `LANGFUSE_TRACING=1`). The route at `app/api/ask/route.ts` and the harness at `prompts/eval/run.ts` both wrap their work in `withAskTrace` → `withRetrievalSpan` → `withGenerationSpan` so a single audit point governs what gets logged per call. Error classification is centralized — `classifyError()` in `lib/observability.ts` is the single source of truth used by both the route's HTTP error mapper and the trace's `error.code`/`error.status` attributes, so the two never drift. Resolves the open Helicone-vs-Langfuse choice from the earlier "Observability: Helicone or Langfuse, wired from day one" decision.
+
+**Why Langfuse over Helicone:** Langfuse's open-source / self-hostable footprint preserves more options for future deployment (Vercel function, dedicated VPS, owner-controlled instance) than a proxy-based service. The OTel integration is Langfuse-native — the `@langfuse/otel` package wraps `BatchSpanProcessor` + `OTLPTraceExporter` with auth headers and provides a standard Node SDK install path. No proxying of LLM traffic; instrumentation sits adjacent to the request flow rather than across it.
+
+**Failure-mode discipline:** A Langfuse outage, bad keys, or any SDK error must not affect `/api/ask` behaviour. SDK init is wrapped in try/catch and returns `null` on failure (tracing disabled, route runs uninstrumented). The `with*Span` helpers wrap `startActiveObservation` in try/catch and fall through to running `fn` directly when tracing is unavailable. Individual `span.update()` calls swallow per-attribute failures so a single bad attribute does not kill the whole trace.
+
+**Revisit if:** Langfuse pricing changes meaningfully at scale; a multi-region routing requirement surfaces; the OTel integration regresses; the "wired from day one" requirement needs to be re-litigated.
+
+---
+
+## Phase 1.3 OTel error hooks: known limitation on bad credentials
+
+**Decision:** OTel hooks fire on transport failures but not on bad credentials; Langfuse Cloud's OTLP endpoint returns 2xx for unknown keys. Detecting key rotation requires a future startup-time auth probe slice. In the interim: if traces stop appearing without console errors, suspect credential rotation first.
+
+**Context:** `initObservability()` installs `diag.setLogger` at `DiagLogLevel.WARN` and `setGlobalErrorHandler` from `@opentelemetry/core` so OTLP fetch-transport failures (DNS, connection refused, HTTP 4xx/5xx from a real endpoint) and BatchSpanProcessor export-result failures both surface to `console.error` with the `[observability]` prefix. The Phase 1.3 plan's "flush/network errors swallowed and console.error'd" requirement is satisfied for those classes of failure — verified end-to-end via a DNS-failure scenario (bad `LANGFUSE_BASE_URL`) under both the harness (plain Node) and the Next.js dev server, both of which produced `[observability] exporter error: Error: getaddrinfo ENOTFOUND ...`.
+
+**The bad-credentials silence:** Langfuse Cloud's OTLP endpoint accepts unknown public keys with HTTP 2xx and filters server-side, so a rotated/typo'd public key produces no transport error and no `console.error`. This is a Langfuse architecture choice, not something OTel can detect through the per-request hook. The hooks are still installed correctly — they fire on every failure OTel can see — but they cannot fire on a class of failure that never reaches OTel.
+
+**Operational implication:** If traces stop appearing in the Langfuse UI but server logs show no `[observability]` errors, the most likely cause is credential rotation (public or secret key in Vercel/`.env.local` no longer matches the active Langfuse project keys). Verify keys before assuming a deeper outage.
+
+**Revisit if:** A startup-time auth probe slice is added (one-shot ping at `initObservability()` to a Langfuse endpoint that does authenticate the keys and surface a `console.error` on rejection); Langfuse Cloud's OTLP endpoint changes its behaviour to reject unknown keys at the transport layer; a different observability backend is adopted.
