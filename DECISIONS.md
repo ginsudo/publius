@@ -424,3 +424,26 @@ evidence is wanted later.
 
 Full design reasoning, predicted failure modes, and open questions:
 `prompts/system-prompt-v0.2.md`.
+
+---
+
+## TypeScript configuration for harness/route co-existence
+
+**Decision:** `tsconfig.json` uses `moduleResolution: bundler` and `allowImportingTsExtensions: true` to allow the same `.ts` import style used by the `node --experimental-strip-types` harness. This keeps the harness and the Next routes importing from `data/eval/` with identical syntax — no fork between toolchains. Changes to either flag require re-validating that the harness still resolves correctly. `@types/node` is pinned to `^22` (overriding `create-next-app`'s default `^20`) because `node:sqlite` types live in `^22` and are required for the route handlers.
+
+---
+
+## Q&A endpoint architecture — two-endpoint split
+
+**Decision:** Phase 1.2 ships two endpoints. `/api/ask` is the public answer surface, returning `{ answer, citations, usage, promptSha256 }` where `citations` is `Hit` minus `text` and similarity. `/api/retrieve` is the development inspection surface, returning `{ hits: Hit[] }` with full chunk text and similarity, no model call. The UI built in Phase 1.4 will be built strictly against `/api/ask` only and must not depend on `/api/retrieve`. This preserves the option to gate, auth, or remove `/api/retrieve` later — relevant to potential commercialization decisions deferred to post-launch — without coordinating UI changes. Define `Citation` as a named TypeScript type next to `Hit`; do not use `Omit<Hit, ...>` inline.
+
+---
+
+## Vercel deployment — deferred decision on macOS-vs-Linux binary
+
+**Decision:** Phase 1.4 must resolve macOS-vs-Linux binary compatibility for `vec0`. The local `data/eval/vendor/vec0.dylib` is macOS arm64; Vercel serverless functions run Linux x86_64. Two paths are open:
+
+- **Option A:** ship a Linux `vec0.so` alongside the macOS `.dylib` and platform-detect at load time. Preserves the Phase 1.1 retrieval stack through deploy. Recurring cost is near zero. Trade is that SQLite-on-Vercel persists, with cold-start implications as the index grows.
+- **Option B:** pull the Phase 5 production-store migration (Turso or Pinecone) forward into Phase 1.4. Requires re-running the probe set against the new store and re-getting owner sign-off before deploy — this is a Phase-1.1-equivalent gate, not a side task. Solves the production-retrieval question once.
+
+Decision is deferred to Phase 1.4 start. Do not pre-resolve. Owner's lean is Option A; Option B remains available if the Linux binary path proves fiddly under Vercel's specific environment.
