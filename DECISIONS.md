@@ -384,3 +384,43 @@ weakens the prompt.
 
 Full design reasoning, predicted failure modes, and open questions:
 `prompts/system-prompt.md`.
+
+---
+
+## Q&A System Prompt v0.2 (Phase 1.2)
+
+v0.2 supersedes v0.1 as of runC sign-off (commit f5b39a6). The rewrite
+dropped the closing "what you are not" section, restructured the rules
+into the actual flow of work (corpora → handling → answer shape), and
+added a permission-and-prohibition pair: commit to readings the corpus
+supports; refuse interpretive partisanship. A light length nudge, an
+explicit no-synthesizing-close instruction, and a reframed
+verdict-pressing instruction (behavioral, not identity-claim) round
+out the changes.
+
+RunA/B on the full 15-question set motivated the rewrite. The closing
+section was mostly redundant — body discipline held without it — and
+on Q5/Q14/Q15 it appeared to suppress analytic depth. The one thing
+it was uniquely doing, enforcing symmetric availability on Q7-style
+questions, is now handled by the new pair. A five-clause ablation
+showed no individual sentence was load-bearing, confirming the
+holistic-effect view of how prompt language works and ruling out a
+surgical rewrite in favor of a structural one.
+
+RunC tested v0.2 against seven diagnostic questions (Q5, Q7, Q9, Q10,
+Q11, Q12, Q14). Discipline preserved across all seven; depth
+permitted where the text supports it; no new failure modes. Output
+lengths uniformly shorter than runB on the same questions (48–82%),
+consistent with the length nudge earning its keep without truncation.
+
+**Watch items.** (1) Outside-corpus factual claims need independent
+verification when load-bearing for an answer — runC's
+characterization of *Loper Bright* and the specific number of people
+Madison enslaved are cases where the discipline of marking "outside
+the corpus" is met but the underlying factual claim is not itself
+audited. (2) The seven-question diagnostic set is small; runD on the
+full 15 questions is available as a future cross-check if stronger
+evidence is wanted later.
+
+Full design reasoning, predicted failure modes, and open questions:
+`prompts/system-prompt-v0.2.md`.
