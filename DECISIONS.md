@@ -447,3 +447,23 @@ Full design reasoning, predicted failure modes, and open questions:
 - **Option B:** pull the Phase 5 production-store migration (Turso or Pinecone) forward into Phase 1.4. Requires re-running the probe set against the new store and re-getting owner sign-off before deploy — this is a Phase-1.1-equivalent gate, not a side task. Solves the production-retrieval question once.
 
 Decision is deferred to Phase 1.4 start. Do not pre-resolve. Owner's lean is Option A; Option B remains available if the Linux binary path proves fiddly under Vercel's specific environment.
+
+---
+
+## Voyage embeddings are not bit-stable across API calls
+
+**Decision:** Voyage embeddings are not bit-stable across API calls. Observed during the Phase 1.2 smoke test (commit `d84e75e`): the same Q7 query, same corpus, same model produced 8/10 overlapping hits with scores ~0.14 lower when run hours after runC, vs. sub-0.01 float noise when the harness and the route were run within the same minute. The pattern is consistent with within-session variance on the order of ±0.02 and larger cross-session drift, possibly from load-balancing across model replicas, possibly from undocumented model updates.
+
+**Three implications:**
+
+- The Phase 1.1 probe-set sign-off is a sample, not a deterministic guarantee. Re-running the probe set is informative but not strictly reproducible.
+- Future automated tests asserting retrieval behavior need tolerance bands, not exact equality.
+- Phase 5 production-store migration comparison ("are the new store's results equivalent to the old?") must account for embedding-side variation, not just attribute differences to the new store.
+
+Within-session variance has not been characterized empirically. First task of the next session is to run a single query (Q7) through the harness 3–4 times in succession, log the result spread, and append the actual variance numbers to this entry.
+
+---
+
+## Vercel env vars are not loaded from .env.local
+
+**Decision:** Vercel deployment requires explicit env var configuration. `loadEnv()` was dropped from the route handlers in Phase 1.2 because Next's automatic `.env.local` loading suffices for development. On Vercel deploy (Phase 1.4), `ANTHROPIC_API_KEY` and `VOYAGE_API_KEY` must be set in Vercel's project environment-variable settings; `.env.local` does not deploy. Worth verifying as part of the Phase 1.4 pre-deploy checklist.
