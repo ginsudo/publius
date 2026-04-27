@@ -523,3 +523,13 @@ Ten sequential invocations of `node --experimental-strip-types data/eval/query.t
 **Operational implication:** If traces stop appearing in the Langfuse UI but server logs show no `[observability]` errors, the most likely cause is credential rotation (public or secret key in Vercel/`.env.local` no longer matches the active Langfuse project keys). Verify keys before assuming a deeper outage.
 
 **Revisit if:** A startup-time auth probe slice is added (one-shot ping at `initObservability()` to a Langfuse endpoint that does authenticate the keys and surface a `console.error` on rejection); Langfuse Cloud's OTLP endpoint changes its behaviour to reject unknown keys at the transport layer; a different observability backend is adopted.
+
+---
+
+## Session-close artifact: IMPLEMENTATION_LOG.md only
+
+**Decision:** The active session-close artifact is `IMPLEMENTATION_LOG.md`. The `/notes/` directory is preserved as a historical record but is no longer where new session summaries land. The dated session-note practice the operational guide originally specified is consolidated into the path-narrative entries IMPLEMENTATION_LOG already receives at session close.
+
+**Reasoning:** Phase 1.1 onward, IMPLEMENTATION_LOG entries have been thorough enough that a separate dated note is ~90% duplicative. Two artifacts covering the same ground is the same drift pattern that produced the project plan / IMPLEMENTATION_LOG phase-numbering mismatch — aligning the rule with the practice now prevents the documents from drifting apart later. CLAUDE.md is the rule of record and is updated to make this explicit; the operational guide's §2 step 6 and §8 checklists are updated in the same commit so the two documents do not diverge again.
+
+**Revisit if:** A future workflow needs a different session artifact (e.g., per-session decision logs separate from path-narratives), or the IMPLEMENTATION_LOG entry shape changes such that a separate session summary recovers value.

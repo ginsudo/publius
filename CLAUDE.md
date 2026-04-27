@@ -99,6 +99,8 @@ If a session ends without an IMPLEMENTATION_LOG entry, that is a failure of the 
 
 Sessions that produce no substantive work (a quick lookup, a tooling check, a question with no decision attached) do not need an entry. The judgment call is whether a future session would benefit from knowing what happened in this one. When in doubt, write the entry.
 
+The `/notes/` directory holds historical session summaries from the project's earlier weeks and is preserved as a record of how the practice evolved. It is no longer the active session-close artifact. Do not add new dated session notes there — the IMPLEMENTATION_LOG path-narrative is sufficient. Design sketches and other non-session artifacts (e.g., `notes/trace-analysis-sketch.md`) remain welcome.
+
 ---
 
 ## The two records, distinguished

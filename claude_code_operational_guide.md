@@ -48,7 +48,7 @@ The loop to run, over and over, for the entire project:
 3. **Approve, then let it execute.** It will write code, possibly run it, possibly install packages. Watch what it's doing. If it starts doing something you didn't approve, stop it (Ctrl+C).
 4. **Test the slice yourself.** Open the page, click the thing, run the script. Don't take its word that it works.
 5. **Commit to git.** Every working slice. This is the undo button when something later breaks.
-6. **End-of-session summary.** "Summarize what we built today, what's stubbed, what's the next logical slice." Save in `/notes/`, dated, committed. Start the next session with that summary as the opening message.
+6. **End-of-session summary.** "Summarize what we built today, what's stubbed, what's the next logical slice." The summary lands as a path-narrative entry in `IMPLEMENTATION_LOG.md`, committed. Start the next session by opening that entry. (The `/notes/` directory holds historical session summaries from the project's earlier weeks and is no longer the active session-close artifact — see `CLAUDE.md` and `DECISIONS.md`.)
 
 ---
 
@@ -117,7 +117,7 @@ Honest list, in rough order of how much time they'll burn:
 Quick scan before/during/after sessions.
 
 **Before a session:**
-- [ ] Last session's summary in hand (or `/notes/` open)
+- [ ] Last session's path-narrative entry in `IMPLEMENTATION_LOG.md` open
 - [ ] Current branch is correct (`git branch`)
 - [ ] Working directory is clean or known-state (`git status`)
 - [ ] The next slice is defined in one sentence
@@ -136,7 +136,5 @@ Quick scan before/during/after sessions.
 **Ending a session:**
 - [ ] Test the slice yourself
 - [ ] Commit with a meaningful message
-- [ ] Ask for the end-of-session summary
-- [ ] Save summary in `/notes/`, dated
-- [ ] Update IMPLEMENTATION_LOG.md with today's path-narrative
+- [ ] Ask for the end-of-session summary as a path-narrative entry in IMPLEMENTATION_LOG.md
 - [ ] Update `CLAUDE.md` or `DECISIONS.md` if anything new emerged
