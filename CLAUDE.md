@@ -91,4 +91,23 @@ The system prompt for the Q&A layer is the highest-stakes artifact in the projec
 
 ---
 
+## IMPLEMENTATION_LOG.md and session close
+
+**IMPLEMENTATION_LOG.md is updated before any session ends.** Every session that produces substantive work — experiments, prompt changes, architectural decisions, scope changes, conceptual reframings — appends a path-narrative entry to IMPLEMENTATION_LOG.md as part of session close. The entry covers what was attempted, what was found, what was decided, and why — not just the resulting state. State changes belong in DECISIONS.md; the path that produced them belongs in IMPLEMENTATION_LOG.md.
+
+If a session ends without an IMPLEMENTATION_LOG entry, that is a failure of the session, not an optional skip. The session is not complete until the entry is in.
+
+Sessions that produce no substantive work (a quick lookup, a tooling check, a question with no decision attached) do not need an entry. The judgment call is whether a future session would benefit from knowing what happened in this one. When in doubt, write the entry.
+
+---
+
+## The two records, distinguished
+
+- **DECISIONS.md** — standing decisions and their rationale. *What was decided.* Refer to it when wondering "should we use Pinecone or Turso?" — the answer is there.
+- **IMPLEMENTATION_LOG.md** — historical record of what got built and why. *The path.* Refer to it when wondering "why does v0.2's closing section work the way it does?" — the experimental story is there.
+
+Both are updated through the project. State changes go in DECISIONS.md; path-and-reasoning go in IMPLEMENTATION_LOG.md. They are not redundant.
+
+---
+
 *Last updated: April 2026. Update this file whenever a new standing decision is made.*

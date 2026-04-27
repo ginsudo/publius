@@ -35,6 +35,8 @@ For Publius, `CLAUDE.md` should encode the standing decisions from the project i
 
 **Companion file — `DECISIONS.md`:** keep this alongside `CLAUDE.md` to capture architecturally significant choices with reasoning. `CLAUDE.md` is "what to do." `DECISIONS.md` is "why we decided this and what we considered." The latter is for you, as project lead, to refer back to when a future session asks "should we use Pinecone or Turso?" and you've already done that analysis.
 
+**Companion file — `IMPLEMENTATION_LOG.md`:** the historical record of what got built and why — the path that produced each architectural decision, each prompt revision, each experiment. `DECISIONS.md` is "what we decided." `IMPLEMENTATION_LOG.md` is "what we tried, what we found, what came of it." Updated at session close as part of standard discipline (see CLAUDE.md). When a future session asks "why does v0.2's closing section work the way it does?" the experimental story is there, not in `DECISIONS.md`.
+
 ---
 
 ## 2. Session Structure and the Working Loop
@@ -136,4 +138,5 @@ Quick scan before/during/after sessions.
 - [ ] Commit with a meaningful message
 - [ ] Ask for the end-of-session summary
 - [ ] Save summary in `/notes/`, dated
+- [ ] Update IMPLEMENTATION_LOG.md with today's path-narrative
 - [ ] Update `CLAUDE.md` or `DECISIONS.md` if anything new emerged
