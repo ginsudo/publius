@@ -25,6 +25,37 @@ export type Hit = {
   text: string;           // the chunk text as embedded
 };
 
+// Public projection of Hit for the /api/ask response. Strips text and
+// similarity fields so the UI never sees raw chunk text or distance scores.
+// Single audit point: if this projection changes, change Citation here.
+export type Citation = {
+  item_id: string;
+  corpus: string;
+  kind: string;
+  paragraph_index: number | null;
+  marker: string | null;
+  paper_number: number;
+  title: string;
+  authors: string[];
+  authorship_status: string;
+  date: string;
+};
+
+export function toCitation(h: Hit): Citation {
+  return {
+    item_id: h.item_id,
+    corpus: h.corpus,
+    kind: h.kind,
+    paragraph_index: h.paragraph_index,
+    marker: h.marker,
+    paper_number: h.paper_number,
+    title: h.title,
+    authors: h.authors,
+    authorship_status: h.authorship_status,
+    date: h.date,
+  };
+}
+
 export async function queryIndex(question: string, k: number = 10): Promise<Hit[]> {
   const db = openDb();
   try {

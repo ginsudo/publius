@@ -12,6 +12,10 @@ dist/
 build/
 out/
 
+# Next.js generated TypeScript files
+next-env.d.ts
+*.tsbuildinfo
+
 # Vercel
 .vercel/
 

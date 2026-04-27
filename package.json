@@ -1,0 +1,22 @@
+{
+  "name": "publius",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Constitutional Q&A. Phase 1.2 introduces the first npm dependencies; data/eval/ retrieval path remains zero-dep — see DECISIONS.md (Phase 1.1 sign-off, TypeScript configuration for harness/route co-existence).",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "16.2.4",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.17",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "typescript": "^5"
+  }
+}
