@@ -62,6 +62,10 @@ Both `end_turn`, no truncations.
 - **macOS-vs-Linux binary**: deferred to Phase 1.4 (DECISIONS.md). Owner's lean is the Linux `.so` path.
 - **Outside-corpus factual claims**: still un-audited. v0.2's Q11 answer cites *Loper Bright* details ("603 U.S. 369 (2024)", "Article III requires") that are not corpus-grounded. Mode discipline is met; factual discipline is separate. Not a 1.2 blocker; flagged for future hardening.
 
+## Carries forward to next session
+
+- **Voyage variance characterization** — run Q7 through harness 3–4 times, log results, append to DECISIONS.md voyage-non-determinism entry.
+
 ## State at session close
 
 Phase 1.2 HTTP boundary is live on the dev machine. Two endpoints, structurally smoke-tested against runC, sha256 pinned. Nothing UI-facing yet; that's Phase 1.4. Nothing observability-wired yet; that's Phase 1.3. Production deploy gated on macOS-vs-Linux binary decision.
