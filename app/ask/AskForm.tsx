@@ -53,6 +53,13 @@ function citationParts(c: Citation): CitationParts {
   };
 }
 
+function citationHref(c: Citation): string {
+  const base = `/paper/${c.paper_number}`;
+  if (c.marker) return `${base}#fn-${c.marker.replace(/[()]/g, '')}`;
+  if (c.paragraph_index != null) return `${base}#p-${c.paragraph_index + 1}`;
+  return base;
+}
+
 export function AskForm() {
   const [question, setQuestion] = useState('');
   const [loading, setLoading] = useState(false);
@@ -153,7 +160,7 @@ export function AskForm() {
                   const parts = citationParts(c);
                   return (
                     <li key={`${c.item_id}-${i}`}>
-                      <a href={`/paper/${c.paper_number}`}>
+                      <a href={citationHref(c)}>
                         {parts.head}
                         {' · '}
                         <em>{parts.title}</em>
