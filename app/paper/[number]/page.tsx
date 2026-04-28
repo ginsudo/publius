@@ -33,6 +33,7 @@ type FederalistItem = {
   authors: string[];
   date: string;
   paragraphs: string[];
+  plain_english: string[];
   footnotes: Footnote[];
   federalist: {
     number: number;
@@ -107,7 +108,11 @@ export default async function PaperPage({
             <p className="paper-authorship-note">{authorshipNote}</p>
           )}
         </header>
-        <PaperBody paragraphs={item.paragraphs} footnotes={item.footnotes} />
+        <PaperBody
+          paragraphs={item.paragraphs}
+          plainEnglish={item.plain_english}
+          footnotes={item.footnotes}
+        />
       </article>
     </main>
   );

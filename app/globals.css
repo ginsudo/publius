@@ -324,9 +324,55 @@ main {
 }
 
 .paper-header {
-  margin: 0 0 56px;
+  margin: 0 0 24px;
   padding: 0 0 32px;
   border-bottom: 1px solid var(--rule);
+}
+
+.paper-mode-toggle {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+  margin: 0 0 32px;
+}
+
+.paper-mode-toggle__label {
+  font: inherit;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--text-tertiary);
+  transition: color 150ms ease;
+}
+
+.paper-mode-toggle__label--active {
+  color: var(--accent);
+}
+
+.paper-mode-toggle__label:hover:not(.paper-mode-toggle__label--active) {
+  color: var(--text-secondary);
+}
+
+.paper-mode-toggle__label:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.paper-mode-toggle__sep {
+  color: var(--text-tertiary);
+  font-size: 12px;
+}
+
+.paper-body {
+  transition: opacity 150ms ease-out;
+}
+
+.paper-body--fading {
+  opacity: 0;
 }
 
 .paper-corpus-tag {
