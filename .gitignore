@@ -33,9 +33,9 @@ npm-debug.log*
 *.db
 *.sqlite
 *.sqlite3
+!data/eval/index.sqlite
 
 # Phase 1.1 retrieval test — local-only artifacts
-data/eval/vendor/
 data/eval/results.md
 
 # Notes (optional — remove this line if you want /notes/ tracked)

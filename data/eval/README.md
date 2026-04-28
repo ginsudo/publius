@@ -14,31 +14,28 @@ VOYAGE_API_KEY=<your key>
 
 The variable name is already in `.env.local` (gitignored); you only need to fill in the value.
 
-### 2. Fetch the sqlite-vec extension binary
+### 2. sqlite-vec extension binary
 
-`build-index.ts` and `query.ts` use Node's built-in `node:sqlite` and load the [sqlite-vec](https://github.com/asg017/sqlite-vec) extension as a binary. The binary is platform-specific and is not committed — fetch the right one for your machine into `data/eval/vendor/`.
+`build-index.ts` and `query.ts` use Node's built-in `node:sqlite` and load the [sqlite-vec](https://github.com/asg017/sqlite-vec) extension as a binary. Two platforms are vendored at **v0.1.6** and committed to the repo:
 
-For the Mac Studio (Apple Silicon, darwin-aarch64):
+- `vendor/vec0.dylib` — macOS arm64 (development).
+- `vendor/vec0.so` — Linux x86_64 (Vercel deployment).
+
+`lib.ts` selects the right one at load time via `process.platform`. Version parity across both binaries is load-bearing — do not upgrade one without upgrading the other and re-running the probe set.
+
+For other platforms (Intel Macs, etc.), fetch the matching v0.1.6 release into `vendor/` locally; do not commit non-arm64-mac / non-linux-x86_64 binaries.
 
 ```bash
-mkdir -p data/eval/vendor
+# Example: Intel Mac
 cd data/eval/vendor
-
-# Pin to a known release. Update the version as desired; verify the
-# checksum from the release notes at
-# https://github.com/asg017/sqlite-vec/releases
 VERSION=v0.1.6
-ARCHIVE="sqlite-vec-${VERSION#v}-loadable-macos-aarch64.tar.gz"
+ARCHIVE="sqlite-vec-${VERSION#v}-loadable-macos-x86_64.tar.gz"
 curl -L "https://github.com/asg017/sqlite-vec/releases/download/${VERSION}/${ARCHIVE}" -o "${ARCHIVE}"
 tar -xzf "${ARCHIVE}"
-# The archive extracts a vec0.dylib (or similar). lib.ts auto-discovers it.
 rm "${ARCHIVE}"
-cd -
 ```
 
-For Intel Macs, use `macos-x86_64`. For Linux, `linux-x86_64` and the file will be `vec0.so`. `lib.ts` auto-discovers any `vec0.dylib` / `vec0.so` (or other `.dylib` / `.so`) in `vendor/`.
-
-`vendor/` is gitignored — every contributor fetches their own platform-appropriate binary.
+`lib.ts`'s `findVecExtension()` will then need a third platform branch (or temporary local edit) — flag this if a non-Mac-arm64 / non-Linux-x86_64 contributor environment becomes load-bearing.
 
 ## Run
 
@@ -68,7 +65,8 @@ After `run.ts` finishes, open `results.md` and fill in the `Owner judgment` line
 ## Troubleshooting
 
 - **`VOYAGE_API_KEY not set`** — set it in `.env.local`. The file is gitignored; never commit it.
-- **`Vendor directory missing` / `No sqlite-vec extension binary found`** — run the fetch step above.
+- **`sqlite-vec extension binary missing`** — the committed binary for your platform is missing. On macOS arm64 or Linux x86_64, the binary should be in `vendor/`; if it's not, your checkout is incomplete. On other platforms, see the fetch step above.
+- **`Unsupported platform for sqlite-vec`** — you're not on macOS arm64 or Linux x86_64. Vendor a matching binary locally; see the fetch step above.
 - **`Voyage API 401`** — bad API key. Regenerate one in the Voyage console and update `.env.local`.
 - **`Voyage API 429`** — rate limited. The runner does not retry; wait a moment and re-run.
 - **Node version error** — requires Node 22.5+ for `node:sqlite`. Yesterday's session notes recorded Node 25.9 on the Mac Studio.
@@ -84,6 +82,7 @@ After `run.ts` finishes, open `results.md` and fill in the `Owner judgment` line
 | `build-index.ts` | Chunk + embed + write index | yes |
 | `query.ts` | CLI single-question query | yes |
 | `run.ts` | Probe-set runner, writes results.md | yes |
-| `index.sqlite` | The vector store | gitignored |
-| `vendor/` | sqlite-vec extension binary | gitignored |
+| `index.sqlite` | The vector store | yes (committed; deterministic rebuild from corpus + embedding model) |
+| `vendor/vec0.dylib` | sqlite-vec macOS arm64 (v0.1.6) | yes |
+| `vendor/vec0.so` | sqlite-vec Linux x86_64 (v0.1.6) | yes |
 | `results.md` | Latest probe-run report | gitignored |

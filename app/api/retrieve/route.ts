@@ -1,3 +1,5 @@
+// TODO(Phase 7): dev inspection surface — review before public launch (auth, IP-allowlist, or remove). Phase 1.4 ships open.
+
 import { queryIndex, type Hit } from '../../../data/eval/query.ts';
 
 export const runtime = 'nodejs';

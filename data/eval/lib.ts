@@ -102,26 +102,35 @@ export async function voyageEmbed(
 // SQLite + sqlite-vec
 // =====================================================================
 
-import { existsSync, readdirSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 
 function findVecExtension(): string {
-  // Prefer macOS arm64 .dylib; fall back to any .dylib / .so in vendor/.
+  // Platform-explicit: darwin → vec0.dylib, linux → vec0.so. Both binaries are
+  // committed at the same sqlite-vec version so retrieval behaviour is identical
+  // across the dev (macOS arm64) and Vercel (Linux x86_64) environments.
   if (!existsSync(VENDOR_DIR)) {
     throw new Error(
       `Vendor directory missing: ${VENDOR_DIR}\n` +
-        'Fetch the sqlite-vec extension binary per data/eval/README.md.',
+        'See data/eval/README.md.',
     );
   }
-  const entries = readdirSync(VENDOR_DIR);
-  const ext = entries.find((f) => /^vec0?\.(dylib|so)$/.test(f))
-    ?? entries.find((f) => /\.(dylib|so)$/.test(f));
-  if (!ext) {
+  let filename: string;
+  if (process.platform === 'darwin') filename = 'vec0.dylib';
+  else if (process.platform === 'linux') filename = 'vec0.so';
+  else {
     throw new Error(
-      `No sqlite-vec extension binary found in ${VENDOR_DIR}.\n` +
-        'Expected a file like vec0.dylib or vec0.so. See data/eval/README.md.',
+      `Unsupported platform for sqlite-vec: ${process.platform}.\n` +
+        'Only darwin and linux are vendored. See data/eval/README.md.',
     );
   }
-  return resolve(VENDOR_DIR, ext);
+  const path = resolve(VENDOR_DIR, filename);
+  if (!existsSync(path)) {
+    throw new Error(
+      `sqlite-vec extension binary missing: ${path}\n` +
+        'Expected to be committed to the repo. See data/eval/README.md.',
+    );
+  }
+  return path;
 }
 
 export function openDb(): DatabaseSync {
