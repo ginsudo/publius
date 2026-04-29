@@ -129,7 +129,7 @@ export function AskForm() {
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           onKeyDown={onKeyDown}
-          placeholder="What does Hamilton argue about judicial independence?"
+          placeholder="Does republican government require strong central power, or does strong central power threaten republican government?"
           disabled={loading}
           aria-label="Question"
           autoFocus
