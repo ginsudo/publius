@@ -2,7 +2,7 @@ import { resolve } from 'node:path';
 import { createHash } from 'node:crypto';
 
 import { queryIndex, toCitation, type Citation } from '../../../data/eval/query.ts';
-import { askClaude, extractPrompt, formatHits, QA_MODEL } from '../../../prompts/eval/lib.ts';
+import { askClaude, extractPrompt, formatHits, QA_MODEL } from '../../../lib/ask.ts';
 import {
   classifyError,
   withAskTrace,

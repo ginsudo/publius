@@ -38,8 +38,12 @@ npm-debug.log*
 # Phase 1.1 retrieval test — local-only artifacts
 data/eval/results.md
 
-# Prompts — kept on disk only, removed from git history 2026-04-29
-prompts/
+# Prompts — prose artifacts kept on disk only, removed from git history 2026-04-29.
+# .ts files (run.ts and shared lib at lib/ask.ts) stay tracked; only the prompt
+# text and harness result files are local-only.
+prompts/*.md
+prompts/eval/results*.md
+prompts/eval/plain-english-sample-results.md
 
 # Notes (optional — remove this line if you want /notes/ tracked)
 # /notes/

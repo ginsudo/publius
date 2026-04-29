@@ -17,7 +17,7 @@ import { startActiveObservation } from '@langfuse/tracing';
 
 import { EMBEDDING_MODEL } from '../data/eval/lib.ts';
 import type { Hit } from '../data/eval/query.ts';
-import type { AnthropicResult } from '../prompts/eval/lib.ts';
+import type { AnthropicResult } from './ask.ts';
 
 // =====================================================================
 // Error classification — shared with the route's mapError so the
