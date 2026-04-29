@@ -10,7 +10,7 @@ Publius surfaces three corpora in genuine dialogue:
 
 Each corpus is available in the original and in modern English. The Q&A layer respects the distinction between argument, observation, and holding — and surfaces interpretive disagreement rather than synthesizing false consensus.
 
-This is not a civics app, not a legal research tool, not a general-purpose constitutional chatbot. It is built for people who think seriously about constitutional interpretation, and it does not condescend toward an audience that doesn't exist.
+This is not a civics app, not a legal research tool, not a general-purpose constitutional chatbot. It is built for people who think seriously about constitutional interpretation.
 
 ## Why this exists
 
@@ -22,7 +22,7 @@ Publius is an attempt to build the tool I wanted to have while taking that cours
 
 ## The lineage that informs this project
 
-The Princeton course traces back through one of the longest unbroken intellectual traditions in American constitutional study. The McCormick Professorship of Jurisprudence — the chair under which the course has been taught — was first held by Woodrow Wilson, and passed to Edward S. Corwin, then to Alpheus T. Mason, then to Walter F. Murphy, then to Robert P. George, who has held it since 1995.
+The Princeton course traces back through one of the longest unbroken intellectual traditions in American constitutional study. The McCormick Professorship of Jurisprudence — the chair under which the course has been taught — was first held by Woodrow Wilson, then passed through William F. Willoughby and Edward S. Corwin, then to Alpheus T. Mason, then to Walter F. Murphy, then to Robert P. George, who has held it since 1995.
 
 Murphy taught Constitutional Interpretation at Princeton for many years before his retirement in 1995. His scholarship — including *Elements of Judicial Strategy*, a foundational work on how Supreme Court Justices actually decide cases — is considered paradigm-shifting in the study of judicial behavior. His students included Justice Samuel Alito, for whom he served as senior thesis advisor; Christopher Eisgruber, now Princeton's president and a former clerk to Justice John Paul Stevens; and generations of constitutional scholars now teaching at universities across the country.
 
@@ -35,7 +35,3 @@ This project does not claim institutional affiliation with the course or its ins
 ## Status
 
 In active development. See `CLAUDE.md` for project conventions and current architecture. See `DECISIONS.md` for architectural decisions and reasoning. The full project plan lives in the project files.
-
-## What this is not
-
-Not a civics education tool. Not a legal research database. Not politically aligned with any interpretive school. Not a product for a mass audience.
