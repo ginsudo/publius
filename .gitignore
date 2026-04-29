@@ -38,5 +38,8 @@ npm-debug.log*
 # Phase 1.1 retrieval test — local-only artifacts
 data/eval/results.md
 
+# Prompts — kept on disk only, removed from git history 2026-04-29
+prompts/
+
 # Notes (optional — remove this line if you want /notes/ tracked)
 # /notes/
