@@ -12,7 +12,7 @@ import {
 
 export const runtime = 'nodejs';
 
-const PROMPT_PATH = resolve(process.cwd(), 'prompts/system-prompt-v0.2.md');
+const PROMPT_PATH = resolve(process.cwd(), 'config/system-prompt.md');
 const SYSTEM_PROMPT = extractPrompt(PROMPT_PATH);
 const PROMPT_SHA256 = createHash('sha256').update(SYSTEM_PROMPT).digest('hex');
 

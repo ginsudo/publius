@@ -12,7 +12,7 @@ const config: NextConfig = {
     '/api/ask': [
       './data/eval/vendor/**',
       './data/eval/index.sqlite',
-      './prompts/system-prompt-v0.2.md',
+      './config/system-prompt.md',
     ],
     '/api/retrieve': [
       './data/eval/vendor/**',
