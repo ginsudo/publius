@@ -31,6 +31,7 @@
 import { readFileSync, writeFileSync, existsSync, renameSync, unlinkSync, mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createHash } from 'node:crypto';
 import Anthropic from '@anthropic-ai/sdk';
 import { loadEnv, REPO_ROOT, FEDERALIST_PATH } from '../data/eval/lib.ts';
 
@@ -43,6 +44,8 @@ const PROMPT_PATH = resolve(REPO_ROOT, 'prompts', 'plain-english-system.md');
 const STATE_PATH = resolve(REPO_ROOT, 'data', 'federalist', '.batch-state.json');
 const BATCH_RESULTS_PATH = resolve(REPO_ROOT, 'data', 'federalist', '.batch-results.json');
 const SAMPLE_RESULTS_PATH = resolve(REPO_ROOT, 'prompts', 'eval', 'plain-english-sample-results.md');
+const ANNOTATIONS_PATH = resolve(REPO_ROOT, 'data', 'federalist', 'federalist-annotations.json');
+const PROMPT_VERSION = 'v0.2';
 
 const MODEL = 'claude-sonnet-4-6';
 const MAX_TOKENS = 2000;
@@ -116,6 +119,45 @@ type RenderResult = {
   warnings: string[];
 };
 
+// Annotations layer (Phase 3.2). Stored at data/federalist/federalist-annotations.json.
+// Sits alongside the corpus, not inside it; pattern carries forward to Tocqueville
+// and SCOTUS annotations once those slices land.
+
+type EditorialStatus = null | 'accepted' | 'edited' | 'flagged_for_rewrite';
+
+type FlagEntry = {
+  kind: FlagKind;
+  // The quoted term/phrase the flag is about. v0.2 prompt formats WORD/RHETORIC
+  // flag bodies as `"term" — note`; AMBIGUOUS flags often describe a passage
+  // without quoting a single term, in which case term is null and the entire
+  // body lives in `note`.
+  term: string | null;
+  note: string;
+};
+
+type ParagraphAnnotation = {
+  paragraph_index: number;
+  // Salutations bypass the API; bypassed:true marks them so a reviewer
+  // sees the bypass discipline explicitly rather than inferring it from a gap.
+  bypassed?: true;
+  flags: FlagEntry[];
+  editorial_status: EditorialStatus;
+  editorial_note: string | null;
+};
+
+type PaperAnnotations = {
+  paper_number: number;
+  paragraphs: ParagraphAnnotation[];
+};
+
+type FederalistAnnotations = {
+  corpus: 'federalist';
+  generated_at: string;
+  prompt_version: string;
+  prompt_sha256: string;
+  papers: PaperAnnotations[];
+};
+
 // ---------------------------------------------------------------------------
 // CLI parsing
 // ---------------------------------------------------------------------------
@@ -129,6 +171,11 @@ const isReset = FLAGS.has('--reset');
 // write rendered paragraphs back into federalist.json. Without this flag,
 // full-mode runs stop after writing the sidecar; the corpus is not mutated.
 const isApply = FLAGS.has('--apply');
+// --merge-annotations: when --apply finds an existing federalist-annotations.json,
+// merge instead of aborting. Editorial state (editorial_status, editorial_note)
+// is preserved per (paper, paragraph); flags and the file-level metadata are
+// replaced by the new run.
+const isMergeAnnotations = FLAGS.has('--merge-annotations');
 // --retry <custom_id>: re-run a single paragraph synchronously and update
 // its sidecar entry in place. Independent of batch state.
 const retryIdx = argv.indexOf('--retry');
@@ -363,9 +410,12 @@ function buildSampleRequests(corpus: Corpus): RequestSpec[] {
 }
 
 function buildFullRequests(corpus: Corpus): RequestSpec[] {
+  // No skip on already-populated plain_english — default mode regenerates from
+  // scratch every invocation. Resumability for an in-flight batch is handled
+  // via .batch-state.json; the previous "skip populated items" optimization
+  // dated to Phase 3.1 when the corpus was empty and is now misleading.
   const out: RequestSpec[] = [];
   for (const item of corpus.items) {
-    if (item.plain_english !== null) continue; // skip already-populated items
     for (let i = 0; i < item.paragraphs.length; i++) {
       const para = item.paragraphs[i];
       if (para === SALUTATION) continue; // bypass — written through verbatim at write time
@@ -592,26 +642,27 @@ function writeSampleReviewFile(
 }
 
 // ---------------------------------------------------------------------------
-// Full-mode write-back to federalist.json
+// Postprocess pass over the entire batch
 // ---------------------------------------------------------------------------
 
-function writeBackFullMode(
+type ProcessedBatch = {
+  // Map keyed by custom_id; only contains entries for non-salutation paragraphs.
+  renderings: Map<string, RenderResult>;
+  failures: string[];
+  warnings: string[];
+};
+
+function processBatch(
   corpus: Corpus,
   results: Map<string, string | { error: string }>,
-): void {
+): ProcessedBatch {
+  const renderings = new Map<string, RenderResult>();
   const failures: string[] = [];
-  const allWarnings: string[] = [];
-
-  // Build plain_english arrays in-place on a clone.
+  const warnings: string[] = [];
   for (const item of corpus.items) {
-    if (item.plain_english !== null) continue; // already populated; skip
-    const out: string[] = new Array(item.paragraphs.length);
     for (let i = 0; i < item.paragraphs.length; i++) {
       const para = item.paragraphs[i];
-      if (para === SALUTATION) {
-        out[i] = SALUTATION;
-        continue;
-      }
+      if (para === SALUTATION) continue; // bypassed — never submitted, not in sidecar
       const cid = makeCustomId(item.federalist.number, i);
       const result = results.get(cid);
       if (typeof result === 'object' && result !== null && 'error' in result) {
@@ -623,43 +674,198 @@ function writeBackFullMode(
         continue;
       }
       const pp = postprocess(result, para);
-      if (pp.warnings.length) allWarnings.push(`${cid}: ${pp.warnings.join('; ')}`);
-      if (pp.flags.length) {
-        for (const f of pp.flags) allWarnings.push(`${cid}: [${f.kind}] ${f.note}`);
+      if (pp.warnings.length) warnings.push(`${cid}: ${pp.warnings.join('; ')}`);
+      renderings.set(cid, pp);
+    }
+  }
+  return { renderings, failures, warnings };
+}
+
+// ---------------------------------------------------------------------------
+// Full-mode corpus write (plain_english only)
+// ---------------------------------------------------------------------------
+
+function writePlainEnglish(corpus: Corpus, renderings: Map<string, RenderResult>): void {
+  for (const item of corpus.items) {
+    const out: string[] = new Array(item.paragraphs.length);
+    for (let i = 0; i < item.paragraphs.length; i++) {
+      const para = item.paragraphs[i];
+      if (para === SALUTATION) {
+        out[i] = SALUTATION;
+        continue;
       }
-      // Flags (AMBIGUOUS/WORD/RHETORIC) are not stored in the corpus per
-      // design; the rendered paragraph in plain_english stays clean. For
-      // Phase 3.1 production, flags are surfaced via the warnings channel
-      // here; the gate-2 sidecar review file is a follow-up step.
-      out[i] = pp.rendered;
+      const cid = makeCustomId(item.federalist.number, i);
+      const r = renderings.get(cid);
+      if (!r) {
+        // Defensive: failures are caught before this function is reached.
+        throw new Error(`writePlainEnglish: missing rendering for ${cid}`);
+      }
+      out[i] = r.rendered;
     }
-
-    // Length-alignment invariant
     if (out.length !== item.paragraphs.length) {
-      failures.push(`federalist:${item.federalist.number}: plain_english.length ${out.length} !== paragraphs.length ${item.paragraphs.length}`);
-      continue;
+      throw new Error(
+        `federalist:${item.federalist.number}: plain_english.length ${out.length} !== paragraphs.length ${item.paragraphs.length}`,
+      );
     }
-    if (failures.length === 0) {
-      item.plain_english = out;
-    }
+    item.plain_english = out;
   }
 
-  if (failures.length) {
-    console.error(`[write] ABORTING: ${failures.length} failures, no write performed:`);
-    for (const f of failures) console.error(`  - ${f}`);
-    throw new Error('aborted before atomic write — see failures above');
-  }
-
-  // Atomic write
   const tmpPath = FEDERALIST_PATH + '.tmp';
   writeFileSync(tmpPath, JSON.stringify(corpus, null, 2) + '\n');
   renameSync(tmpPath, FEDERALIST_PATH);
-  console.log(`[write] atomic rename complete: ${FEDERALIST_PATH}`);
+  console.log(`[plain-english] atomic rename complete: ${FEDERALIST_PATH}`);
+}
 
-  if (allWarnings.length) {
-    console.warn(`[write] ${allWarnings.length} postprocess warnings (non-fatal):`);
-    for (const w of allWarnings) console.warn(`  - ${w}`);
+// ---------------------------------------------------------------------------
+// Annotations build + write (Phase 3.2)
+// ---------------------------------------------------------------------------
+
+// Parse the body of a flag note into (term, note). v0.2 prompt formats
+// WORD/RHETORIC bodies as `"term" — note`; AMBIGUOUS bodies often have no
+// quoted term. Handles both straight quotes and curly quotes, and both
+// em-dash and hyphen separators.
+const FLAG_BODY_RE = /^\s*["“]([^"”]+)["”]\s*[—–\-]\s*([\s\S]*)$/;
+
+function parseFlagBody(body: string): { term: string | null; note: string } {
+  const m = body.match(FLAG_BODY_RE);
+  if (m) {
+    return { term: m[1].trim(), note: m[2].trim() };
   }
+  return { term: null, note: body.trim() };
+}
+
+function buildAnnotations(
+  corpus: Corpus,
+  renderings: Map<string, RenderResult>,
+  promptSha256: string,
+): FederalistAnnotations {
+  const papers: PaperAnnotations[] = [];
+  for (const item of corpus.items) {
+    const paragraphs: ParagraphAnnotation[] = [];
+    for (let i = 0; i < item.paragraphs.length; i++) {
+      const para = item.paragraphs[i];
+      if (para === SALUTATION) {
+        paragraphs.push({
+          paragraph_index: i,
+          bypassed: true,
+          flags: [],
+          editorial_status: null,
+          editorial_note: null,
+        });
+        continue;
+      }
+      const cid = makeCustomId(item.federalist.number, i);
+      const r = renderings.get(cid);
+      if (!r) {
+        throw new Error(`buildAnnotations: missing rendering for ${cid}`);
+      }
+      const flags: FlagEntry[] = r.flags.map(f => {
+        const parsed = parseFlagBody(f.note);
+        return { kind: f.kind, term: parsed.term, note: parsed.note };
+      });
+      paragraphs.push({
+        paragraph_index: i,
+        flags,
+        editorial_status: null,
+        editorial_note: null,
+      });
+    }
+    papers.push({ paper_number: item.federalist.number, paragraphs });
+  }
+  return {
+    corpus: 'federalist',
+    generated_at: new Date().toISOString(),
+    prompt_version: PROMPT_VERSION,
+    prompt_sha256: promptSha256,
+    papers,
+  };
+}
+
+function writeAnnotationsFile(ann: FederalistAnnotations, mergeAnnotations: boolean): void {
+  if (existsSync(ANNOTATIONS_PATH)) {
+    if (!mergeAnnotations) {
+      throw new Error(
+        `Refusing to overwrite existing ${ANNOTATIONS_PATH}.\n` +
+          `  - To regenerate from scratch (discarding any editorial_status/editorial_note values), delete the file and re-run --apply.\n` +
+          `  - To preserve editorial_status and editorial_note while replacing flags, re-run with --apply --merge-annotations.`,
+      );
+    }
+    // Merge: preserve editorial_status and editorial_note from the existing
+    // file per (paper_number, paragraph_index). Flags and file-level metadata
+    // (generated_at, prompt_sha256, prompt_version) come from the new run.
+    const existing = JSON.parse(readFileSync(ANNOTATIONS_PATH, 'utf8')) as FederalistAnnotations;
+    const editorialMap = new Map<string, { status: EditorialStatus; note: string | null }>();
+    for (const p of existing.papers) {
+      for (const para of p.paragraphs) {
+        if (para.editorial_status !== null || para.editorial_note !== null) {
+          const key = `${p.paper_number}-${para.paragraph_index}`;
+          editorialMap.set(key, { status: para.editorial_status, note: para.editorial_note });
+        }
+      }
+    }
+    let merged = 0;
+    for (const p of ann.papers) {
+      for (const para of p.paragraphs) {
+        const key = `${p.paper_number}-${para.paragraph_index}`;
+        const prev = editorialMap.get(key);
+        if (prev) {
+          para.editorial_status = prev.status;
+          para.editorial_note = prev.note;
+          merged++;
+        }
+      }
+    }
+    console.log(`[annotations] merge: preserved ${merged} editorial-state entries from existing file`);
+  }
+  const tmp = ANNOTATIONS_PATH + '.tmp';
+  writeFileSync(tmp, JSON.stringify(ann, null, 2) + '\n');
+  renameSync(tmp, ANNOTATIONS_PATH);
+  console.log(`[annotations] atomic rename complete: ${ANNOTATIONS_PATH}`);
+}
+
+function summarize(ann: FederalistAnnotations): void {
+  let totalParagraphs = 0;
+  let totalAnnotated = 0;
+  let totalSalutations = 0;
+  const flagCounts: Record<FlagKind, number> = { AMBIGUOUS: 0, WORD: 0, RHETORIC: 0 };
+  const papersWithZeroFlags: number[] = [];
+  for (const p of ann.papers) {
+    let paperFlagCount = 0;
+    for (const para of p.paragraphs) {
+      totalParagraphs++;
+      if (para.bypassed) {
+        totalSalutations++;
+        continue;
+      }
+      totalAnnotated++;
+      for (const f of para.flags) {
+        flagCounts[f.kind]++;
+        paperFlagCount++;
+      }
+    }
+    if (paperFlagCount === 0) papersWithZeroFlags.push(p.paper_number);
+  }
+  const totalFlags = flagCounts.AMBIGUOUS + flagCounts.WORD + flagCounts.RHETORIC;
+  console.log('');
+  console.log('=== ANNOTATIONS SUMMARY ===');
+  console.log(`Total paragraphs: ${totalParagraphs}`);
+  console.log(`  Annotated (non-salutation): ${totalAnnotated}`);
+  console.log(`  Salutations (bypassed):     ${totalSalutations}`);
+  console.log('');
+  console.log('Flag counts by kind:');
+  console.log(`  AMBIGUOUS: ${flagCounts.AMBIGUOUS}`);
+  console.log(`  WORD:      ${flagCounts.WORD}`);
+  console.log(`  RHETORIC:  ${flagCounts.RHETORIC}`);
+  console.log(`  TOTAL:     ${totalFlags}`);
+  console.log('');
+  if (papersWithZeroFlags.length > 0) {
+    console.log(
+      `Papers with zero flags (${papersWithZeroFlags.length}): ${papersWithZeroFlags.join(', ')}`,
+    );
+  } else {
+    console.log('Papers with zero flags: none');
+  }
+  console.log('===========================');
 }
 
 // ---------------------------------------------------------------------------
@@ -783,14 +989,19 @@ async function main() {
   const corpus: Corpus = JSON.parse(readFileSync(FEDERALIST_PATH, 'utf8'));
 
   // Mode-mutex: --retry is independent of all other flags except API key.
-  if (isRetry && (isApply || isSample || isResume || isReset)) {
-    console.error('[main] --retry is incompatible with --apply / --sample / --resume / --reset');
+  if (isRetry && (isApply || isSample || isResume || isReset || isMergeAnnotations)) {
+    console.error('[main] --retry is incompatible with --apply / --sample / --resume / --reset / --merge-annotations');
+    process.exit(2);
+  }
+  if (isMergeAnnotations && !isApply) {
+    console.error('[main] --merge-annotations is only valid with --apply');
     process.exit(2);
   }
 
   // --apply takes a fast path: no submission, no polling, no API contact.
-  // Reads the sidecar produced by a prior run, validates length-alignment,
-  // writes federalist.json atomically, then clears state + sidecar.
+  // Reads the sidecar produced by a prior run, postprocesses every entry,
+  // writes the annotations file (abort-vs-merge), writes federalist.json
+  // atomically, prints a summary, then clears state + sidecar.
   if (isApply) {
     if (isSample) {
       console.error('[main] --apply is incompatible with --sample (sample mode does not write back to the corpus).');
@@ -798,10 +1009,36 @@ async function main() {
     }
     const results = readResultsSidecar();
     console.log(`[apply] read ${results.size} results from sidecar`);
-    writeBackFullMode(corpus, results);
+
+    // Load the system prompt to compute its sha256 — pinned in the
+    // annotations file as a verifiable record of which prompt produced
+    // these flags. Reading the file is cheap; the sha is the audit point.
+    const systemPromptForSha = loadSystemPrompt();
+    const promptSha256 = createHash('sha256').update(systemPromptForSha).digest('hex');
+
+    const { renderings, failures, warnings } = processBatch(corpus, results);
+    if (failures.length) {
+      console.error(`[apply] ABORTING: ${failures.length} failures, no write performed:`);
+      for (const f of failures) console.error(`  - ${f}`);
+      throw new Error('aborted before write — see failures above');
+    }
+    if (warnings.length) {
+      console.warn(`[apply] ${warnings.length} postprocess warnings (non-fatal):`);
+      for (const w of warnings) console.warn(`  - ${w}`);
+    }
+
+    // Annotations write first: its abort-vs-merge guard can fail, and we'd
+    // rather catch that before mutating the corpus. Both writes use atomic
+    // tmp+rename; cross-file consistency on a partial failure is bounded.
+    const ann = buildAnnotations(corpus, renderings, promptSha256);
+    writeAnnotationsFile(ann, isMergeAnnotations);
+    writePlainEnglish(corpus, renderings);
+
+    summarize(ann);
+
     if (existsSync(BATCH_RESULTS_PATH)) unlinkSync(BATCH_RESULTS_PATH);
     clearState();
-    console.log(`[apply] corpus updated; sidecar and state cleared.`);
+    console.log(`[apply] corpus + annotations updated; sidecar and state cleared.`);
     return;
   }
 

@@ -35,6 +35,10 @@ npm-debug.log*
 *.sqlite3
 !data/eval/index.sqlite
 
+# Batch API ephemeral state (generate-plain-english.ts)
+data/federalist/.batch-results.json
+data/federalist/.batch-state.json
+
 # Phase 1.1 retrieval test — local-only artifacts
 data/eval/results.md
 
