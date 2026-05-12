@@ -664,6 +664,28 @@ The federalist-only review CLI shipped in late April had to expand to Tocquevill
 
 **Next slice.** Owner-driven editorial review against either corpus. Claude Code's role drops back to advisor unless a tool gap surfaces.
 
+### Phase 3.2 review — Tocqueville "moeurs" → "mores" standing convention applied across the annotations file (2026-05-12)
+
+A standing editorial convention emerged during the Tocqueville review pass and was applied to `data/tocqueville/tocqueville-annotations.json` as a one-shot consistency fix. Rendering policy for *moeurs*: render as **mores** throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French or any single-word approximation. This supersedes the Phase 4 translation-time pin ("*moeurs* stays in French and italicized with a first-occurrence translator's note" — recorded in the 2026-05-12 Phase 4 entry), which was pragmatic for draft generation and always going to be revisited at editorial review.
+
+**Locked artifacts (today's work — 2026-05-12):**
+- `data/tocqueville/tocqueville-annotations.json` — 102 units mutated (99 paragraphs + 3 footnotes), each set to `editorial_status: "flagged_for_rewrite"` with a unit-level editorial note pinning the rendering. One flag note also rewritten (vol1.part2.ch3 paragraph 1) to remove a now-contradictory "manners" suggestion and replace it with the standing convention.
+- `scripts/apply-moeurs-policy.mjs` — idempotent one-shot mutator. Matches any unit whose `flags[]` contains an entry with `french` or `note` mentioning "moeurs" (case-insensitive; `mœurs` ligature also matched defensively, though grep confirms zero ligature occurrences in the source).
+
+**Path:**
+
+*Inconsistency surfaced during review.* The annotations file as populated at Phase 4 apply handled *moeurs* inconsistently across its 102 occurrences in Volume I. Some flag entries carried notes echoing the leave-in-French policy; others suggested "manners" as a working rendering; others carried no note at all. One paragraph (vol1.introduction paragraph 29) had already accumulated an editorial note pinning the "mores" convention from a prior session; another (vol1.part2.ch3 paragraph 1) carried a flag note explicitly suggesting "manners" — directly contradictory with the convention being established. Continuing unit-by-unit would have re-decided the same translation question 101 times. Better to lock the convention once and bring the annotations into a consistent state before resuming.
+
+*Plan-first, count-confirmed.* Drafted a plan that named the match rule, the mutation, the affected count, and the one judgment call (whether to also rewrite the flag note text at the lone "note-only" match, where the flag contradicted the unit-level decision). Pre-scan numbers: 102 units would be touched (99 paragraphs, 3 footnotes); 101 had `editorial_status: null`; 1 (vol1.introduction paragraph 29) already carried `flagged_for_rewrite` and a near-identical note that would be replaced verbatim. Owner approved and added the flag-text rewrite to scope.
+
+*The script.* `apply-moeurs-policy.mjs` reads the JSON, deep-clones it as a pre-run snapshot, walks every `items[*].paragraphs[*]` and `items[*].footnotes[*]`, applies the mutation on match, and runs an in-process verifier that compares pre/post field-by-field on every unit before the file is rewritten. Verification asserts: (a) only `editorial_status`, `editorial_note`, and (for the single special-case unit) the matching flag's `note` differ; (b) every matched unit ends up `flagged_for_rewrite` with the expected note; (c) no non-matched unit's editorial fields shifted. Any divergence aborts before the write.
+
+*Verification clean.* 102 / 102 units affected as planned (99 paragraphs + 3 footnotes); exactly one flag-array delta detected (the intentional vol1.part2.ch3 paragraph 1 flag rewrite); zero non-affected units touched. Independent re-scan against `/tmp/tocq-pre-moeurs.json` produced the same numbers. Re-running the script is a no-op against the post-state.
+
+*Review paused at 10/378.* Tocqueville editorial review was at position 10/378 when this fix was made. Resume from the same position; the 102 newly `flagged_for_rewrite` units will reappear in the stream's natural order and can be re-decided in the normal review flow — most should now be acceptable as marked, since the standing convention is already pinned in each unit's editorial note.
+
+**Conclusion.** A standing editorial convention is reified at the data layer; the annotations file is internally consistent on *moeurs* before review resumes. The `apply-moeurs-policy.mjs` script lives alongside the corpus and can be re-run safely if a future regenerate reintroduces inconsistency — the verifier provides a hard stop against any unexpected mutation.
+
 ## Current state of the repository
 
 **What exists in the repo:**
