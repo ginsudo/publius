@@ -244,6 +244,7 @@ Phase 2.3 takes the deployed `/api/ask` boundary from Phase 1.4 and wires the fi
 
 **Follow-on edits:**
 - 2026-05-12 — `/ask` placeholder swapped to the counter-majoritarian-difficulty question (Bickel-shaped); textarea `rows` bumped 2 → 5 to keep the long placeholder visible end-to-end. Visual weight to be re-evaluated; will dial down to 4 if 5 reads as too heavy.
+- 2026-05-12 — `/ask` adds a Tab-fill affordance: pressing Tab in the empty textarea fills it with the placeholder question (now extracted as `DEFAULT_QUESTION` so placeholder + Tab-fill cannot drift). Tab with content present falls through to default focus-move behavior. A small italic hint ("Press Tab to use this question") sits below the input while empty and hides on any keystroke. New `.ask-hint` class in `globals.css` (13px italic, tertiary text color). Both the hint visibility and the Tab-fill trigger key off `question.trim() === ''` so they stay coupled. Verification: tsc clean, SSR initial state confirmed via curl; (a) Tab on empty fills, (b) Tab with content moves focus, (c) clear-and-refill works, (d) Return submits — all verified manually in the browser on 2026-05-12.
 
 **Next slice: Phase 2.1 — Browse UI.** Paper list / catalog view with per-paper summaries stubbed initially. The DESIGN.md "Browse layout" guidance (a constrained list, not a card grid; dense, not spacious; signals 85 papers and invites navigation rather than consumption) drives the visual register. Summaries become real once the Phase 4 plain-English / summary generation slice runs.
 

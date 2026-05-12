@@ -23,6 +23,9 @@ type AskResponse = {
   promptSha256: string;
 };
 
+const DEFAULT_QUESTION =
+  'By what right does an unelected, life-tenured judiciary overturn the considered judgments of democratically elected legislatures — and if it has that right, what principled limits constrain its exercise?';
+
 function stripMarkdown(s: string): string {
   return s
     .replace(/\*\*([\s\S]+?)\*\*/g, '$1')
@@ -110,6 +113,11 @@ export function AskForm() {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       void submit();
+      return;
+    }
+    if (e.key === 'Tab' && question.trim() === '') {
+      e.preventDefault();
+      setQuestion(DEFAULT_QUESTION);
     }
   }
 
@@ -129,11 +137,14 @@ export function AskForm() {
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           onKeyDown={onKeyDown}
-          placeholder="By what right does an unelected, life-tenured judiciary overturn the considered judgments of democratically elected legislatures — and if it has that right, what principled limits constrain its exercise?"
+          placeholder={DEFAULT_QUESTION}
           disabled={loading}
           aria-label="Question"
           autoFocus
         />
+        {question.trim() === '' && (
+          <p className="ask-hint">Press Tab to use this question</p>
+        )}
       </form>
 
       {loading && <p className="ask-status">Thinking…</p>}

@@ -138,6 +138,13 @@ main {
   cursor: not-allowed;
 }
 
+.ask-hint {
+  margin: 4px 0 0;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-tertiary);
+}
+
 .ask-status {
   margin: 24px 0 0;
   font-size: 16px;
