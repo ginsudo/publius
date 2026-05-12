@@ -339,8 +339,8 @@
               "note": "second occurrence in chapter; italicized only per policy."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 30,
@@ -351,7 +351,7 @@
               "note": "aphoristic balance — *Il faut une science politique nouvelle à un monde tout nouveau* — the French chiasmus (*nouvelle... nouveau*) is approximated by repetition of \"new\"; the symmetry is partly lost."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -416,8 +416,8 @@
               "note": "recurrence; italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 39,
@@ -458,8 +458,8 @@
               "note": "recurrence; italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 45,
@@ -512,8 +512,8 @@
               "note": "recurrence; italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 52,
@@ -590,8 +590,8 @@
               "note": "recurrence; italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 64,
@@ -608,8 +608,8 @@
               "note": "recurrence; italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 66,
@@ -632,8 +632,8 @@
               "note": "recurrence; italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 69,
@@ -662,8 +662,8 @@
               "note": "recurrence; italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 73,
@@ -674,8 +674,8 @@
               "note": "recurrence; italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 74,
@@ -698,8 +698,8 @@
               "note": "recurrence; italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 77,
@@ -716,8 +716,8 @@
               "note": "recurrence; italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 79,
@@ -1422,8 +1422,8 @@
               "note": "second occurrence in chapter; italicized per policy."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 7,
@@ -1464,8 +1464,8 @@
               "note": "italicized per policy."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 13,
@@ -1506,8 +1506,8 @@
               "note": "italicized per policy."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 19,
@@ -1722,8 +1722,8 @@
               "note": "italicized per policy."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 52,
@@ -1877,8 +1877,8 @@
               "note": "italicized per policy."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 74,
@@ -1925,8 +1925,8 @@
               "note": "italicized per policy; two instances."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 81,
@@ -1955,8 +1955,8 @@
               "note": "italicized per policy."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 85,
@@ -1973,8 +1973,8 @@
               "note": "italicized per policy."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 87,
@@ -2693,8 +2693,8 @@
               "note": "left in French per standing policy."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         }
       ],
       "footnotes": [
@@ -2770,8 +2770,8 @@
               "note": "rendered here as \"custom,\" which is defensible, but the owner should decide whether \"mores,\" \"habits,\" or \"manners\" better fits the running usage across the translation as a whole. This is a structurally important Tocquevillian term."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 4,
@@ -3075,8 +3075,8 @@
               "note": "first occurrence in chapter; translator's note appended per policy."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 13,
@@ -3087,8 +3087,8 @@
               "note": "second occurrence; italicized only per policy."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 14,
@@ -3129,8 +3129,8 @@
               "note": "italicized only per policy."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 20,
@@ -3219,8 +3219,8 @@
               "note": "italicized only per policy."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 34,
@@ -3957,8 +3957,8 @@
               "note": "italicized only per policy."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 153,
@@ -4563,8 +4563,8 @@
               "note": "italicized only per policy."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 252,
@@ -6276,8 +6276,8 @@
               "note": "second occurrence in this chapter; italicized only per policy."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 60,
@@ -6420,8 +6420,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 83,
@@ -6810,8 +6810,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 147,
@@ -8352,8 +8352,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 403,
@@ -8388,8 +8388,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 408,
@@ -8460,8 +8460,8 @@
               "note": "italicized only, twice in this paragraph."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 419,
@@ -8484,8 +8484,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 422,
@@ -8496,8 +8496,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 423,
@@ -8538,8 +8538,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 429,
@@ -8736,8 +8736,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 461,
@@ -8838,8 +8838,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 477,
@@ -14509,8 +14509,8 @@
               "note": "second chapter occurrence; italicized only per policy."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 21,
@@ -14533,8 +14533,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 24,
@@ -15271,8 +15271,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 146,
@@ -15847,8 +15847,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 241,
@@ -16303,8 +16303,8 @@
               "note": "second occurrence in chapter; italicized only per policy"
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 46,
@@ -16345,8 +16345,8 @@
               "note": "third occurrence; italicized only"
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 51,
@@ -16447,8 +16447,8 @@
               "note": "italicized only per policy"
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 66,
@@ -16471,8 +16471,8 @@
               "note": "italicized only per policy"
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 69,
@@ -17053,8 +17053,8 @@
               "note": "italicized only, per policy after first occurrence in chapter."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 48,
@@ -17101,8 +17101,8 @@
               "note": "italicized only, per policy."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 55,
@@ -17239,8 +17239,8 @@
               "note": "italicized only, per policy."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 76,
@@ -17263,8 +17263,8 @@
               "note": "italicized only, per policy."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 79,
@@ -18026,8 +18026,8 @@
               "note": "per standing policy, italicized only on subsequent occurrences within the chapter."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 83,
@@ -18321,8 +18321,8 @@
               "note": "recurrence within this chapter; italicized only, no note repeated."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 17,
@@ -18405,8 +18405,8 @@
               "note": "recurrence; italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 30,
@@ -18507,8 +18507,8 @@
               "note": "recurrence; italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 46,
@@ -18537,8 +18537,8 @@
               "note": "recurrence; italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 50,
@@ -18555,8 +18555,8 @@
               "note": "recurrence; italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 52,
@@ -18633,8 +18633,8 @@
               "note": "in the chapter heading; kept untranslated per policy."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 63,
@@ -18645,8 +18645,8 @@
               "note": "recurrence; italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 64,
@@ -18657,8 +18657,8 @@
               "note": "Tocqueville's own gloss on the term; preserved untranslated and the author's parallel with Latin *mores* is left intact."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 65,
@@ -20080,8 +20080,8 @@
               "note": "second occurrence in chapter; italicized only per policy."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 3,
@@ -20122,8 +20122,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 9,
@@ -20140,8 +20140,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 11,
@@ -20206,8 +20206,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 21,
@@ -20248,8 +20248,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 27,
@@ -20422,8 +20422,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 54,
@@ -20464,8 +20464,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 60,
@@ -20488,8 +20488,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 63,
@@ -20589,8 +20589,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 77,
@@ -20745,8 +20745,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 102,
@@ -20757,8 +20757,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 103,
@@ -20847,8 +20847,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 116,
@@ -20859,8 +20859,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 117,
@@ -20931,8 +20931,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 128,
@@ -20991,8 +20991,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 137,
@@ -21267,8 +21267,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 182,
@@ -22221,8 +22221,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 340,
@@ -22293,8 +22293,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 351,
@@ -22323,8 +22323,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 355,
@@ -22563,8 +22563,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 394,
@@ -22893,8 +22893,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 448,
@@ -22923,8 +22923,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 452,
@@ -22965,8 +22965,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 458,
@@ -23013,8 +23013,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 465,
@@ -23055,8 +23055,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 471,
@@ -23079,8 +23079,8 @@
               "note": "italicized only; two occurrences in one sentence."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 474,
@@ -23169,8 +23169,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 488,
@@ -23223,8 +23223,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 496,
@@ -23451,8 +23451,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 533,
@@ -23571,8 +23571,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 552,
@@ -23685,8 +23685,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 570,
@@ -23819,8 +23819,8 @@
               "note": "italicized only; appears twice in this quoted passage."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "marker": "[57]",
@@ -23861,8 +23861,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "marker": "[63]",
@@ -23963,8 +23963,8 @@
               "note": "italicized only."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "marker": "[79]",
@@ -24983,8 +24983,8 @@
               "note": "consistently rendered here as \"mores.\" This is the central Tocquevillian term. The owner should decide on a single English equivalent — \"mores,\" \"manners,\" \"customs,\" or \"habits\" — and apply it uniformly throughout."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French."
+          "editorial_status": null,
+          "editorial_note": null
         },
         {
           "paragraph_index": 47,
