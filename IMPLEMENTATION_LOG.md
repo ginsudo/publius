@@ -686,6 +686,27 @@ A standing editorial convention emerged during the Tocqueville review pass and w
 
 **Conclusion.** A standing editorial convention is reified at the data layer; the annotations file is internally consistent on *moeurs* before review resumes. The `apply-moeurs-policy.mjs` script lives alongside the corpus and can be re-run safely if a future regenerate reintroduces inconsistency — the verifier provides a hard stop against any unexpected mutation.
 
+### Phase 3.2 review — Tocqueville "moeurs" → "mores" substitution applied to translation bodies (2026-05-12)
+
+Follow-on to the annotation-layer pin: the standing convention was applied directly into `data/tocqueville/tocqueville.json` translation bodies, and the 94 annotation units whose only flag was `[TERM] "moeurs"` were cleared back to `null` because they no longer need editorial attention.
+
+**Locked artifacts (today's work — 2026-05-12):**
+- `data/tocqueville/tocqueville.json` — 132 translation paragraphs + 4 footnote paragraphs mutated. Net effect: `*moeurs*` count goes 165 → 0; bare `moeurs` count goes 1 → 0; `mores` count goes 4 → 168 (delta +164). French source text, English `text`, and French footnotes untouched.
+- `data/tocqueville/tocqueville-annotations.json` — 94 units (91 paragraphs + 3 footnotes) cleared: `editorial_status` and `editorial_note` reset to `null`.
+- `scripts/apply-moeurs-substitution.mjs` — idempotent one-shot mutator with an in-process verifier covering both files.
+
+**Path:**
+
+*Four ordered substitution rules.* Rule 1: `Custom and *moeurs*` → `Habits and mores` (1 occurrence at `vol1.introduction` paragraph 38; the additional phrase pinning was owner instruction — *"l'usage et les moeurs"* renders as "habits and mores," not "custom and mores"). Rule 2: lowercase variant — zero occurrences. Rule 3: remaining `*moeurs*` → `mores` (163 occurrences). Rule 4: bare `moeurs` not flanked by stars — zero after the special edits below. Ordering matters: rule 1 consumes the one capitalized phrase before rule 3 sees it.
+
+*Two structural edits at specific paragraphs, surfaced in the plan and approved by the owner before substitution.* (1) At `vol1.introduction` paragraph 1, the parenthetical `[Translator's note: *moeurs* — Tocqueville's term for the habits, dispositions, and moral character of a people; no English equivalent captures its full range.]` was deleted in full. After substitution the note would have self-contradicted (claiming no English equivalent while supplying one); the standing convention has retired the need for the note. (2) At `vol1.t1.notes.E` paragraph 20, a leaked `TEXTURE: "les moeurs se sont pliées au mouvement du temps" — …` flag annotation embedded in the translation body was stripped (everything from `\n\nTEXTURE:` onward). This was a Phase 4 extraction failure — a flag that should have been parsed out of the model response and routed to the annotations file ended up inside the translation. Applying rule 4 to it would have corrupted the embedded French citation; stripping the leakage was cleaner. Both edits were performed before the substitution pass so no bare-`moeurs` rule fired.
+
+*Annotation clearing — strict criterion.* `flags.length === 1 && flags[0].french === "moeurs"` matched 94 of the 102 previously-affected units. All 94 transitioned from `flagged_for_rewrite + standing-convention note` to `null + null`. The remaining 8 units were preserved byte-identically: 5 multi-flag (moeurs plus another flag still warranting review), 2 single-flag compound phrases (`les moeurs et les lois`, `ces moeurs chevaleresques qu'on mêlait au négoce`), and 1 note-only flag (`vol1.part2.ch3` paragraph 1, where the flag's french is `null` but the note discusses moeurs). The 8 retain their `flagged_for_rewrite` status; the moeurs editorial note on each is still applicable to the moeurs-touching flag, while their other flags / compound senses await per-unit review.
+
+*Verification — two passes.* The script's in-process verifier asserts zero `*moeurs*` and zero bare `moeurs` remain in any translation string, and that exactly the 94 expected annotation units have status/note cleared. A second independent verifier reads `/tmp/tocq-corpus-pre.json` and `/tmp/tocq-ann-pre.json` snapshots and confirms field-by-field byte identity on everything outside the expected mutation set — including positive byte-identity checks against each of the 8 preserved moeurs-adjacent annotation units (owner-prompted, after the first verifier's "untouched units: 0" report was caught as ambiguously phrased — the counter was misnamed and incremented only on the contradictory condition "non-target AND mutated").
+
+**Conclusion.** The standing *moeurs* → *mores* convention is now live across the corpus and the annotations are consistent with it. The 94 single-flag moeurs units are off the review queue; the 8 multi-flag/compound units remain in the stream for their non-moeurs business. The substitution script and the earlier `apply-moeurs-policy.mjs` are both idempotent and re-runnable; together they form a one-shot pair that brings the corpus into convention-consistent state and could be re-applied if a future regenerate of either file ever reintroduces the inconsistency.
+
 ## Current state of the repository
 
 **What exists in the repo:**
