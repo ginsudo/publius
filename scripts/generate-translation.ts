@@ -33,6 +33,7 @@ import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import Anthropic from '@anthropic-ai/sdk';
 import { loadEnv, REPO_ROOT } from '../data/eval/lib.ts';
+import { extractPrompt } from '../lib/ask.ts';
 
 // ---------------------------------------------------------------------------
 // Paths and constants
@@ -204,29 +205,6 @@ const SAMPLE_SPECS: SampleSpec[] = [
     note: 'Tome 1 end-note A — full note (includes inline footnote marker [163])',
   },
 ];
-
-// ---------------------------------------------------------------------------
-// Prompt loading. The translation prompt uses a different convention from
-// the other prompts in the repo: documentation lives above a single "---"
-// rule, and the section AFTER that rule (to end of file) is the prompt
-// sent to the API. Mirror that convention here rather than reuse the
-// extractPrompt() helper, which expects "## The prompt" → first "---".
-// ---------------------------------------------------------------------------
-
-function loadSystemPrompt(): string {
-  const raw = readFileSync(PROMPT_PATH, 'utf8');
-  const ruleIdx = raw.indexOf('\n---\n');
-  if (ruleIdx < 0) {
-    throw new Error(
-      `Prompt file ${PROMPT_PATH} has no "---" rule. The convention is: docs above the rule, prompt text below it.`,
-    );
-  }
-  const body = raw.slice(ruleIdx + 5).trim();
-  if (body.length === 0) {
-    throw new Error(`Prompt file ${PROMPT_PATH} has an empty section after the "---" rule.`);
-  }
-  return body;
-}
 
 // ---------------------------------------------------------------------------
 // Custom-ID encoding. The Batch API requires ^[a-zA-Z0-9_-]{1,64}$, and
@@ -986,7 +964,7 @@ function applyToCorpus(corpus: Corpus): void {
   const results = readResultsSidecar();
   console.log(`[apply] read ${results.size} results from sidecar`);
 
-  const systemPrompt = loadSystemPrompt();
+  const systemPrompt = extractPrompt(PROMPT_PATH);
   const promptSha256 = createHash('sha256').update(systemPrompt).digest('hex');
 
   const volumeOneItems = corpus.items.filter(it => it.tocqueville.volume === TARGET_VOLUME);
@@ -1232,7 +1210,7 @@ async function main() {
     return;
   }
 
-  const systemPrompt = loadSystemPrompt();
+  const systemPrompt = extractPrompt(PROMPT_PATH);
   const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
   if (isRetry) {
