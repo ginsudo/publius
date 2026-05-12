@@ -1,8 +1,8 @@
 # Tocqueville translation — gate-1 sample results
 
-Generated: 2026-05-12T01:43:27.205Z
-Model: claude-sonnet-4-6
-System prompt: prompts/tocqueville-translation-system.md (v1.0)
+Generated: 2026-05-12T02:22:44.838Z
+Model: claude-opus-4-7
+System prompt: prompts/tocqueville-translation-system.md (v1.1)
 Sample size: 3 item slices
 
 Each section shows: coverage note, item header, French source, English translation,
@@ -38,15 +38,12 @@ any postprocess warnings, and any READING / TEXTURE / TERM flags emitted by the 
 
 **Translation:**
 
-> Among the new things that caught my attention during my stay in the United States, none struck me more forcibly than the equality of conditions. I had no difficulty discovering the prodigious influence this primary fact exerts on the course of society: it gives to public opinion a certain direction, to laws a certain character, to those who govern new maxims, and to those who are governed distinctive habits.
-> 
-> ---
+> Among the new things that caught my attention during my stay in the United States, none struck me more forcefully than the equality of conditions. I had no trouble seeing the prodigious influence that this primary fact exerts on the course of society: it gives public opinion a certain direction and a certain cast to the laws; it gives those who govern new maxims, and those who are governed habits peculiar to themselves.
 
 **Flags:**
 
-- *TERM* — *égalité des conditions* — Tocqueville's central concept. "Equality of conditions" is the established rendering (cf. Lawrence/Mayer). "Equality of social condition" is more explicit but adds a word Tocqueville doesn't use. Flag for owner: retain "equality of conditions" or expand?
-- *TERM* — *fait* — used here and throughout in a technical-philosophical sense: a foundational fact or datum, something given and operative. "Fact" works but can feel flat. Flag for owner: "fact," "given," or "datum"?
-- *TEXTURE* — *donne … un certain tour aux lois* — literally "gives to laws a certain turn/cast." "Character" loses the sense of motion or inflection. Alternatives: "a certain cast," "a certain tendency." Flag for owner.
+- *READING* — l'égalité des conditions — kept as "equality of conditions" rather than "equality of social conditions" or "equality of status"; this is Tocqueville's recurring technical phrase and must remain identifiable across the work.
+- *TEXTURE* — il donne à l'esprit public une certaine direction, un certain tour aux lois; aux gouvernants des maximes nouvelles, et des habitudes particulières aux gouvernés — a four-part parallelism built on the single verb *donne*, with the verb elided in the last three clauses. English requires "it gives" twice to stay legible; the tight chiastic compression of the French is approximated, not preserved.
 
 ### Paragraph 1
 
@@ -56,14 +53,9 @@ any postprocess warnings, and any READING / TEXTURE / TERM flags emitted by the 
 
 **Translation:**
 
-> I soon recognized that this same fact extends its influence far beyond political customs and laws, and holds no less sway over civil society than over government: it shapes opinions, gives rise to feelings, suggests customs, and modifies everything it does not directly produce.
-> 
-> ---
+> I soon recognized that this same fact extends its influence far beyond political *moeurs* [Translator's note: *moeurs* — Tocqueville's term for the habits, dispositions, and moral character of a people; no English equivalent captures its full range.] and laws, and that it holds no less sway over civil society than over government: it creates opinions, gives rise to sentiments, suggests customs, and modifies whatever it does not itself produce.
 
-**Flags:**
-
-- *TERM* — *moeurs politiques* — "political customs" or "political mores." "Mores" is the standard Tocqueville term in English scholarship but may feel academic. Flag for owner: "customs," "mores," or "habits"?
-- *TERM* — *société civile* — "civil society" in the modern sense (as distinct from the state), but Tocqueville may mean simply the social sphere as opposed to the political. Flag for owner.
+**Flags:** none
 
 ### Paragraph 2
 
@@ -73,14 +65,11 @@ any postprocess warnings, and any READING / TEXTURE / TERM flags emitted by the 
 
 **Translation:**
 
-> Thus, the more I studied American society, the more I came to see in the equality of conditions the generative fact from which every particular fact seemed to derive, and I encountered it constantly before me like a central point toward which all my observations converged.
-> 
-> ---
+> And so, as I studied American society, I came to see in the equality of conditions, more and more clearly, the generative fact from which every particular fact seemed to descend, and I kept finding it before me as a central point at which all my observations converged.
 
 **Flags:**
 
-- *TEXTURE* — *fait générateur* — "generative fact" preserves the quasi-scientific register. "Master fact" or "originating fact" are alternatives. Flag for owner.
-- *TEXTURE* — *venaient aboutir* — "converged" works; "came to rest" or "arrived" are also possible, with slightly different implication. Flag for owner.
+- *READING* — le fait générateur — rendered "the generative fact" rather than "the originating fact" or "the source"; *générateur* in Tocqueville carries the sense of an active, continuously producing cause, not merely a historical origin.
 
 ### Paragraph 3
 
@@ -90,14 +79,9 @@ any postprocess warnings, and any READING / TEXTURE / TERM flags emitted by the 
 
 **Translation:**
 
-> I then turned my thoughts toward our own hemisphere, and it seemed to me that I could discern there something analogous to what the New World had shown me. I saw the equality of conditions advancing—without yet having reached, as in the United States, its furthest limits, but drawing closer to them day by day—and that same democracy which reigned over American societies appeared to me to be moving rapidly in Europe toward power.
-> 
-> ---
+> I then turned my mind back toward our own hemisphere, and it seemed to me that I could make out something there analogous to the spectacle the New World had offered me. I saw the equality of conditions which, without having reached its extreme limits as in the United States, was drawing nearer to them every day; and that same democracy which reigned over American societies seemed to me, in Europe, to be advancing rapidly toward power.
 
-**Flags:**
-
-- *TEXTURE* — *je distinguais* — "discern" captures the tentative, effortful quality of the seeing, as opposed to the clearer "discover" of paragraph 0. Flag for owner: worth preserving the contrast.
-- *TERM* — *vers le pouvoir* — "toward power" is literal. Could be "toward dominion" or "into power." The sense is that democracy is on the march and will arrive at political control. Flag for owner.
+**Flags:** none
 
 ### Paragraph 4
 
@@ -107,52 +91,33 @@ any postprocess warnings, and any READING / TEXTURE / TERM flags emitted by the 
 
 **Translation:**
 
-> From that moment I conceived the idea of the book the reader is about to read.
+> From that moment I conceived the idea of the book one is about to read.
 
 **Flags:**
 
-- *TEXTURE* — *qu'on va lire* — the impersonal "on" gives a slight formality. "The reader is about to read" is slightly redundant in English; "the book you are about to read" is more natural but loses the third-person distance. Flag for owner.
+- *TEXTURE* — qu'on va lire — the impersonal pronoun preserves Tocqueville's formal distance from the reader; "one is about to read" keeps this, where "the reader is about to read" or "you are about to read" would not.
 
 <details><summary>Raw model output</summary>
 
 ```
 ### Paragraph 0
-Among the new things that caught my attention during my stay in the United States, none struck me more forcibly than the equality of conditions. I had no difficulty discovering the prodigious influence this primary fact exerts on the course of society: it gives to public opinion a certain direction, to laws a certain character, to those who govern new maxims, and to those who are governed distinctive habits.
-
-[TERM: "égalité des conditions" — Tocqueville's central concept. "Equality of conditions" is the established rendering (cf. Lawrence/Mayer). "Equality of social condition" is more explicit but adds a word Tocqueville doesn't use. Flag for owner: retain "equality of conditions" or expand?]
-[TERM: "fait" — used here and throughout in a technical-philosophical sense: a foundational fact or datum, something given and operative. "Fact" works but can feel flat. Flag for owner: "fact," "given," or "datum"?]
-[TEXTURE: "donne … un certain tour aux lois" — literally "gives to laws a certain turn/cast." "Character" loses the sense of motion or inflection. Alternatives: "a certain cast," "a certain tendency." Flag for owner.]
-
----
+Among the new things that caught my attention during my stay in the United States, none struck me more forcefully than the equality of conditions. I had no trouble seeing the prodigious influence that this primary fact exerts on the course of society: it gives public opinion a certain direction and a certain cast to the laws; it gives those who govern new maxims, and those who are governed habits peculiar to themselves.
+[READING: l'égalité des conditions — kept as "equality of conditions" rather than "equality of social conditions" or "equality of status"; this is Tocqueville's recurring technical phrase and must remain identifiable across the work.]
+[TEXTURE: il donne à l'esprit public une certaine direction, un certain tour aux lois; aux gouvernants des maximes nouvelles, et des habitudes particulières aux gouvernés — a four-part parallelism built on the single verb *donne*, with the verb elided in the last three clauses. English requires "it gives" twice to stay legible; the tight chiastic compression of the French is approximated, not preserved.]
 
 ### Paragraph 1
-I soon recognized that this same fact extends its influence far beyond political customs and laws, and holds no less sway over civil society than over government: it shapes opinions, gives rise to feelings, suggests customs, and modifies everything it does not directly produce.
-
-[TERM: "moeurs politiques" — "political customs" or "political mores." "Mores" is the standard Tocqueville term in English scholarship but may feel academic. Flag for owner: "customs," "mores," or "habits"?]
-[TERM: "société civile" — "civil society" in the modern sense (as distinct from the state), but Tocqueville may mean simply the social sphere as opposed to the political. Flag for owner.]
-
----
+I soon recognized that this same fact extends its influence far beyond political *moeurs* [Translator's note: *moeurs* — Tocqueville's term for the habits, dispositions, and moral character of a people; no English equivalent captures its full range.] and laws, and that it holds no less sway over civil society than over government: it creates opinions, gives rise to sentiments, suggests customs, and modifies whatever it does not itself produce.
 
 ### Paragraph 2
-Thus, the more I studied American society, the more I came to see in the equality of conditions the generative fact from which every particular fact seemed to derive, and I encountered it constantly before me like a central point toward which all my observations converged.
-
-[TEXTURE: "fait générateur" — "generative fact" preserves the quasi-scientific register. "Master fact" or "originating fact" are alternatives. Flag for owner.]
-[TEXTURE: "venaient aboutir" — "converged" works; "came to rest" or "arrived" are also possible, with slightly different implication. Flag for owner.]
-
----
+And so, as I studied American society, I came to see in the equality of conditions, more and more clearly, the generative fact from which every particular fact seemed to descend, and I kept finding it before me as a central point at which all my observations converged.
+[READING: le fait générateur — rendered "the generative fact" rather than "the originating fact" or "the source"; *générateur* in Tocqueville carries the sense of an active, continuously producing cause, not merely a historical origin.]
 
 ### Paragraph 3
-I then turned my thoughts toward our own hemisphere, and it seemed to me that I could discern there something analogous to what the New World had shown me. I saw the equality of conditions advancing—without yet having reached, as in the United States, its furthest limits, but drawing closer to them day by day—and that same democracy which reigned over American societies appeared to me to be moving rapidly in Europe toward power.
-
-[TEXTURE: "je distinguais" — "discern" captures the tentative, effortful quality of the seeing, as opposed to the clearer "discover" of paragraph 0. Flag for owner: worth preserving the contrast.]
-[TERM: "vers le pouvoir" — "toward power" is literal. Could be "toward dominion" or "into power." The sense is that democracy is on the march and will arrive at political control. Flag for owner.]
-
----
+I then turned my mind back toward our own hemisphere, and it seemed to me that I could make out something there analogous to the spectacle the New World had offered me. I saw the equality of conditions which, without having reached its extreme limits as in the United States, was drawing nearer to them every day; and that same democracy which reigned over American societies seemed to me, in Europe, to be advancing rapidly toward power.
 
 ### Paragraph 4
-From that moment I conceived the idea of the book the reader is about to read.
-
-[TEXTURE: "qu'on va lire" — the impersonal "on" gives a slight formality. "The reader is about to read" is slightly redundant in English; "the book you are about to read" is more natural but loses the third-person distance. Flag for owner.]
+From that moment I conceived the idea of the book one is about to read.
+[TEXTURE: qu'on va lire — the impersonal pronoun preserves Tocqueville's formal distance from the reader; "one is about to read" keeps this, where "the reader is about to read" or "you are about to read" would not.]
 ```
 
 </details>
@@ -175,7 +140,7 @@ From that moment I conceived the idea of the book the reader is about to read.
 
 **Translation:**
 
-> Before beginning this chapter, I feel the need to remind the reader of something I have already indicated several times in the course of this book.
+> Before beginning the present chapter, I feel the need to remind the reader of what I have already pointed out several times in the course of this book.
 
 **Flags:** none
 
@@ -187,7 +152,7 @@ From that moment I conceived the idea of the book the reader is about to read.
 
 **Translation:**
 
-> The political constitution of the United States seems to me one of the forms that democracy can give to its government; but I do not regard American institutions as the only ones, nor as the best ones, that a democratic people must adopt.
+> The political constitution of the United States appears to me one of the forms that democracy can give to its government; but I do not regard American institutions as the only ones, nor as the best, that a democratic people ought to adopt.
 
 **Flags:** none
 
@@ -199,7 +164,7 @@ From that moment I conceived the idea of the book the reader is about to read.
 
 **Translation:**
 
-> In describing what benefits the Americans derive from democratic government, I am therefore far from claiming or believing that such advantages can be obtained only by means of the same laws.
+> In making known what benefits the Americans draw from the government of democracy, I am therefore far from claiming, or even thinking, that such advantages can be obtained only by means of the same laws.
 
 **Flags:** none
 
@@ -211,28 +176,28 @@ From that moment I conceived the idea of the book the reader is about to read.
 
 **Translation:**
 
-> ON THE GENERAL TENDENCY OF LAWS UNDER THE SWAY OF AMERICAN DEMOCRACY, AND THE INSTINCT OF THOSE WHO APPLY THEM.
+> ON THE GENERAL TENDENCY OF THE LAWS UNDER THE RULE OF AMERICAN DEMOCRACY, AND ON THE INSTINCT OF THOSE WHO APPLY THEM.
 
 **Flags:**
 
-- *TERM* — *empire* — Tocqueville uses *empire* here in its older sense of "dominion" or "sway" rather than as a political empire. The rendering "sway" is one option; "rule," "reign," or "dominion" are alternatives. Flag for owner.
+- *READING* — l'empire de la démocratie américaine — rendered as "the rule of American democracy"; "sway" or "dominion" would carry more weight but read as archaic. "Empire" in the literal sense is avoided to prevent confusion with the political form.
 
 <details><summary>Raw model output</summary>
 
 ```
 ### Paragraph 0
-Before beginning this chapter, I feel the need to remind the reader of something I have already indicated several times in the course of this book.
+Before beginning the present chapter, I feel the need to remind the reader of what I have already pointed out several times in the course of this book.
 
 ### Paragraph 1
-The political constitution of the United States seems to me one of the forms that democracy can give to its government; but I do not regard American institutions as the only ones, nor as the best ones, that a democratic people must adopt.
+The political constitution of the United States appears to me one of the forms that democracy can give to its government; but I do not regard American institutions as the only ones, nor as the best, that a democratic people ought to adopt.
 
 ### Paragraph 2
-In describing what benefits the Americans derive from democratic government, I am therefore far from claiming or believing that such advantages can be obtained only by means of the same laws.
+In making known what benefits the Americans draw from the government of democracy, I am therefore far from claiming, or even thinking, that such advantages can be obtained only by means of the same laws.
 
 ### Paragraph 3
-ON THE GENERAL TENDENCY OF LAWS UNDER THE SWAY OF AMERICAN DEMOCRACY, AND THE INSTINCT OF THOSE WHO APPLY THEM.
+ON THE GENERAL TENDENCY OF THE LAWS UNDER THE RULE OF AMERICAN DEMOCRACY, AND ON THE INSTINCT OF THOSE WHO APPLY THEM.
 
-[TERM: "empire" — Tocqueville uses *empire* here in its older sense of "dominion" or "sway" rather than as a political empire. The rendering "sway" is one option; "rule," "reign," or "dominion" are alternatives. Flag for owner.]
+[READING: l'empire de la démocratie américaine — rendered as "the rule of American democracy"; "sway" or "dominion" would carry more weight but read as archaic. "Empire" in the literal sense is avoided to prevent confusion with the political form.]
 ```
 
 </details>
@@ -255,7 +220,7 @@ ON THE GENERAL TENDENCY OF LAWS UNDER THE SWAY OF AMERICAN DEMOCRACY, AND THE IN
 
 **Translation:**
 
-> See the two expeditions undertaken by Major Long, at the expense of Congress, concerning all the western territories into which Europeans have not yet penetrated.
+> On the western lands not yet penetrated by Europeans, see the two expeditions undertaken by Major Long at the expense of Congress.
 
 **Flags:** none
 
@@ -267,12 +232,9 @@ ON THE GENERAL TENDENCY OF LAWS UNDER THE SWAY OF AMERICAN DEMOCRACY, AND THE IN
 
 **Translation:**
 
-> Major Long says in particular, regarding the great American desert, that one must draw a line roughly parallel to the 20th degree of longitude (Washington meridian [163]), running from the Red River to the Platte River. From this imaginary line to the Rocky Mountains, which bound the valley of the Mississippi to the west, there stretch immense plains, covered for the most part with sand that resists cultivation, or strewn with granite rocks. They are without water in summer. One encounters there only great herds of buffalo and wild horses. A few bands of Indians are also to be found there, but in small numbers.
+> Mr. Long observes, in particular, concerning the great American desert, that one must draw a line roughly parallel to the 20th degree of longitude (Washington meridian[163]), running from the Red River to the Platte. From this imaginary line to the Rocky Mountains, which bound the Mississippi valley to the west, stretch immense plains, generally covered with sand that resists cultivation, or strewn with blocks of granite. They have no water in summer. One finds there only great herds of buffalo and wild horses. A few bands of Indians are also to be seen, but in small numbers.
 
-**Flags:**
-
-- *READING* — *20e degré de longitude (méridien de Washington)* — Tocqueville is using a Washington meridian; see Footnote 163 for the Paris-meridian conversion. The owner should decide whether to add a clarifying editorial note for modern readers accustomed to Greenwich.
-- *TERM* — *grand désert américain* — "great American desert": the standard period term for the semi-arid plains west of the Mississippi. Worth flagging as a historical geographic designation that differs from modern usage.
+**Flags:** none
 
 ### Paragraph 2
 
@@ -282,11 +244,9 @@ ON THE GENERAL TENDENCY OF LAWS UNDER THE SWAY OF AMERICAN DEMOCRACY, AND THE IN
 
 **Translation:**
 
-> Major Long heard it said that, traveling further up the Platte River in the same direction, one would always find the same desert to one's left; but he was not able to verify the accuracy of this report himself. *Long's Expedition*, vol. 2, p. 361.
+> Major Long has heard it said that, ascending above the Platte in the same direction, one continues to find the same desert on the left; but he was not able to verify this report himself. *Long's expedition*, vol. 2, p. 361.
 
-**Flags:**
-
-- *TEXTURE* — Tocqueville quotes the English-language source title in italics in the original. The owner may wish to keep the title in its original English form and italicize it, as done here.
+**Flags:** none
 
 ### Paragraph 3
 
@@ -296,11 +256,9 @@ ON THE GENERAL TENDENCY OF LAWS UNDER THE SWAY OF AMERICAN DEMOCRACY, AND THE IN
 
 **Translation:**
 
-> Whatever confidence Major Long's account deserves, one must not forget that he did no more than cross the country he describes, without making any wide detours beyond the line he was following.
+> Whatever confidence Major Long's account deserves, it must not be forgotten that he merely crossed the country he describes, without making any wide detours off the line he was following.
 
-**Flags:**
-
-- *TEXTURE* — *sans tracer de grands zigzags au-dehors de la ligne qu'il suivait* — the phrase is vivid and slightly informal. "Wide detours beyond the line he was following" is close; the owner may prefer something more literal, such as "without striking out in broad zigzags from his route."
+**Flags:** none
 
 ### Footnote [163]
 
@@ -310,38 +268,27 @@ ON THE GENERAL TENDENCY OF LAWS UNDER THE SWAY OF AMERICAN DEMOCRACY, AND THE IN
 
 **Translation:**
 
-> The 20th degree of longitude, reckoned from the Washington meridian, corresponds approximately to the 99th degree reckoned from the Paris meridian.
+> The 20th degree of longitude on the Washington meridian corresponds approximately to the 99th degree on the Paris meridian.
 
-**Flags:**
-
-- *READING* — This note clarifies the coordinate system in use. Modern readers orient by the Greenwich meridian; the owner may wish to add a bracketed editorial gloss converting to Greenwich (approximately 97°W).
+**Flags:** none
 
 <details><summary>Raw model output</summary>
 
 ```
 ### Paragraph 0
-See the two expeditions undertaken by Major Long, at the expense of Congress, concerning all the western territories into which Europeans have not yet penetrated.
+On the western lands not yet penetrated by Europeans, see the two expeditions undertaken by Major Long at the expense of Congress.
 
 ### Paragraph 1
-Major Long says in particular, regarding the great American desert, that one must draw a line roughly parallel to the 20th degree of longitude (Washington meridian [163]), running from the Red River to the Platte River. From this imaginary line to the Rocky Mountains, which bound the valley of the Mississippi to the west, there stretch immense plains, covered for the most part with sand that resists cultivation, or strewn with granite rocks. They are without water in summer. One encounters there only great herds of buffalo and wild horses. A few bands of Indians are also to be found there, but in small numbers.
-
-[READING: "20e degré de longitude (méridien de Washington)" — Tocqueville is using a Washington meridian; see Footnote 163 for the Paris-meridian conversion. The owner should decide whether to add a clarifying editorial note for modern readers accustomed to Greenwich.]
-[TERM: "grand désert américain" — "great American desert": the standard period term for the semi-arid plains west of the Mississippi. Worth flagging as a historical geographic designation that differs from modern usage.]
+Mr. Long observes, in particular, concerning the great American desert, that one must draw a line roughly parallel to the 20th degree of longitude (Washington meridian[163]), running from the Red River to the Platte. From this imaginary line to the Rocky Mountains, which bound the Mississippi valley to the west, stretch immense plains, generally covered with sand that resists cultivation, or strewn with blocks of granite. They have no water in summer. One finds there only great herds of buffalo and wild horses. A few bands of Indians are also to be seen, but in small numbers.
 
 ### Paragraph 2
-Major Long heard it said that, traveling further up the Platte River in the same direction, one would always find the same desert to one's left; but he was not able to verify the accuracy of this report himself. *Long's Expedition*, vol. 2, p. 361.
-
-[TEXTURE: Tocqueville quotes the English-language source title in italics in the original. The owner may wish to keep the title in its original English form and italicize it, as done here.]
+Major Long has heard it said that, ascending above the Platte in the same direction, one continues to find the same desert on the left; but he was not able to verify this report himself. *Long's expedition*, vol. 2, p. 361.
 
 ### Paragraph 3
-Whatever confidence Major Long's account deserves, one must not forget that he did no more than cross the country he describes, without making any wide detours beyond the line he was following.
-
-[TEXTURE: "sans tracer de grands zigzags au-dehors de la ligne qu'il suivait" — the phrase is vivid and slightly informal. "Wide detours beyond the line he was following" is close; the owner may prefer something more literal, such as "without striking out in broad zigzags from his route."]
+Whatever confidence Major Long's account deserves, it must not be forgotten that he merely crossed the country he describes, without making any wide detours off the line he was following.
 
 ### Footnote [163]
-The 20th degree of longitude, reckoned from the Washington meridian, corresponds approximately to the 99th degree reckoned from the Paris meridian.
-
-[READING: This note clarifies the coordinate system in use. Modern readers orient by the Greenwich meridian; the owner may wish to add a bracketed editorial gloss converting to Greenwich (approximately 97°W).]
+The 20th degree of longitude on the Washington meridian corresponds approximately to the 99th degree on the Paris meridian.
 ```
 
 </details>

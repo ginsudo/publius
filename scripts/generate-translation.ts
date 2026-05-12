@@ -42,14 +42,26 @@ import { extractPrompt } from '../lib/ask.ts';
 const TOCQUEVILLE_PATH = resolve(REPO_ROOT, 'data', 'tocqueville', 'tocqueville.json');
 const PROMPT_PATH = resolve(REPO_ROOT, 'prompts', 'tocqueville-translation-system.md');
 const STATE_PATH = resolve(REPO_ROOT, 'data', 'tocqueville', '.translation-batch-state.json');
+const RESUBMIT_STATE_PATH = resolve(REPO_ROOT, 'data', 'tocqueville', '.translation-resubmit-state.json');
 const BATCH_RESULTS_PATH = resolve(REPO_ROOT, 'data', 'tocqueville', '.translation-batch-results.json');
 const SAMPLE_RAW_PATH = resolve(REPO_ROOT, 'data', 'tocqueville', '.translation-sample.json');
 const SAMPLE_RESULTS_PATH = resolve(REPO_ROOT, 'data', 'tocqueville', 'translation-sample-results.md');
 const ANNOTATIONS_PATH = resolve(REPO_ROOT, 'data', 'tocqueville', 'tocqueville-annotations.json');
-const PROMPT_VERSION = 'v1.0';
+const PROMPT_VERSION = 'v1.1';
 
-const MODEL = 'claude-sonnet-4-6';
-const MAX_TOKENS = 8000;
+// Opus 4.7 is required for the 128K-token output ceiling. Sonnet 4.6 caps
+// at 64K and cannot fit the longest Vol I chapters (part2.ch10 at ~275K
+// source chars needs ~70-90K output tokens). The 300K-output beta is also
+// only available on the Opus line.
+const MODEL = 'claude-opus-4-7';
+const MAX_TOKENS = 128_000;
+// Synchronous calls (sample, retry) hit the SDK's 10-minute non-streaming
+// guardrail at MAX_TOKENS. Sample slices are tiny (a few paragraphs); 16K
+// is plenty and stays well under the guardrail.
+const SYNC_MAX_TOKENS = 16_000;
+// Beta required for output >128K on Batch API. Set even though we cap at
+// 128K — keeps the path identical if a single item ever needs to lift.
+const BETA_HEADER = 'output-300k-2026-03-24' as const;
 const POLL_INTERVAL_MS = 60_000;
 const TARGET_VOLUME = 1;
 
@@ -103,10 +115,12 @@ type Flag = { kind: FlagKind; french: string | null; note: string };
 
 type BatchState = {
   batch_id: string;
-  mode: 'full';
+  mode: 'full' | 'resubmit';
   submitted_at: string;
   request_count: number;
   custom_ids: string[];
+  // Resubmit only — the un-encoded item IDs being replaced in the sidecar.
+  item_ids?: string[];
 };
 
 // Parsed translation for one item. For sample/retry modes, paragraphs and
@@ -172,14 +186,38 @@ const retryParaIdxArg: string | null =
   retryIdx >= 0 && retryIdx + 2 < argv.length ? argv[retryIdx + 2] : null;
 const isRetry = retryIdx >= 0;
 
+// --resubmit <item_id> [<item_id> ...] : everything after the flag, up to
+// the next flag-style arg (starting with --) or end of argv, is treated as
+// an item ID. At least one is required.
+const resubmitIdx = argv.indexOf('--resubmit');
+const isResubmit = resubmitIdx >= 0;
+const resubmitItemIds: string[] = (() => {
+  if (!isResubmit) return [];
+  const out: string[] = [];
+  for (let i = resubmitIdx + 1; i < argv.length; i++) {
+    if (argv[i].startsWith('--')) break;
+    out.push(argv[i]);
+  }
+  return out;
+})();
+
 if (isRetry && (!retryItemIdArg || retryParaIdxArg === null)) {
   console.error('[main] --retry requires two args: --retry <item_id> <paragraph_index>');
+  process.exit(2);
+}
+
+if (isResubmit && resubmitItemIds.length === 0) {
+  console.error('[main] --resubmit requires at least one item ID: --resubmit <item_id> [<item_id> ...]');
   process.exit(2);
 }
 
 if (isReset && existsSync(STATE_PATH)) {
   unlinkSync(STATE_PATH);
   console.log(`[reset] removed ${STATE_PATH}`);
+}
+if (isReset && existsSync(RESUBMIT_STATE_PATH)) {
+  unlinkSync(RESUBMIT_STATE_PATH);
+  console.log(`[reset] removed ${RESUBMIT_STATE_PATH}`);
 }
 
 // ---------------------------------------------------------------------------
@@ -466,31 +504,35 @@ function buildFullRequests(corpus: Corpus): RequestSpec[] {
 // State file (resume support)
 // ---------------------------------------------------------------------------
 
-function readState(): BatchState | null {
-  if (!existsSync(STATE_PATH)) return null;
-  return JSON.parse(readFileSync(STATE_PATH, 'utf8')) as BatchState;
+function readState(path: string = STATE_PATH): BatchState | null {
+  if (!existsSync(path)) return null;
+  return JSON.parse(readFileSync(path, 'utf8')) as BatchState;
 }
 
-function writeState(state: BatchState): void {
-  mkdirSync(dirname(STATE_PATH), { recursive: true });
-  writeFileSync(STATE_PATH, JSON.stringify(state, null, 2));
+function writeState(state: BatchState, path: string = STATE_PATH): void {
+  mkdirSync(dirname(path), { recursive: true });
+  writeFileSync(path, JSON.stringify(state, null, 2));
 }
 
-function clearState(): void {
-  if (existsSync(STATE_PATH)) unlinkSync(STATE_PATH);
+function clearState(path: string = STATE_PATH): void {
+  if (existsSync(path)) unlinkSync(path);
 }
 
 // ---------------------------------------------------------------------------
 // Batch submission and polling
 // ---------------------------------------------------------------------------
 
+// All batch API calls go through client.beta.messages.batches so the
+// output-300k beta header is attached. The non-beta endpoint does not
+// accept a `betas` param.
 async function submitBatch(
   client: Anthropic,
   systemPrompt: string,
   corpus: Corpus,
   requests: RequestSpec[],
+  options: { mode: 'full' | 'resubmit'; statePath: string; itemIds?: string[] },
 ): Promise<BatchState> {
-  console.log(`[submit] preparing ${requests.length} requests…`);
+  console.log(`[submit] preparing ${requests.length} requests… (mode=${options.mode})`);
   const byId = new Map(corpus.items.map(it => [it.id, it]));
   const apiRequests = requests.map(req => {
     const item = byId.get(req.item_id)!;
@@ -514,23 +556,27 @@ async function submitBatch(
     };
   });
 
-  const batch = await client.messages.batches.create({ requests: apiRequests });
+  const batch = await client.beta.messages.batches.create({
+    requests: apiRequests,
+    betas: [BETA_HEADER],
+  });
   console.log(`[submit] batch created: ${batch.id} (${batch.processing_status})`);
   const state: BatchState = {
     batch_id: batch.id,
-    mode: 'full',
+    mode: options.mode,
     submitted_at: new Date().toISOString(),
     request_count: requests.length,
     custom_ids: requests.map(r => r.custom_id),
+    ...(options.itemIds ? { item_ids: options.itemIds } : {}),
   };
-  writeState(state);
-  console.log(`[submit] state written to ${STATE_PATH}`);
+  writeState(state, options.statePath);
+  console.log(`[submit] state written to ${options.statePath}`);
   return state;
 }
 
 async function pollUntilEnded(client: Anthropic, batchId: string): Promise<void> {
   while (true) {
-    const batch = await client.messages.batches.retrieve(batchId);
+    const batch = await client.beta.messages.batches.retrieve(batchId, { betas: [BETA_HEADER] });
     const c = batch.request_counts;
     console.log(
       `[poll ${new Date().toISOString().slice(11, 19)}] status=${batch.processing_status} processing=${c.processing} succeeded=${c.succeeded} errored=${c.errored} canceled=${c.canceled} expired=${c.expired}`,
@@ -545,7 +591,7 @@ async function fetchResults(
   batchId: string,
 ): Promise<Map<string, string | { error: string }>> {
   const out = new Map<string, string | { error: string }>();
-  const stream = await client.messages.batches.results(batchId);
+  const stream = await client.beta.messages.batches.results(batchId, { betas: [BETA_HEADER] });
   for await (const entry of stream) {
     const cid = entry.custom_id;
     const r = entry.result;
@@ -651,11 +697,12 @@ async function runSample(
     const userMessage = buildUserMessage(item, paragraphInclusions, fnsToInclude);
 
     console.log(`[sample] ${item.id} — ${indices.length} paragraph(s), ${fnsToInclude.length} footnote(s)…`);
-    const response = await client.messages.create({
+    const response = await client.beta.messages.create({
       model: MODEL,
-      max_tokens: MAX_TOKENS,
+      max_tokens: SYNC_MAX_TOKENS,
       system: systemPrompt,
       messages: [{ role: 'user', content: userMessage }],
+      betas: [BETA_HEADER],
     });
     const rawText = response.content
       .filter(b => b.type === 'text')
@@ -836,11 +883,12 @@ async function retryOne(
     fnsToInclude,
   );
 
-  const response = await client.messages.create({
+  const response = await client.beta.messages.create({
     model: MODEL,
-    max_tokens: MAX_TOKENS,
+    max_tokens: SYNC_MAX_TOKENS,
     system: systemPrompt,
     messages: [{ role: 'user', content: userMessage }],
+    betas: [BETA_HEADER],
   });
   const rawText = response.content
     .filter(b => b.type === 'text')
@@ -954,6 +1002,114 @@ function extractParagraphBlock(raw: string, paragraphIndex: number): string | nu
     }
   }
   return lines.slice(start, end).join('\n').replace(/\s+$/, '');
+}
+
+// ---------------------------------------------------------------------------
+// Resubmit mode — re-run a named subset of items at the current MAX_TOKENS,
+// merge results into the existing sidecar, replacing only those items.
+// Used after a full-mode batch where some items truncated.
+// ---------------------------------------------------------------------------
+
+async function runResubmit(
+  client: Anthropic,
+  systemPrompt: string,
+  corpus: Corpus,
+  itemIds: string[],
+): Promise<void> {
+  // Validate each item exists and is Volume I.
+  const byId = new Map(corpus.items.map(it => [it.id, it]));
+  const validated: TocquevilleItem[] = [];
+  const errors: string[] = [];
+  for (const id of itemIds) {
+    const item = byId.get(id);
+    if (!item) {
+      errors.push(`item not in corpus: ${id}`);
+      continue;
+    }
+    if (item.tocqueville.volume !== TARGET_VOLUME) {
+      errors.push(`item ${id} is Volume ${item.tocqueville.volume}; resubmit is restricted to Volume ${TARGET_VOLUME}`);
+      continue;
+    }
+    validated.push(item);
+  }
+  if (errors.length > 0) {
+    console.error('[resubmit] aborting — invalid item IDs:');
+    for (const e of errors) console.error(`  - ${e}`);
+    process.exit(2);
+  }
+
+  // Soft warning for IDs not currently in the sidecar (likely typo).
+  let existingSidecar: Record<string, string | { error: string }> = {};
+  if (existsSync(BATCH_RESULTS_PATH)) {
+    existingSidecar = JSON.parse(readFileSync(BATCH_RESULTS_PATH, 'utf8'));
+  }
+  for (const item of validated) {
+    const cid = encodeCustomId(item.id);
+    if (!(cid in existingSidecar)) {
+      console.warn(`[resubmit] note: ${item.id} (custom_id ${cid}) is not currently in the sidecar — it will be added by this run`);
+    }
+  }
+
+  // Either resume an existing resubmit batch (state file present) or submit
+  // a new one. The full-mode state file is left untouched throughout.
+  let state = readState(RESUBMIT_STATE_PATH);
+  const requests: RequestSpec[] = validated.map(it => ({
+    custom_id: encodeCustomId(it.id),
+    item_id: it.id,
+  }));
+
+  if (state) {
+    if (state.mode !== 'resubmit') {
+      console.error(`[resubmit] state file at ${RESUBMIT_STATE_PATH} has mode=${state.mode}; expected 'resubmit'. Delete it or run with --reset.`);
+      process.exit(2);
+    }
+    console.log(`[resubmit] resuming existing resubmit batch ${state.batch_id} (${state.request_count} requests)`);
+    // Note: the resumed state's item_ids may differ from the current argv list.
+    // Prefer the state file's recorded item_ids — those describe the batch
+    // that is actually in flight.
+    if (state.item_ids) {
+      console.log(`[resubmit] resumed batch is replacing: ${state.item_ids.join(', ')}`);
+    }
+  } else if (isResume) {
+    console.error('[resubmit] --resume passed but no state file at ' + RESUBMIT_STATE_PATH);
+    process.exit(2);
+  } else {
+    console.log(`[resubmit] submitting new resubmit batch (${requests.length} items): ${validated.map(it => it.id).join(', ')}`);
+    state = await submitBatch(client, systemPrompt, corpus, requests, {
+      mode: 'resubmit',
+      statePath: RESUBMIT_STATE_PATH,
+      itemIds: validated.map(it => it.id),
+    });
+  }
+
+  await pollUntilEnded(client, state.batch_id);
+  console.log(`[resubmit] batch ended; fetching results…`);
+  const results = await fetchResults(client, state.batch_id);
+  console.log(`[resubmit] received ${results.size} results`);
+
+  // Merge into the existing sidecar (replace specified IDs only).
+  const merged: Record<string, string | { error: string }> = { ...existingSidecar };
+  let replaced = 0;
+  let added = 0;
+  let failures = 0;
+  for (const [cid, v] of results) {
+    const isError = typeof v !== 'string';
+    if (isError) failures++;
+    if (cid in merged) replaced++;
+    else added++;
+    merged[cid] = v;
+  }
+  mkdirSync(dirname(BATCH_RESULTS_PATH), { recursive: true });
+  const tmp = BATCH_RESULTS_PATH + '.tmp';
+  writeFileSync(tmp, JSON.stringify(merged, null, 2));
+  renameSync(tmp, BATCH_RESULTS_PATH);
+  console.log(`[resubmit] sidecar merged at ${BATCH_RESULTS_PATH}: replaced=${replaced} added=${added} failures=${failures}`);
+
+  // Clear the resubmit state file but leave the full-mode state in place.
+  clearState(RESUBMIT_STATE_PATH);
+  console.log('[resubmit] resubmit state cleared; full-mode state untouched.');
+  console.log('[resubmit] To write translations back into the corpus, run:');
+  console.log('[resubmit]   node --experimental-strip-types scripts/generate-translation.ts --apply');
 }
 
 // ---------------------------------------------------------------------------
@@ -1196,8 +1352,12 @@ async function main() {
 
   const corpus: Corpus = JSON.parse(readFileSync(TOCQUEVILLE_PATH, 'utf8'));
 
-  if (isRetry && (isApply || isSample || isResume || isReset)) {
-    console.error('[main] --retry is incompatible with --apply / --sample / --resume / --reset');
+  if (isRetry && (isApply || isSample || isResume || isReset || isResubmit)) {
+    console.error('[main] --retry is incompatible with --apply / --sample / --resume / --reset / --resubmit');
+    process.exit(2);
+  }
+  if (isResubmit && (isApply || isSample || isRetry)) {
+    console.error('[main] --resubmit is incompatible with --apply / --sample / --retry');
     process.exit(2);
   }
 
@@ -1223,6 +1383,11 @@ async function main() {
     return;
   }
 
+  if (isResubmit) {
+    await runResubmit(client, systemPrompt, corpus, resubmitItemIds);
+    return;
+  }
+
   // Default: full Volume I batch submission.
   let state = readState();
   const requests = buildFullRequests(corpus);
@@ -1234,7 +1399,10 @@ async function main() {
     process.exit(2);
   } else {
     console.log(`[main] no state file — submitting new full batch with ${requests.length} requests`);
-    state = await submitBatch(client, systemPrompt, corpus, requests);
+    state = await submitBatch(client, systemPrompt, corpus, requests, {
+      mode: 'full',
+      statePath: STATE_PATH,
+    });
   }
 
   await pollUntilEnded(client, state.batch_id);

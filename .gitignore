@@ -43,6 +43,11 @@ data/federalist/.batch-state.json
 data/federalist/.retry-results.json
 data/federalist/.retry-review.md
 
+# Batch API ephemeral state (generate-translation.ts)
+data/tocqueville/.translation-batch-results.json
+data/tocqueville/.translation-batch-state.json
+data/tocqueville/.translation-resubmit-state.json
+
 # Phase 1.1 retrieval test — local-only artifacts
 data/eval/results.md
 
