@@ -605,3 +605,17 @@ The relocation of `prompts/eval/lib.ts` to `lib/ask.ts` was forced by the gitign
 **Where `extractPrompt()` lives:** `lib/ask.ts`. The file's name reflects its primary consumer (`/api/ask`), but the function is import-safe from any context — pure Node.js (`node:fs`), no Next.js imports, no route-handler dependencies. Scripts and routes import it directly; there is no separate `lib/prompt-utils.ts`. If `lib/ask.ts` ever grows route-only dependencies, `extractPrompt` (and `parseQuestions`) get factored out at that point, not preemptively.
 
 **How to apply:** Any new prompt file needs a `## The prompt` heading and a `---` after the prompt body. Any new script or route that loads a prompt imports `extractPrompt` from `lib/ask.ts`. Do not write a local prompt loader; if the existing extractor doesn't fit, surface it as a change to `extractPrompt` rather than fork the convention.
+
+---
+
+# Open observations
+
+Items in this section are observed behaviors or tensions not yet decided. They are recorded here so they don't get lost between sessions, and so that a future decision has the original observation in front of it rather than a paraphrase. When an item resolves into a standing decision, it moves up into the main decision list and is removed from here.
+
+---
+
+## Open observation: loaded-question handling (May 2026)
+
+When a user's question frames an inquiry as a critique of a particular interpretive school (e.g., "why do originalists reach conservative outcomes"), the current system prompt produces answers that work within the frame rather than balancing it. The project instructions require surfacing originalist and living constitutionalist readings when both exist, which suggests loaded questions should trigger explicit steelmanning of the disfavored side.
+
+Not yet decided whether this requires a system prompt addition or whether the current behavior is acceptable. Observed in comparison testing against Claude chat on the originalism/motivated-reasoning question. Worth revisiting after more example questions accumulate.

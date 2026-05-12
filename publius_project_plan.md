@@ -277,4 +277,20 @@ The Murphy / Dworkin / George formation is not incidental to this product. It is
 
 ---
 
+## Deferred features
+
+Features that have been thought through enough to record but that have no phase assigned. They live here rather than in a phase so they don't pull scope into a current phase prematurely; when one is ready to enter the plan, it gets a phase number and moves into the body above.
+
+### Right-hand panel for pedagogical exploration (deferred)
+
+Future UI feature: an openable right-hand panel or drawer that surfaces supplementary material for the question being asked — primary sources outside the loaded corpus, adjacent corpus material not cited in the main answer, and pointers toward further reading.
+
+Design intent: preserve the scholarly-instrument register of the main answer (corpus-grounded, marked, disciplined) while giving the serious student a launching point for independent further study. Distinguishes Publius from chatbot products that integrate secondary literature into the response, short-circuiting the synthesis work that ingrains understanding.
+
+Content register: nudges toward primary-source learning paths rather than presenting citation-precise apparatus. May be partially editorial/curated, partially retrieval-surfaced from within the corpus.
+
+No phase assigned. Likely post-Phase 6 (case corpus) since the panel becomes more valuable as the corpus diversifies.
+
+---
+
 *Confidential  ·  April 2026  ·  Updated with Long-Term Architecture section*
