@@ -125,11 +125,11 @@ export function AskForm() {
       <form className="ask-form" onSubmit={onSubmit}>
         <textarea
           className="ask-input"
-          rows={2}
+          rows={5}
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           onKeyDown={onKeyDown}
-          placeholder="Does republican government require strong central power, or does strong central power threaten republican government?"
+          placeholder="By what right does an unelected, life-tenured judiciary overturn the considered judgments of democratically elected legislatures — and if it has that right, what principled limits constrain its exercise?"
           disabled={loading}
           aria-label="Question"
           autoFocus

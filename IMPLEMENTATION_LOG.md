@@ -242,6 +242,9 @@ Phase 2.3 takes the deployed `/api/ask` boundary from Phase 1.4 and wires the fi
 **Open from this session (low risk, named so it doesn't drift):**
 - The markdown strip fix was committed without a browser retest after the regex landed. tsc passed clean and the regex is small, but the rendered output with the stripper applied was not visually verified before the commit. First load on the deployed `/ask` page is the moment to confirm.
 
+**Follow-on edits:**
+- 2026-05-12 — `/ask` placeholder swapped to the counter-majoritarian-difficulty question (Bickel-shaped); textarea `rows` bumped 2 → 5 to keep the long placeholder visible end-to-end. Visual weight to be re-evaluated; will dial down to 4 if 5 reads as too heavy.
+
 **Next slice: Phase 2.1 — Browse UI.** Paper list / catalog view with per-paper summaries stubbed initially. The DESIGN.md "Browse layout" guidance (a constrained list, not a card grid; dense, not spacious; signals 85 papers and invites navigation rather than consumption) drives the visual register. Summaries become real once the Phase 4 plain-English / summary generation slice runs.
 
 ### Phase 2.1 — Browse UI
