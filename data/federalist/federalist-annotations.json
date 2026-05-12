@@ -28,7 +28,7 @@
               "note": "used here in the older sense of \"choice\" or \"selection,\" not in the narrower modern sense of a voting procedure; the original word carries a broader deliberative weight that \"choice\" only partially recovers."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -45,7 +45,7 @@
               "note": "retained here as it remains current, but worth noting that in Hamilton's usage it carries the full weight of the faculty of judgment — practical wisdom — rather than merely \"wise\" or \"careful\" in a casual sense."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -67,7 +67,7 @@
               "note": "in this context, \"perverted\" means twisted away from its proper or legitimate aim, applied to ambition that has been bent toward destructive ends; \"corrupted\" captures the moral distortion but \"perverted\" more precisely conveys a warping of something that might otherwise be legitimate"
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -94,55 +94,18 @@
               "note": "the word \"heresies\" extends the church/inquisition analogy with deliberate sharpness, implying that political opponents who use coercion are playing inquisitor, not statesman; substituting a neutral word like \"errors\" or \"dissent\" would dissolve the irony."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
           "paragraph_index": 5,
-          "flags": [
-            {
-              "kind": "WORD",
-              "term": "temper",
-              "note": "in 18th-century usage, \"temper\" denotes a settled disposition or character, not a momentary mood; rendering it as \"temperament\" or \"disposition\" preserves this, while \"mood\" would lose the sense of a fixed character trait."
-            },
-            {
-              "kind": "RHETORIC",
-              "term": "stale bait for popularity at the expense of the public good",
-              "note": "the phrase \"stale bait\" is conspicuously contemptuous, casting the appeal to popular rights not merely as cynical but as a tired, worn-out trick; substituting a neutral phrase like \"cheap appeal\" would lose the implication of something both fraudulent and hackneyed."
-            },
-            {
-              "kind": "RHETORIC",
-              "term": "specious mask of zeal for the rights of the people",
-              "note": "\"specious\" means superficially plausible but actually false; combined with \"mask,\" it renders the pose of popular advocacy as a deliberate and calculated disguise, not mere error; softening to \"false appearance\" would lose both the calculated quality and the implicit accusation of sophistication in the deception."
-            },
-            {
-              "kind": "RHETORIC",
-              "term": "obsequious court to the people",
-              "note": "\"obsequious\" carries a charge of servile, fawning flattery; \"court\" frames the relationship as one of calculated seduction rather than genuine representation; together the phrase is a pointed inversion of democratic legitimacy, portraying popular appeal as degrading manipulation; any substitution loses this double edge."
-            }
-          ],
+          "flags": [],
           "editorial_status": null,
           "editorial_note": null
         },
         {
           "paragraph_index": 6,
-          "flags": [
-            {
-              "kind": "RHETORIC",
-              "term": "I affect not reserves which I do not feel.",
-              "note": "Hamilton is saying he performs no false hesitation, feigns no uncertainty he does not actually experience. The word \"affect\" in the 18th-century sense means \"to put on a pretense of.\" Smoothing this into neutral modern prose — e.g., \"I am not pretending to be undecided\" — loses the pointed, almost defiant quality of the original, where the compressed syntax itself performs the confidence it describes."
-            },
-            {
-              "kind": "WORD",
-              "term": "consciousness",
-              "note": "in 18th-century usage, \"consciousness\" here carries the sense of inward knowledge or awareness of one's own state, closer to \"being conscious of\" than the modern psychological sense of \"consciousness\" as a general state of awareness. The risk is that a modern reader hears an abstract philosophical term where Hamilton meant something more direct: the simple inner knowledge that one's purposes are honest."
-            },
-            {
-              "kind": "WORD",
-              "term": "disdains",
-              "note": "retained deliberately; Hamilton writes \"disdains ambiguity,\" not merely \"avoids\" it. The word carries contempt, not just rejection, and that contempt is part of the argument: that good intentions find ambiguity beneath them, not merely inconvenient."
-            }
-          ],
+          "flags": [],
           "editorial_status": null,
           "editorial_note": null
         },
@@ -161,7 +124,7 @@
               "note": "in 18th-century usage, \"species\" functioned as a neutral classificatory term meaning \"kind\" or \"type,\" carrying no biological connotation. Rendering it as \"form\" preserves the logical sense, but loses the taxonomic precision Hamilton intended — the suggestion that republican government is a distinct category of a broader genus, not merely a style or variant."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -179,7 +142,7 @@
               "note": "a \"votary\" is a devoted adherent, almost in the religious sense of one bound by a vow; \"followers\" captures the count but loses the connotation of fervent, quasi-religious commitment."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         }
       ]
@@ -208,13 +171,7 @@
         },
         {
           "paragraph_index": 3,
-          "flags": [
-            {
-              "kind": "RHETORIC",
-              "term": "certain characters who were much opposed to it formerly, are at present of the number",
-              "note": "the phrase \"certain characters\" is conspicuously pointed, carrying a note of irony or skepticism about the integrity of those who have changed positions; \"characters\" in 18th-century usage could signal a deliberate withholding of respect, and substituting a neutral word like \"individuals\" or \"figures\" loses the edge of the implied reproach."
-            }
-          ],
+          "flags": [],
           "editorial_status": null,
           "editorial_note": null
         },
@@ -227,7 +184,7 @@
               "note": "carries the sense of an allotted share or inheritance, as if distributed by Providence; the modern reader may read it as merely \"part,\" losing the connotation of something granted or apportioned."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -239,7 +196,7 @@
               "note": "in 18th-century usage, \"counsels\" denotes formal deliberative processes and collective decision-making, not merely advice; rendering it as \"deliberations\" preserves the institutional weight, whereas the modern \"counsel\" most naturally reads as advice given by one party to another"
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -256,7 +213,7 @@
               "note": "Jay is doing deliberate argumentative work here by invoking fraternal and quasi-familial language. Softening \"brethren\" to \"brothers\" or \"fellow citizens\" would lose the slightly elevated, almost covenantal register that frames national union as a bond of kinship, not merely political convenience. The phrase is meant to make fragmentation feel like a violation of something close to natural or sacred obligation."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -268,7 +225,7 @@
               "note": "in the 18th century, \"orders\" referred to social ranks or estates, and \"denominations\" to distinct classes or categories of persons, not religious groupings as the word primarily suggests today; together they convey the full breadth of society across every social distinction"
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -280,7 +237,7 @@
               "note": "used here in its Latin-rooted sense of unfavorable or ill-omened circumstances, carrying a stronger note of foreboding than mere \"difficult\"; the connotation of omen and portent risks being lost if rendered as simply \"unfavorable\" or \"troubled.\""
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -298,8 +255,8 @@
               "note": "the original says \"very unanimous,\" a phrase that modern readers may take as emphatic rather than qualified; it may mean \"highly unanimous\" (near-total agreement) or function as an emphatic equivalent of \"unanimous\" without intending a qualification — the text does not resolve whether Jay is acknowledging that agreement was less than complete or simply intensifying the claim of unanimity."
             }
           ],
-          "editorial_status": null,
-          "editorial_note": null
+          "editorial_status": "accepted",
+          "editorial_note": "nearly unanimous — interpretive choice; Jay knew Convention was not fully unanimous"
         },
         {
           "paragraph_index": 11,
@@ -315,7 +272,7 @@
               "note": "in 18th-century usage, \"teem\" meant to swarm or overflow with abundance, often with a connotation of excessive proliferation; the modern word risks losing that sense of uncontrolled, almost organic multiplication"
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -338,7 +295,7 @@
               "note": "in this period, \"confide in\" meant to place trust or confidence in someone, not merely to share secrets with them. The modern sense of \"confide\" has narrowed to the latter meaning; \"trust in\" is used here to preserve the original sense, though it loses the slightly formal, deliberate quality of the original."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -360,7 +317,7 @@
               "note": "the capitalization and direct quotation of Cardinal Wolsey's lament from Shakespeare's Henry VIII are doing pointed rhetorical work: Jay is casting those who would dissolve the Union in the role of a figure whose overreach brought about his own catastrophic ruin, and invoking a moment of tragic self-recognition. Substituting a paraphrase would lose the allusive weight, the drama of the capital letters, and the implicit warning that the greatness being lost is one the nation itself will only recognize in the moment of its passing"
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         }
       ]
@@ -402,7 +359,7 @@
               "note": "in 18th-century usage, \"cordial\" carried the sense of heartfelt, sincere, and proceeding from the heart, rather than the weaker modern sense of merely warm or friendly. The original meaning emphasizes the depth and authenticity of the Union's commitment, which a substitution like \"genuine\" approximates but does not fully capture."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -426,7 +383,7 @@
               "note": "the 18th-century term *jus gentium*, meaning the body of principles governing relations between sovereign states, now generally called \"international law\"; the original phrase carries a specific legal tradition that \"international law\" only partially captures."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -438,7 +395,7 @@
               "note": "\"contracted\" here means narrow or parochial in scope, not relating to a legal contract; the modern word \"local\" captures part of this but loses the sense of influence that is deliberately small and inward-looking"
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -455,8 +412,8 @@
               "note": "rendered as \"rulings\" for fluency, but the original term carries the specific meaning of formal judicial determinations. \"Rulings\" is slightly narrower and more colloquial; \"adjudications\" implies the full procedural act of a court resolving a dispute, which is the precise sense intended here."
             }
           ],
-          "editorial_status": null,
-          "editorial_note": null
+          "editorial_status": "accepted",
+          "editorial_note": "prefer \"international law\" as consistent modern rendering for \"laws of nations\" throughout"
         },
         {
           "paragraph_index": 10,
@@ -491,7 +448,7 @@
               "note": "the parenthetical concession is doing pointed rhetorical work: Jay is preemptively disarming the objection that the federal government's clean record is simply because it has done nothing, by acknowledging its weakness directly and turning that acknowledgment into a reinforcement of the argument. Smoothing this into neutral prose would lose the rhetorical judo."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -509,7 +466,7 @@
               "note": "in 18th-century usage, \"candor\" carried the sense of fairness, impartiality, and benevolent openness of mind, rather than the modern meaning of blunt or forthright honesty. Rendering it as \"openness\" preserves some of this, but the older connotation of equitable good faith is at risk of being lost."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -551,7 +508,7 @@
               "note": "in 18th-century usage, \"pretended\" means fabricated or falsely claimed, not merely attempted or aspired to as in the modern sense. The risk is that a modern reader understands \"pretended causes of war\" as causes that are merely nominal or half-hearted, rather than causes that are deliberately manufactured as a pretext to justify aggression that was sought on other grounds."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -563,7 +520,7 @@
               "note": "means to increase the power, wealth, or prestige of; in contemporary usage the word often carries a purely pejorative or vain connotation, but here it refers to deliberate political accumulation of power and dynastic advantage, a distinction the original holds."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -575,7 +532,7 @@
               "note": "in 18th-century usage, \"bounties\" refers specifically to government subsidies or financial incentives paid to domestic producers to encourage production or competitiveness. The modern word \"bounty\" most commonly means a reward for capturing someone, which would badly mislead the reader. \"Subsidies\" is the closest modern equivalent, though it is somewhat more general and loses the specific flavor of a direct per-unit payment to producers."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -599,7 +556,7 @@
               "note": "in 18th-century usage, \"address\" means adroitness, skill, or practical cleverness; the modern sense of \"address\" as a location would entirely obscure this meaning."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -611,7 +568,7 @@
               "note": "in 18th-century usage, \"traffic\" meant trade or commerce broadly, not the modern sense of vehicular movement. Rendering it as \"trade and commerce\" preserves the original meaning; using \"traffic\" alone risks the modern reader misreading it as referring to passage or transit rather than commercial exchange."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -633,7 +590,7 @@
               "note": "Jay preserves this phrase rather than stating flatly that other nations will be alarmed. The understatement is pointed: by framing it as an expectation we should not hold, he makes the conclusion feel inevitable without overstating it. Smoothing this into something like \"with indifference\" would lose the ironic politeness of the construction."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -650,7 +607,7 @@
               "note": "here used as a verb meaning to give a misleading but plausible appearance to something, to make it look legitimate. The modern word \"dress up\" approximates this, but \"color\" in the original carries a specific rhetorical tradition of lending false credibility to an action through framing. A substitution risks losing the sense of deliberate cosmetic manipulation of perception."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -661,13 +618,7 @@
         },
         {
           "paragraph_index": 12,
-          "flags": [
-            {
-              "kind": "WORD",
-              "term": "Chief Magistrate",
-              "note": "in 18th-century usage this refers to the executive head of government, here the President; the modern phrase \"Chief Executive\" carries roughly the same meaning, but \"Magistrate\" carries a judicial connotation today that risks obscuring the purely executive role intended."
-            }
-          ],
+          "flags": [],
           "editorial_status": null,
           "editorial_note": null
         },
@@ -679,35 +630,13 @@
         },
         {
           "paragraph_index": 14,
-          "flags": [
-            {
-              "kind": "WORD",
-              "term": "nursery",
-              "note": "in 18th-century usage, a nursery is a place that cultivates and produces; \"training ground\" captures the productive/developmental sense, but loses the organic connotation of something being grown and nurtured rather than merely trained"
-            },
-            {
-              "kind": "RHETORIC",
-              "term": "their prowess and their thunder would never have been celebrated",
-              "note": "the phrase is deliberately elevated and almost epic in register, evoking martial glory through the word \"thunder\" (cannons, naval firepower, but also grandeur). Substituting a neutral equivalent like \"their power and firepower would never have been recognized\" flattens the rhetorical force: Jay is invoking the awe Britain's navy commands in order to make the argument feel visceral, not merely logical."
-            }
-          ],
+          "flags": [],
           "editorial_status": null,
           "editorial_note": null
         },
         {
           "paragraph_index": 15,
-          "flags": [
-            {
-              "kind": "WORD",
-              "term": "specious",
-              "note": "in 18th-century usage, \"specious\" means superficially attractive or plausible but actually false or misleading. The modern reader often takes it to mean simply \"false\" or \"spurious,\" losing the crucial sense of surface appeal that makes the deception dangerous. The rendering \"attractive\" approximates this but cannot fully carry the connotation of deliberate, deceptive gloss."
-            },
-            {
-              "kind": "WORD",
-              "term": "flattered",
-              "note": "here meaning persuaded or won over through pleasing inducements, carrying a sense of being deliberately deceived through gratification. The modern sense of \"flatter\" is narrower (to compliment), and the political sense of being manipulated through agreeable overtures is at risk of being lost."
-            }
-          ],
+          "flags": [],
           "editorial_status": null,
           "editorial_note": null
         },
@@ -731,7 +660,7 @@
               "note": "means \"purchased at great cost,\" typically through suffering or sacrifice. The phrase carries a weight of painful consequence that the bland modern \"hard-won\" partially conveys but does not fully preserve, since \"dear-bought\" emphasizes the price paid rather than the difficulty of the struggle."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         }
       ]
@@ -760,7 +689,7 @@
               "note": "in 18th-century usage, \"disappoint\" carried the stronger sense of to frustrate, thwart, or defeat (a plan or design), not merely to let someone down emotionally. The meaning here is that union will actively defeat the enemies' schemes, which is a more forceful claim than the modern word typically conveys."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -772,7 +701,7 @@
               "note": "in 18th-century usage, \"copious\" means abundant or extensive in scope, applied here to a subject with much more to be said. The modern word \"rich\" approximates this, but \"copious\" also carries a connotation of sheer volume or supply that \"rich\" softens. A reader might otherwise misread the original as \"copious\" in its narrower modern sense of verbosity."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -790,7 +719,7 @@
               "note": "\"joined in affection\" and \"interests\" — The quotation marks in the original are pointed: Jay is citing, almost mockingly, the optimistic language of those who imagine that divided confederacies could remain harmonious neighbors. Preserving the quotation marks is essential; removing them would erase the ironic distance Jay places between himself and the claim, flattening a rhetorical move into a straight assertion."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -802,18 +731,12 @@
               "note": "in 18th-century usage, \"sanguine\" meant confidently or cheerfully optimistic, often to the point of naivety; rendering it simply as \"optimistic\" risks losing the connotation of unrealistic hopefulness that is doing argumentative work here."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
           "paragraph_index": 6,
-          "flags": [
-            {
-              "kind": "WORD",
-              "term": "invidious jealousies",
-              "note": "\"invidious\" in 18th-century usage carried the specific sense of causing ill will or offense through unfair discrimination or comparison; the modern reader may take it as merely meaning \"unpleasant,\" losing the active, socially corrosive quality the word implies"
-            }
-          ],
+          "flags": [],
           "editorial_status": null,
           "editorial_note": null
         },
@@ -831,7 +754,7 @@
               "note": "\"NORTHERN HIVE\" and \"young swarms might often be tempted to gather honey\" — Jay extends the hive metaphor deliberately: a northern power generating swarms of settlers or armies who raid or colonize weaker southern neighbors. The metaphor naturalizes expansionist aggression as instinctive animal behavior, making northern encroachment seem as inevitable as bees seeking flowers. Substituting neutral language such as \"northern power\" and \"expansion\" would lose the suggestion that such predation is organic and unstoppable."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -843,7 +766,7 @@
               "note": "The capitalization is a deliberate rhetorical device, setting the phrase apart as both a culminating irony and a kind of epitaph for the confederacy scheme. The word \"formidable,\" which elsewhere in the Papers denotes the strength needed to deter foreign enemies, is here turned against itself: the very quality the confederacies would need to project outward would instead be directed inward. Rendering this phrase in lowercase or paraphrasing it would dissolve the bitter inversion the author has constructed."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -860,18 +783,7 @@
         },
         {
           "paragraph_index": 11,
-          "flags": [
-            {
-              "kind": "WORD",
-              "term": "innovations",
-              "note": "in 18th-century usage, \"innovation\" carried a strong negative connotation of unwanted, destabilizing change imposed from outside, rather than the neutral or positive sense of novelty and improvement it carries today. Rendering it as \"changes to the internal order of government\" preserves the critical force, but the original word's ominous charge — the sense of something subversive being smuggled in — is at risk of being lost."
-            },
-            {
-              "kind": "RHETORIC",
-              "term": "pretended to protect",
-              "note": "the word \"pretended\" is doing sharp argumentative work, exposing the Roman role of protector as a deliberate fiction concealing imperial ambition. A neutral substitute like \"claimed\" or \"purported\" softens the accusation of bad faith that Jay is making explicit. The original phrase is preserved here as closely as modern syntax allows."
-            }
-          ],
+          "flags": [],
           "editorial_status": null,
           "editorial_note": null
         },
@@ -902,7 +814,7 @@
               "note": "in 18th-century usage, \"arts\" commonly denoted cunning stratagems, diplomatic manipulation, and political craft, not creative or fine arts. Rendering it as \"political scheming\" captures the adversarial sense but loses the breadth of the original, which encompassed any form of calculated statecraft used against American interests."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -919,7 +831,7 @@
               "note": "the word survives into modern English but has narrowed toward simple greed; in Hamilton's usage it carries the fuller sense of predatory seizure — taking by force what one desires — which is distinct from mere avarice and matters to the argument about interstate conflict."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -931,7 +843,7 @@
               "note": "in 18th-century usage, \"have not scrupled to\" means have felt no moral compunction or scruple about doing something. Rendering it as \"have not hesitated\" captures the behavioral meaning but loses the specifically moral dimension — the original implies an absence of conscience, not merely an absence of reluctance."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -948,7 +860,7 @@
               "note": "in 18th-century usage, \"primitive\" here means \"first\" or \"original\" in the causal chain, not \"crude\" or \"undeveloped.\" The risk is that a modern reader takes Hamilton to be calling Pericles unsophisticated rather than identifying him as the originating cause of the war."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -965,7 +877,7 @@
               "note": "the pairing is deliberately contemptuous: Wolsey was used by Charles and also fooled by him simultaneously. Rendering this as something like \"both a tool and a victim\" loses the pointed irony, which is itself an argument that personal vanity does not merely corrupt policy but renders its possessor ridiculous."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -982,7 +894,7 @@
               "note": "a \"cabal\" denotes a small group engaged in secret intrigue or faction; \"scheming\" loses the sense of conspiratorial coalition and reduces a collective political phenomenon to individual behavior."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -994,7 +906,7 @@
               "note": "The original capitalizes this phrase, a conspicuous typographic choice that does pointed argumentative work: it reduces Shays from a political actor with a cause to a man driven by private financial ruin. The capitalization underscores Hamilton's broader thesis that personal grievance, not principled ideology, is the engine of political upheaval. Rendering this in lowercase would lose the rhetorical force of the reduction."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -1011,55 +923,18 @@
               "note": "refers to the classical theory of bodily humors as the basis of temperament and disposition; the word carried a quasi-medical force suggesting that bellicose passions are rooted in human constitution, not mere circumstance."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
           "paragraph_index": 9,
-          "flags": [
-            {
-              "kind": "RHETORIC",
-              "term": "projectors in politics",
-              "note": "\"projectors\" in 18th-century usage meant visionary schemers or speculators, often with a disparaging edge; replacing it with \"theorists\" loses the implicit mockery of people who project grand plans untethered from reality"
-            },
-            {
-              "kind": "WORD",
-              "term": "imperious",
-              "note": "carries connotations of domineering, overriding authority; \"commanding\" approximates this but loses the flavor of a force that brooks no opposition"
-            },
-            {
-              "kind": "WORD",
-              "term": "predilections",
-              "note": "a favoritism or bias toward something; \"attachments\" partially captures this but loses the sense of unreasoned preference"
-            },
-            {
-              "kind": "WORD",
-              "term": "avarice",
-              "note": "specifically the insatiable love of accumulating wealth, a more pointed and moralized term than the general \"greed\""
-            },
-            {
-              "kind": "WORD",
-              "term": "tinctured",
-              "note": "literally \"tinted\" or \"dyed,\" implying a subtle but pervasive influence; \"colored\" preserves the dye metaphor but loses some of the subtlety"
-            },
-            {
-              "kind": "WORD",
-              "term": "cupidity",
-              "note": "specifically an intense, acquisitive greed, especially for land or dominion; no modern single word captures this with the same moral charge"
-            }
-          ],
+          "flags": [],
           "editorial_status": null,
           "editorial_note": null
         },
         {
           "paragraph_index": 10,
-          "flags": [
-            {
-              "kind": "WORD",
-              "term": "sated",
-              "note": "the original carries a strong sensory connotation of gluttonous overconsumption, implying that Rome gorged itself on carnage and conquest the way an appetite is gorged on food; \"satisfied\" captures the logical meaning but loses the visceral disgust embedded in the original"
-            }
-          ],
+          "flags": [],
           "editorial_status": null,
           "editorial_note": null
         },
@@ -1072,7 +947,7 @@
               "note": "in 18th-century usage, \"commonwealth\" referred to a republic or self-governing political community, not to a vague notion of public welfare or a modern Commonwealth nation. Substituting \"republic\" preserves the political meaning, but loses the connotation of a community organized around shared civic life, which \"commonwealth\" carried and which Hamilton may have chosen deliberately to echo the earlier framing of Carthage as a republic."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -1084,18 +959,12 @@
               "note": "Hamilton's phrasing is deliberately pointed: \"haughty\" is a moral characterization, not a neutral descriptor, and its placement at the close of the sentence gives the downfall of Venice a quality of deserved comeuppance. Substituting a neutral term like \"proud\" or \"ambitious\" would flatten the rhetorical judgment embedded in the word and lose the sense that Venice's arrogance was itself implicated in its ruin."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
           "paragraph_index": 13,
-          "flags": [
-            {
-              "kind": "RHETORIC",
-              "term": "implacable",
-              "note": "the word means \"impossible to appease or pacify,\" carrying a connotation of relentless, almost irrational hostility that \"unrelenting\" or \"determined\" would flatten. Hamilton's choice charges the Dutch opposition to Louis XIV with something beyond strategic persistence — a refusal to be bought off or worn down. Substituting a neutral modern word loses that edge."
-            }
-          ],
+          "flags": [],
           "editorial_status": null,
           "editorial_note": null
         },
@@ -1119,18 +988,12 @@
               "note": "Hamilton deliberately corrects himself mid-phrase, replacing \"ambition\" with \"avarice\" as the sharper and more damning charge. The self-correction is itself rhetorical: it performs a kind of precision, as if catching himself being too generous, and lands on a word that implies not merely overreach but base greed. Smoothing this into a single neutral term would erase the argumentative gesture."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
           "paragraph_index": 16,
-          "flags": [
-            {
-              "kind": "WORD",
-              "term": "culpable",
-              "note": "carries a moral-judgment sense of blameworthiness that is somewhat stronger and more juridical than the modern \"blameworthy\" or \"reprehensible\"; the original implies not merely that the desire is regrettable but that it is deserving of censure or reproach in a quasi-legal sense. \"More culpable\" also functions comparatively, implying that the desires previously named are already somewhat discreditable, and this one more so — a nuance that a flat substitution like \"worse\" would lose."
-            }
-          ],
+          "flags": [],
           "editorial_status": null,
           "editorial_note": null
         },
@@ -1148,23 +1011,12 @@
               "note": "in 18th-century usage, \"sanguine\" meant confidently optimistic, not merely hopeful. The word derives from the humoral sense of a temperament predisposed toward cheerful confidence. Rendering it as \"eager confidence\" approximates but softens the original, which implies an almost reckless certainty of success."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
           "paragraph_index": 18,
-          "flags": [
-            {
-              "kind": "RHETORIC",
-              "term": "reveries which would seduce us",
-              "note": "Hamilton's word choice is conspicuously sharp: \"reveries\" marks the opposing view as not merely wrong but dreamy and irrational, while \"seduce\" implies a morally compromised luring away from clear-eyed judgment. Substituting something like \"illusions that would lead us\" would lose both the dismissiveness and the suggestion of temptation."
-            },
-            {
-              "kind": "WORD",
-              "term": "empire",
-              "note": "in 18th-century usage, \"empire\" here means \"realm\" or \"dominion\" in an abstract sense, not a political empire with colonial connotations. The risk is that a modern reader hears geopolitical expansion where Hamilton means only sovereign domain or prevailing rule."
-            }
-          ],
+          "flags": [],
           "editorial_status": null,
           "editorial_note": null
         },
@@ -1177,7 +1029,7 @@
               "note": "The sentence is deliberately left incomplete, its verb hanging without an object. The dash and exclamation mark are not a typographical accident but a calculated rhetorical device: the evidence is so damning that Hamilton refuses to supply a conclusion, forcing the reader to complete the thought. Smoothing this into a finished sentence would destroy the effect entirely, replacing a controlled outburst with a pedestrian claim."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -1189,7 +1041,7 @@
               "note": "the original phrase carries a deliberate soporific image: these theorists are not merely mistaken but are actively inducing a dangerous unconsciousness. \"Lull us into complacency\" softens the predatory or negligent quality of the act."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         }
       ]
@@ -1206,13 +1058,7 @@
         },
         {
           "paragraph_index": 1,
-          "flags": [
-            {
-              "kind": "RHETORIC",
-              "term": "deluged in blood all the nations in the world",
-              "note": "the original phrase carries a deliberately overwhelming image: not merely war between some nations, but a universal deluge of blood. Substituting a neutral equivalent like \"caused widespread warfare\" would lose both the scale (all nations) and the visceral violence of the image, which is doing rhetorical work by preempting the question's implied smugness before the argument proper even begins."
-            }
-          ],
+          "flags": [],
           "editorial_status": null,
           "editorial_note": null
         },
@@ -1230,7 +1076,7 @@
               "note": "a legal term meaning the return of property to its original owner once the purpose or condition of a grant has expired; substituting a general term like \"return\" would lose the specific legal claim being made."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -1242,7 +1088,7 @@
               "note": "the original carries a specific humoral connotation of cheerful, blood-warm confidence; \"overly optimistic\" captures the sense but loses the slightly ironic, almost physiological texture of the original"
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -1264,7 +1110,7 @@
               "note": "means inauspicious or ill-fated, with a connotation of being marked by bad fortune from the outset; \"unfortunate\" captures the general sense but loses the implication of an unfavorable destiny foretold by circumstances."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
@@ -1281,28 +1127,12 @@
               "note": "\"enterprise\" in the 18th century denoted bold, adventurous commercial undertaking with an edge of daring; \"entrepreneurial\" approximates this but risks importing a more neutral, modern business connotation and losing the suggestion of aggressive, unbridled initiative."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
           "paragraph_index": 6,
-          "flags": [
-            {
-              "kind": "WORD",
-              "term": "metropolis",
-              "note": "in 18th-century usage, this refers to a dominant commercial center or port city rather than a large city in the modern demographic sense; the original meaning emphasizes economic centrality and the advantages that flow from it, which \"commercial hub\" approximates but does not fully capture."
-            },
-            {
-              "kind": "RHETORIC",
-              "term": "odious to our neighbors, and, in their opinion, so oppressive",
-              "note": "the paired qualifications are doing precise argumentative work: \"odious\" is the neighbors' emotional judgment, \"oppressive\" is their political characterization, and \"in their opinion\" carefully distances Hamilton from endorsing either label while still conveying their force. Smoothing this into neutral language would lose the deliberate acknowledgment that the grievance, however real, is being characterized from the aggrieved party's point of view."
-            },
-            {
-              "kind": "WORD",
-              "term": "temerity",
-              "note": "in 18th-century usage, \"temerity\" specifically means reckless boldness or rashness, with a connotation of foolhardy overconfidence; \"recklessness\" captures the core meaning, but the original carries a slightly sharper implication of presumptuous daring."
-            }
-          ],
+          "flags": [],
           "editorial_status": null,
           "editorial_note": null
         },
@@ -1315,62 +1145,24 @@
               "note": "the original carries a stronger connotation of deliberate, self-interested delay rather than mere slowness; the modern word risks losing the sense of strategic obstruction."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {
           "paragraph_index": 8,
-          "flags": [
-            {
-              "kind": "WORD",
-              "term": "incumbrances",
-              "note": "the 18th-century term carries the specific sense of financial encumbrances or debt obligations; \"obligations\" is the closest modern equivalent but loses the connotation of a weight pressed down upon the bearer"
-            },
-            {
-              "kind": "RHETORIC",
-              "term": "as true as it is trite",
-              "note": "the self-aware acknowledgment of the observation's familiarity is itself an argumentative move: Hamilton is signaling that what follows is not novel but is being ignored despite being universally known; smoothing this into neutral prose loses that ironic edge"
-            }
-          ],
+          "flags": [],
           "editorial_status": null,
           "editorial_note": null
         },
         {
           "paragraph_index": 9,
-          "flags": [
-            {
-              "kind": "WORD",
-              "term": "liberal",
-              "note": "in 18th-century usage, \"liberal\" here means something closer to \"generous,\" \"broad-minded,\" or \"fair-minded\" in the sense of not being narrow or self-interested; the modern political connotation risks obscuring this meaning."
-            },
-            {
-              "kind": "WORD",
-              "term": "enormities",
-              "note": "in 18th-century usage, this meant acts of extreme wickedness or moral enormity, not merely great size; the modern sense of \"enormity\" is contested but often implies sheer scale rather than moral horror, which risks losing the specific condemnation intended."
-            },
-            {
-              "kind": "RHETORIC",
-              "term": "a war, not of PARCHMENT, but of the sword",
-              "note": "the capitalization of PARCHMENT is in the original and does pointed argumentative work: it dismisses the existing legal and diplomatic instruments (petitions, resolutions, legislative retaliations) as merely paper conflict, while warning that real violence would follow. Smoothing this into neutral prose — \"an armed conflict rather than a legal dispute\" — would strip the contemptuous force of the contrast and lose the implicit argument that paper remedies are fragile substitutes for the coercion a real union could provide."
-            }
-          ],
+          "flags": [],
           "editorial_status": null,
           "editorial_note": null
         },
         {
           "paragraph_index": 10,
-          "flags": [
-            {
-              "kind": "WORD",
-              "term": "pernicious",
-              "note": "carries a stronger moral charge than \"dangerous,\" implying something actively corrupting or destructive rather than merely hazardous; the sense of insidious harm is at risk of being lost."
-            },
-            {
-              "kind": "RHETORIC",
-              "term": "Divide et impera",
-              "note": "Hamilton closes the paper with the Latin maxim (\"divide and rule\") untranslated, which is itself a rhetorical choice. Leaving it in Latin gives it the weight of a recognized, almost axiomatic principle of statecraft — a thing so established it needs no translation — and the terseness of the phrase functions as a final, damning verdict rather than a reasoned claim. Rendering it into English (\"divide and rule\") would flatten this effect, stripping the sense that Hamilton is invoking a principle universally known among the educated and pointing it, with cold precision, at America's potential vulnerabilities."
-            }
-          ],
+          "flags": [],
           "editorial_status": null,
           "editorial_note": null
         }
@@ -1394,42 +1186,19 @@
         },
         {
           "paragraph_index": 2,
-          "flags": [
-            {
-              "kind": "WORD",
-              "term": "economy",
-              "note": "in 18th-century usage, \"economy\" commonly meant frugality or the efficient management of resources, not the broader system of production and trade the word now denotes; rendering it as \"fiscal prudence\" preserves the original sense of restraint in expenditure"
-            },
-            {
-              "kind": "WORD",
-              "term": "signal",
-              "note": "used here in its older sense of \"remarkable\" or \"striking,\" not as a verb or as mere communication; the modern word \"notable\" approximates it, but loses some of the emphatic force"
-            }
-          ],
+          "flags": [],
           "editorial_status": null,
           "editorial_note": null
         },
         {
           "paragraph_index": 3,
-          "flags": [
-            {
-              "kind": "RHETORIC",
-              "term": "PLUNDER and devastation ever march in the train of irregulars",
-              "note": "The original capitalizes \"PLUNDER\" (as rendered in the source text), lending it an almost personified, monumental quality. The phrase \"march in the train of\" continues this personification, casting plunder and devastation as grim attendants in a procession. Substituting neutral language such as \"irregular forces typically cause plunder and devastation\" would flatten the rhetorical effect entirely, losing the sense that these evils are inevitable, almost ceremonial companions to irregular warfare."
-            }
-          ],
+          "flags": [],
           "editorial_status": null,
           "editorial_note": null
         },
         {
           "paragraph_index": 4,
-          "flags": [
-            {
-              "kind": "RHETORIC",
-              "term": "This picture is not too highly wrought",
-              "note": "the phrase performs double duty: it defends the preceding passage against the charge of alarmism while also conceding, in the very next clause, that the picture will not remain accurate. The combination of modest disclaimer and immediate self-qualification is itself an argumentative move, signaling Hamilton's confidence that the argument stands even under scrutiny. Rendering it as \"not overdrawn\" preserves the defensive posture but loses the craft metaphor embedded in \"wrought,\" which evokes deliberate artistic construction — the implicit claim being that the picture was shaped with care, not hysteria."
-            }
-          ],
+          "flags": [],
           "editorial_status": null,
           "editorial_note": null
         },
@@ -1447,7 +1216,7 @@
               "note": "carries the sense of \"without any possibility of failure,\" stronger than the modern casual use of \"inevitably.\" The rendering uses \"unfailingly\" to preserve this force, but the reader should note that Hamilton is asserting a near-logical necessity, not merely a strong likelihood."
             }
           ],
-          "editorial_status": null,
+          "editorial_status": "accepted",
           "editorial_note": null
         },
         {

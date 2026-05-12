@@ -39,6 +39,10 @@ npm-debug.log*
 data/federalist/.batch-results.json
 data/federalist/.batch-state.json
 
+# Retry pass ephemeral state (retry-flagged.ts)
+data/federalist/.retry-results.json
+data/federalist/.retry-review.md
+
 # Phase 1.1 retrieval test — local-only artifacts
 data/eval/results.md
 
