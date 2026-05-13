@@ -179,12 +179,14 @@ main {
   margin-bottom: 0;
 }
 
-.ask-section-header {
+.ask-answer .ask-section-header {
   font-family: inherit;
   font-size: inherit;
+  font-style: inherit;
   font-weight: 600;
-  margin-top: 2rem;
-  margin-bottom: 0.75rem;
+  line-height: inherit;
+  color: inherit;
+  margin: 2rem 0 0.75rem;
 }
 
 .ask-sources {

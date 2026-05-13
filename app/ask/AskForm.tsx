@@ -97,6 +97,18 @@ function parseBlocks(raw: string): Block[] {
       continue;
     }
 
+    // Numbered section label: "1. Short label" — single line, ≤ 80 chars total.
+    // The 80-char cap rules out numbered list items whose body runs into prose.
+    const isNumberedLabel =
+      /^\d+\.\s+\S/.test(rawTrimmed) &&
+      !rawTrimmed.includes('\n') &&
+      rawTrimmed.length <= 80;
+    if (isNumberedLabel) {
+      blocks.push({ kind: 'header', text: stripMarkdown(rawTrimmed) });
+      nextIsHeader = false;
+      continue;
+    }
+
     const text = stripMarkdown(rawTrimmed);
 
     if (nextIsHeader) {
