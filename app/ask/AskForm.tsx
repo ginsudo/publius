@@ -17,6 +17,10 @@ type Citation = {
   date: string;
 };
 
+type Block =
+  | { kind: 'paragraph'; text: string }
+  | { kind: 'header'; text: string };
+
 type DeltaEvent = { type: 'delta'; text: string };
 type DoneEvent = {
   type: 'done';
@@ -48,11 +52,57 @@ function stripMarkdown(s: string): string {
     .replace(/\*([\s\S]+?)\*/g, '$1');
 }
 
-function splitParagraphs(answer: string): string[] {
-  return stripMarkdown(answer)
-    .split(/\n{2,}/)
-    .map((p) => p.trim())
-    .filter((p) => p.length > 0);
+// Parse a complete answer into a sequence of typed blocks. The model uses two
+// structural devices: (a) a standalone segment whose entire content is bold
+// (e.g. `**The functional case (Federalist No. 23)**`) acting as a section
+// label, and (b) `---` on its own line as a separator that occasionally
+// precedes a short label. Both render as headers. A length guard on (b)
+// prevents closing prose paragraphs from being promoted when the model uses
+// `---` as a horizontal rule before a summary.
+//
+// Splitting happens on raw text (before stripMarkdown) so the bold-label
+// pattern is still visible. Streaming render uses a simpler path because a
+// partially-arrived `**…` or `---` would misclassify.
+function parseBlocks(raw: string): Block[] {
+  const segments = raw.split(/\n{2,}/);
+  const blocks: Block[] = [];
+  let nextIsHeader = false;
+
+  for (const seg of segments) {
+    const rawTrimmed = seg.trim();
+    if (!rawTrimmed) continue;
+
+    if (rawTrimmed === '---') {
+      nextIsHeader = true;
+      continue;
+    }
+
+    // Entire-segment bold pattern. 80 char label + 4 for the `**` markers.
+    const isBoldLabel =
+      /^\*\*(.+)\*\*$/.test(rawTrimmed) && rawTrimmed.length <= 84;
+    if (isBoldLabel) {
+      const label = rawTrimmed.replace(/^\*\*|\*\*$/g, '');
+      blocks.push({ kind: 'header', text: label });
+      nextIsHeader = false;
+      continue;
+    }
+
+    const text = stripMarkdown(rawTrimmed);
+
+    if (nextIsHeader) {
+      if (text.length <= 80) {
+        blocks.push({ kind: 'header', text });
+      } else {
+        blocks.push({ kind: 'paragraph', text });
+      }
+      nextIsHeader = false;
+      continue;
+    }
+
+    blocks.push({ kind: 'paragraph', text });
+  }
+
+  return blocks;
 }
 
 // Fisher–Yates shuffle (returns a new array; does not mutate the input).
@@ -94,7 +144,7 @@ export function AskForm() {
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [streamingAnswer, setStreamingAnswer] = useState('');
-  const [answer, setAnswer] = useState<string | null>(null);
+  const [blocks, setBlocks] = useState<Block[] | null>(null);
   const [citations, setCitations] = useState<Citation[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [currentPhrase, setCurrentPhrase] = useState<string>(LOADING_PHRASES[0]);
@@ -150,7 +200,7 @@ export function AskForm() {
 
     setLoading(true);
     setStreamingAnswer('');
-    setAnswer(null);
+    setBlocks(null);
     setCitations([]);
     setError(null);
 
@@ -205,7 +255,7 @@ export function AskForm() {
             accumulated += event.text;
             setStreamingAnswer(accumulated);
           } else if (event.type === 'done') {
-            setAnswer(accumulated);
+            setBlocks(parseBlocks(accumulated));
             setCitations(event.citations);
             // eslint-disable-next-line no-console
             console.log('promptSha256:', event.promptSha256);
@@ -240,8 +290,16 @@ export function AskForm() {
     void submit();
   }
 
-  const finalParagraphs = answer ? splitParagraphs(answer) : [];
-  const streamingParagraphs = streamingAnswer ? splitParagraphs(streamingAnswer) : [];
+  // Streaming render: strip markdown and split on blank lines but do not parse
+  // blocks. A `---` separator may have arrived without its following section
+  // label yet; treating it as a header mid-stream would render with stale text
+  // and re-layout when the next delta lands.
+  const streamingParagraphs = streamingAnswer
+    ? stripMarkdown(streamingAnswer)
+        .split(/\n{2,}/)
+        .map((p) => p.trim())
+        .filter((p) => p.length > 0)
+    : [];
 
   return (
     <div>
@@ -287,12 +345,18 @@ export function AskForm() {
         </p>
       )}
 
-      {!loading && answer && (
+      {!loading && blocks && (
         <>
           <article className="ask-answer">
-            {finalParagraphs.map((p, i) => (
-              <p key={i}>{p}</p>
-            ))}
+            {blocks.map((block, i) =>
+              block.kind === 'header' ? (
+                <h3 key={i} className="ask-section-header">
+                  {block.text}
+                </h3>
+              ) : (
+                <p key={i}>{block.text}</p>
+              ),
+            )}
           </article>
 
           {citations.length > 0 && (

@@ -179,6 +179,17 @@ main {
   margin-bottom: 0;
 }
 
+.ask-section-header {
+  font-family: var(--font-spectral);
+  font-size: 0.78rem;
+  font-variant: small-caps;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  font-weight: 500;
+  margin-top: 2rem;
+  margin-bottom: 0.25rem;
+}
+
 .ask-sources {
   margin-top: 56px;
   padding-top: 24px;
