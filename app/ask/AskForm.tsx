@@ -32,12 +32,16 @@ type ErrorEvent = { type: 'error'; message: string };
 type StreamEvent = DeltaEvent | DoneEvent | ErrorEvent;
 
 const LOADING_PHRASES = [
-  'The inquiry is before us.',
-  'Let us trace this further.',
-  'The matter deserves a candid inquiry.',
-  'It remains to be considered…',
-  'The inquiry naturally presents itself…',
-  'Upon reflection, the question resolves into…',
+  'The inquiry is before us…',
+  'Let us trace this further…',
+  'The matter deserves a candid inquiry…',
+  'Consulting the extended republic…',
+  'The inquiry admits of some delay…',
+  'Passion subsiding. Reason ascending…',
+  'The parchment is being examined…',
+  'Ambition is being made to counteract ambition…',
+  'Factions are being consulted…',
+  'Weighing the auxiliary precautions…',
 ];
 
 function getSessionQuestion(): string {
