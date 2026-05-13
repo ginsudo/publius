@@ -727,6 +727,17 @@ The Ask page's placeholder was a single hard-coded default question. Replaced wi
 
 **Conclusion.** The Ask page now rotates through SQ01–SQ20 on every mount. The sample bank is extensible — adding a question to `data/sample-questions.json` requires no code change. The lazy-initializer + post-mount placeholder pattern is the right shape for any future SSR-rendered, client-only-random UI in this codebase.
 
+### Phase 2.3 Ask UI — tap-to-fill affordance and streaming TODO (2026-05-13)
+
+Two follow-ons to the rotating-sample-question work earlier today.
+
+**Locked artifacts:**
+- `app/ask/AskForm.tsx` — added an `onClick` on the textarea that fires `setQuestion(sessionQuestion)` only when `question.trim() === ''`, mirroring the existing Tab-fill guard. Hint text changed from "Press Tab to use this question" to "Tap to use this question." Tab-fill in `onKeyDown` is untouched, so desktop Tab still works. Also added a `// TODO: stream response from /api/ask for better perceived latency` comment above the fetch call (committed separately in `a960e00`).
+
+**Path.** The Tab-fill affordance is desktop-only — phones have no Tab key, and the rotating sample question on the placeholder is therefore visible but un-actionable on mobile. Adding an `onClick` that fires the same fill logic covers both surfaces with one handler. The empty-textarea guard makes it a no-op once the user has typed anything, so it doesn't interfere with cursor placement on a populated textarea. Hint text reworded from "Press Tab" to "Tap" — accurate on mobile, close enough on desktop. No separate copy needed for the two surfaces.
+
+**Conclusion.** The sample question is now actionable on both mobile and desktop with one mechanism. The streaming TODO is parked as a note for the next perceived-latency pass.
+
 ## Current state of the repository
 
 **What exists in the repo:**

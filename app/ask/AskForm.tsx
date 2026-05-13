@@ -147,13 +147,16 @@ export function AskForm() {
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           onKeyDown={onKeyDown}
+          onClick={() => {
+            if (question.trim() === '') setQuestion(sessionQuestion);
+          }}
           placeholder={mounted ? sessionQuestion : ''}
           disabled={loading}
           aria-label="Question"
           autoFocus
         />
         {question.trim() === '' && (
-          <p className="ask-hint">Press Tab to use this question</p>
+          <p className="ask-hint">Tap to use this question</p>
         )}
       </form>
 
