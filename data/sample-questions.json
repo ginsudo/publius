@@ -1,0 +1,82 @@
+[
+  {
+    "id": "SQ01",
+    "question": "Federalist 10 argues that an extended republic disperses faction. Federalist 51 argues that separation of powers checks it. Are these two solutions to the same problem, or are they solving different problems — and does either argument anticipate what happens when faction captures a political party that then controls multiple branches simultaneously?"
+  },
+  {
+    "id": "SQ02",
+    "question": "The Federalist Papers were written as political advocacy, not disinterested constitutional theory. Does that affect how much argumentative weight they should carry in constitutional interpretation — and did Hamilton or Madison ever acknowledge the tension between their role as advocates and their claims to be explaining what the Constitution means?"
+  },
+  {
+    "id": "SQ03",
+    "question": "Madison argues in Federalist 39 that the Constitution is neither purely national nor purely federal but a composition of both. Does the rest of the Federalist corpus consistently maintain that distinction, or does it collapse under pressure when Hamilton argues for national supremacy?"
+  },
+  {
+    "id": "SQ04",
+    "question": "Federalist 51 says that in a republic the people are the primary check on government. Federalist 10 says that direct democracy is dangerous precisely because the people are susceptible to faction. How does the Federalist argument hold both positions simultaneously without contradiction?"
+  },
+  {
+    "id": "SQ05",
+    "question": "Hamilton devotes six papers to defending the executive's treaty-making power and the Senate's role in it. What theory of democratic accountability underlies that argument — and is it consistent with his argument for executive energy in Federalist 70?"
+  },
+  {
+    "id": "SQ06",
+    "question": "The Federalist Papers almost never discuss slavery directly. Where does it appear, how is it handled when it does, and what does the evasion itself reveal about the constitutional theory on offer?"
+  },
+  {
+    "id": "SQ07",
+    "question": "Madison argues in Federalist 44 that the Necessary and Proper Clause is indispensable to effective government. Hamilton argues in Federalist 33 that it adds nothing beyond what the Constitution already implies. Are they making the same argument or different ones?"
+  },
+  {
+    "id": "SQ08",
+    "question": "Federalist 84 argues against a Bill of Rights, on the grounds that enumerating rights implies the government has powers it doesn't have. How does that argument hold together — and what does it imply about how the Bill of Rights should have been interpreted once ratified?"
+  },
+  {
+    "id": "SQ09",
+    "question": "The Federalist Papers make a sustained argument that the Senate's design — equal state representation, longer terms, smaller size — produces wisdom and stability. What exactly is the theory of institutional design behind that argument, and does it depend on assumptions about the Senate's membership that no longer hold?"
+  },
+  {
+    "id": "SQ10",
+    "question": "Hamilton argues in Federalist 70 that unity in the executive produces accountability because the public knows who to blame. Does that argument actually support a unitary executive theory, or does it support something more limited?"
+  },
+  {
+    "id": "SQ11",
+    "question": "Madison argues in Federalist 46 that state governments will serve as a counterweight to federal overreach, with citizens loyal enough to their states to resist federal tyranny. What conditions does that argument depend on — and does the Federalist corpus supply any account of what happens if those conditions fail?"
+  },
+  {
+    "id": "SQ12",
+    "question": "Publius repeatedly invokes the lessons of history — Greece, Rome, the Dutch Republic, the Swiss cantons. Is history being used as genuine evidence in these arguments, or as rhetorical decoration? Where, if anywhere, does the historical argument do real analytical work?"
+  },
+  {
+    "id": "SQ13",
+    "question": "Hamilton and Madison both argue that the Constitution improves on the Articles of Confederation. But their diagnoses of what was wrong with the Articles differ. What does each author think the fundamental defect was — and do those different diagnoses lead them to different conclusions about what the new Constitution actually fixed?"
+  },
+  {
+    "id": "SQ14",
+    "question": "Federalist 49 argues against frequent appeals to the people to resolve constitutional disputes, on the grounds that it would destabilize government and erode constitutional veneration. What does that argument imply about the role of popular sovereignty in constitutional theory — and is it in tension with the democratic premises the Papers elsewhere assert?"
+  },
+  {
+    "id": "SQ15",
+    "question": "The Federalist Papers present the Constitution as the product of deliberative reason rather than historical accident or force. Is that a descriptive claim, a normative one, or both — and where does the argument become most vulnerable to the historical record of how the Convention actually proceeded?"
+  },
+  {
+    "id": "SQ16",
+    "question": "Hamilton argues in Federalist 9 that the improved science of politics — separation of powers, legislative checks, independent courts — makes republican government stable in ways it never was in antiquity. Is that an empirical claim, and if so what would falsify it?"
+  },
+  {
+    "id": "SQ17",
+    "question": "Federalist 63 defends the Senate as a body that maintains national character and continuity across administrations, including the capacity to be held responsible by foreign nations for treaty obligations. What theory of institutional memory underlies that argument — and how does it interact with Madison's broader argument about accountability to the people?"
+  },
+  {
+    "id": "SQ18",
+    "question": "The Federalist Papers were written to persuade New York to ratify. How much of the constitutional theory in them is genuinely universal argument, and how much is tailored to New York's specific fears — large-state resentment, commercial interests, Anti-Federalist strength?"
+  },
+  {
+    "id": "SQ19",
+    "question": "The Federalist Papers make arguments for both judicial independence and judicial restraint. How do these arguments hold together — and where, if anywhere, do they create interpretive problems for modern judicial review doctrine?"
+  },
+  {
+    "id": "SQ20",
+    "question": "If you had to identify the single argument in the Federalist Papers that has aged worst — the one where the reasoning was sound for 1787 but depends most heavily on conditions that no longer obtain — what would it be, and why?"
+  }
+]

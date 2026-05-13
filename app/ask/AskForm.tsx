@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { FormEvent, KeyboardEvent } from 'react';
+import sampleQuestions from '@/data/sample-questions.json';
 
 type Citation = {
   item_id: string;
@@ -23,8 +24,10 @@ type AskResponse = {
   promptSha256: string;
 };
 
-const DEFAULT_QUESTION =
-  'By what right does an unelected, life-tenured judiciary overturn the considered judgments of democratically elected legislatures — and if it has that right, what principled limits constrain its exercise?';
+function getSessionQuestion(): string {
+  if (typeof window === 'undefined') return sampleQuestions[0].question;
+  return sampleQuestions[Math.floor(Math.random() * sampleQuestions.length)].question;
+}
 
 function stripMarkdown(s: string): string {
   return s
@@ -65,9 +68,15 @@ function citationHref(c: Citation): string {
 
 export function AskForm() {
   const [question, setQuestion] = useState('');
+  const [sessionQuestion] = useState<string>(getSessionQuestion);
+  const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState<AskResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   async function submit() {
     const trimmed = question.trim();
@@ -117,7 +126,7 @@ export function AskForm() {
     }
     if (e.key === 'Tab' && question.trim() === '') {
       e.preventDefault();
-      setQuestion(DEFAULT_QUESTION);
+      setQuestion(sessionQuestion);
     }
   }
 
@@ -137,7 +146,7 @@ export function AskForm() {
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           onKeyDown={onKeyDown}
-          placeholder={DEFAULT_QUESTION}
+          placeholder={mounted ? sessionQuestion : ''}
           disabled={loading}
           aria-label="Question"
           autoFocus

@@ -707,6 +707,26 @@ Follow-on to the annotation-layer pin: the standing convention was applied direc
 
 **Conclusion.** The standing *moeurs* → *mores* convention is now live across the corpus and the annotations are consistent with it. The 94 single-flag moeurs units are off the review queue; the 8 multi-flag/compound units remain in the stream for their non-moeurs business. The substitution script and the earlier `apply-moeurs-policy.mjs` are both idempotent and re-runnable; together they form a one-shot pair that brings the corpus into convention-consistent state and could be re-applied if a future regenerate of either file ever reintroduces the inconsistency.
 
+### Phase 2.3 Ask UI — rotating sample question on the placeholder (2026-05-13)
+
+The Ask page's placeholder was a single hard-coded default question. Replaced with a rotating pick from a curated bank of 20 hard interpretive questions, fresh on every page mount.
+
+**Locked artifacts (today's work — 2026-05-13):**
+- `data/sample-questions.json` — 20 questions (SQ01–SQ20), each a hard interpretive question chosen to showcase the corpus-grounded reasoning Publius is built for and the epistemic discipline the system prompt is built to enforce (Hamilton-vs-Madison tension, slavery's near-absence from the corpus, arguments that have aged worst, etc.). Owner-curated; not derived from the probe set.
+- `app/ask/AskForm.tsx` — `DEFAULT_QUESTION` constant replaced with `getSessionQuestion()`, a pure random pick from `sampleQuestions`. The function is passed as a lazy initializer to `useState`, so it runs exactly once per component mount; within-page stability is automatic. A `mounted` state plus a `useEffect(() => setMounted(true), [])` gates the placeholder so SSR emits an empty placeholder and the client fills it post-mount — no hydration mismatch between the server's fallback and the client's random pick. The Tab-fill handler and the placeholder both read from `sessionQuestion`, so they stay in sync.
+
+**Path:**
+
+*Initial implementation — `sessionStorage`-persisted index.* First cut stored the chosen index in `sessionStorage` under `publius-sq-index` so navigating away from `/ask` and back within the same browser session would surface the same question. Lazy `useState` + an SSR guard kept the read safe.
+
+*Hydration bug — placeholder and Tab-fill out of sync.* `getSessionQuestion()` runs on the server (where `window` is undefined) and returns `sampleQuestions[0]`; it runs again on the client during the lazy `useState` initializer and returns the persisted-or-fresh index. The server-rendered HTML shipped to the browser carried `placeholder="<SQ01>"`; after client mount the placeholder reconciled to the session value, but in the window before reconciliation the user could see SQ01 as the placeholder while Tab-fill would insert the actual session question. Fixed by gating the placeholder on a `mounted` flag set inside a `useEffect`: server emits `placeholder=""`, client fills it post-mount, no mismatch.
+
+*Owner correction — drop persistence entirely.* The intended behavior was "fresh sample question on every page load," not "stable across navigation within a session." `sessionStorage` was doing the opposite of what was wanted. Replaced with a pure random pick; the `useState` lazy initializer is sufficient for within-page stability (no re-roll on keystrokes, on form state updates, or while waiting for a response) because React only calls the initializer on mount.
+
+*Verification.* `npx tsc --noEmit` clean across all three revisions. Dev server smoke-tested at `localhost:3000/ask` — placeholder reads as a sample question on first load, Tab on an empty textarea inserts that same question, navigating away and back rolls a different question.
+
+**Conclusion.** The Ask page now rotates through SQ01–SQ20 on every mount. The sample bank is extensible — adding a question to `data/sample-questions.json` requires no code change. The lazy-initializer + post-mount placeholder pattern is the right shape for any future SSR-rendered, client-only-random UI in this codebase.
+
 ## Current state of the repository
 
 **What exists in the repo:**
