@@ -47,6 +47,7 @@ function getSessionQuestion(): string {
 
 function stripMarkdown(s: string): string {
   return s
+    .replace(/^#{1,3}\s+/gm, '')
     .replace(/\*\*([\s\S]+?)\*\*/g, '$1')
     .replace(/__([\s\S]+?)__/g, '$1')
     .replace(/\*([\s\S]+?)\*/g, '$1');
@@ -82,6 +83,15 @@ function parseBlocks(raw: string): Block[] {
       /^\*\*(.+)\*\*$/.test(rawTrimmed) && rawTrimmed.length <= 84;
     if (isBoldLabel) {
       const label = rawTrimmed.replace(/^\*\*|\*\*$/g, '');
+      blocks.push({ kind: 'header', text: label });
+      nextIsHeader = false;
+      continue;
+    }
+
+    // Markdown `#`/`##`/`###` heading on the segment's first line.
+    const isMarkdownHeader = /^#{1,3}\s+/.test(rawTrimmed);
+    if (isMarkdownHeader) {
+      const label = rawTrimmed.replace(/^#{1,3}\s+/, '');
       blocks.push({ kind: 'header', text: label });
       nextIsHeader = false;
       continue;
