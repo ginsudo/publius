@@ -626,6 +626,30 @@ The relocation of `prompts/eval/lib.ts` to `lib/ask.ts` was forced by the gitign
 
 ---
 
+## `/api/ask` response: NDJSON stream over single JSON
+
+**Decision:** The `/api/ask` endpoint returns `Content-Type: application/x-ndjson`. Each line is one JSON event. Two event types in the success path; one in the error path.
+
+```ts
+{ type: "delta"; text: string }
+{ type: "done";  citations: Citation[]; usage: { inputTokens: number; outputTokens: number; stopReason: string }; promptSha256: string }
+{ type: "error"; message: string }
+```
+
+`delta` events arrive as Claude generates text. The complete answer is the concatenation of all `delta.text` values. `done` arrives once, after `messages.stream().finalMessage()` resolves; it carries citations, token usage, stop reason, and the prompt SHA-256. `error` is enqueued if the stream throws after the HTTP response has already begun streaming.
+
+**Prior shape (replaced):** `application/json`, single object `{ answer, citations, usage, promptSha256 }`. Returned only after the full generation completed.
+
+**Rationale:** Streaming for perceived latency — the user sees the answer building rather than waiting for the entire generation. Citations and metadata are deferred to the `done` event because they require the complete generation to be known (usage and stop reason are only available once `finalMessage()` resolves).
+
+**Compatibility:** None. There is no fallback to the old JSON shape. Any future consumer of `/api/ask` must read the body as a UTF-8 stream and parse line-by-line. This is acceptable because the only current consumer is `app/ask/AskForm.tsx`, which is updated in the same change. The harness at `prompts/eval/run.ts` uses `askClaude` directly (not the route), so it is unaffected.
+
+**Error responses outside the stream are unchanged:** validation errors (400), missing API key (500), and retrieval failures still return standard JSON error responses with the existing status codes. Only generation-time failures (after the stream has opened) become `error` events in the NDJSON body.
+
+**Escape hatch:** `POST /api/ask?transport=json` returns the original `application/json` single-object shape `{ answer, citations, usage, promptSha256 }`. Use this to isolate streaming-specific failures in production. The parameter is intentionally not documented in the public API surface.
+
+---
+
 # Open observations
 
 Items in this section are observed behaviors or tensions not yet decided. They are recorded here so they don't get lost between sessions, and so that a future decision has the original observation in front of it rather than a paraphrase. When an item resolves into a standing decision, it moves up into the main decision list and is removed from here.

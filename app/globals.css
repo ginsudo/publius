@@ -155,6 +155,16 @@ main {
   color: var(--text-secondary);
 }
 
+@keyframes phraseIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.loading-phrase {
+  display: inline-block;
+  animation: phraseIn 300ms ease-in;
+}
+
 .ask-answer {
   margin-top: 40px;
 }

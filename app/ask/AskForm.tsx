@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { FormEvent, KeyboardEvent } from 'react';
 import sampleQuestions from '@/data/sample-questions.json';
 
@@ -17,12 +17,24 @@ type Citation = {
   date: string;
 };
 
-type AskResponse = {
-  answer: string;
+type DeltaEvent = { type: 'delta'; text: string };
+type DoneEvent = {
+  type: 'done';
   citations: Citation[];
   usage: { inputTokens: number; outputTokens: number; stopReason: string };
   promptSha256: string;
 };
+type ErrorEvent = { type: 'error'; message: string };
+type StreamEvent = DeltaEvent | DoneEvent | ErrorEvent;
+
+const LOADING_PHRASES = [
+  'The inquiry is before us.',
+  'Let us trace this further.',
+  'The matter deserves a candid inquiry.',
+  'It remains to be considered…',
+  'The inquiry naturally presents itself…',
+  'Upon reflection, the question resolves into…',
+];
 
 function getSessionQuestion(): string {
   if (typeof window === 'undefined') return sampleQuestions[0].question;
@@ -41,6 +53,16 @@ function splitParagraphs(answer: string): string[] {
     .split(/\n{2,}/)
     .map((p) => p.trim())
     .filter((p) => p.length > 0);
+}
+
+// Fisher–Yates shuffle (returns a new array; does not mutate the input).
+function shuffle<T>(arr: readonly T[]): T[] {
+  const out = arr.slice();
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
 }
 
 type CitationParts = {
@@ -71,23 +93,68 @@ export function AskForm() {
   const [sessionQuestion] = useState<string>(getSessionQuestion);
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState<AskResponse | null>(null);
+  const [streamingAnswer, setStreamingAnswer] = useState('');
+  const [answer, setAnswer] = useState<string | null>(null);
+  const [citations, setCitations] = useState<Citation[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [currentPhrase, setCurrentPhrase] = useState<string>(LOADING_PHRASES[0]);
+
+  // Track the last phrase across reshuffles so we never repeat back-to-back.
+  const lastPhraseRef = useRef<string | null>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Rotate loading phrases every 3s while `loading` is true. Reshuffle when
+  // the current pass is exhausted, ensuring the first phrase of a new pass is
+  // not the same as the last phrase of the previous one.
+  useEffect(() => {
+    if (!loading) return;
+
+    let queue = shuffle(LOADING_PHRASES);
+    if (lastPhraseRef.current && queue[0] === lastPhraseRef.current && queue.length > 1) {
+      [queue[0], queue[1]] = [queue[1], queue[0]];
+    }
+    let i = 0;
+    setCurrentPhrase(queue[0]);
+    lastPhraseRef.current = queue[0];
+
+    const interval = window.setInterval(() => {
+      i += 1;
+      if (i >= queue.length) {
+        const reshuffled = shuffle(LOADING_PHRASES);
+        if (
+          lastPhraseRef.current &&
+          reshuffled[0] === lastPhraseRef.current &&
+          reshuffled.length > 1
+        ) {
+          [reshuffled[0], reshuffled[1]] = [reshuffled[1], reshuffled[0]];
+        }
+        queue = reshuffled;
+        i = 0;
+      }
+      const next = queue[i];
+      setCurrentPhrase(next);
+      lastPhraseRef.current = next;
+    }, 3000);
+
+    return () => {
+      window.clearInterval(interval);
+    };
+  }, [loading]);
 
   async function submit() {
     const trimmed = question.trim();
     if (!trimmed || loading) return;
 
     setLoading(true);
-    setResponse(null);
+    setStreamingAnswer('');
+    setAnswer(null);
+    setCitations([]);
     setError(null);
 
     try {
-      // TODO: stream response from /api/ask for better perceived latency
       const res = await fetch('/api/ask', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
@@ -105,16 +172,53 @@ export function AskForm() {
           // fall through with default message
         }
         setError(message);
+        setLoading(false);
         return;
       }
 
-      const data = (await res.json()) as AskResponse;
-      // eslint-disable-next-line no-console
-      console.log('promptSha256:', data.promptSha256);
-      setResponse(data);
+      if (!res.body) {
+        setError('Something went wrong.');
+        setLoading(false);
+        return;
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+      let accumulated = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop()!; // last element may be incomplete
+        for (const line of lines) {
+          if (!line.trim()) continue;
+          let event: StreamEvent;
+          try {
+            event = JSON.parse(line) as StreamEvent;
+          } catch {
+            continue;
+          }
+          if (event.type === 'delta') {
+            accumulated += event.text;
+            setStreamingAnswer(accumulated);
+          } else if (event.type === 'done') {
+            setAnswer(accumulated);
+            setCitations(event.citations);
+            // eslint-disable-next-line no-console
+            console.log('promptSha256:', event.promptSha256);
+            setLoading(false);
+            setStreamingAnswer('');
+          } else if (event.type === 'error') {
+            setError(event.message);
+            setLoading(false);
+          }
+        }
+      }
     } catch {
       setError('Something went wrong.');
-    } finally {
       setLoading(false);
     }
   }
@@ -136,7 +240,8 @@ export function AskForm() {
     void submit();
   }
 
-  const paragraphs = response ? splitParagraphs(response.answer) : [];
+  const finalParagraphs = answer ? splitParagraphs(answer) : [];
+  const streamingParagraphs = streamingAnswer ? splitParagraphs(streamingAnswer) : [];
 
   return (
     <div>
@@ -160,7 +265,21 @@ export function AskForm() {
         )}
       </form>
 
-      {loading && <p className="ask-status">Thinking…</p>}
+      {loading && streamingAnswer === '' && (
+        <p className="ask-status" aria-live="polite">
+          <span key={currentPhrase} className="loading-phrase">
+            {currentPhrase}
+          </span>
+        </p>
+      )}
+
+      {loading && streamingAnswer !== '' && (
+        <article className="ask-answer" aria-live="polite">
+          {streamingParagraphs.map((p, i) => (
+            <p key={i}>{p}</p>
+          ))}
+        </article>
+      )}
 
       {!loading && error && (
         <p className="ask-status ask-status--error" role="alert">
@@ -168,19 +287,19 @@ export function AskForm() {
         </p>
       )}
 
-      {!loading && response && (
+      {!loading && answer && (
         <>
           <article className="ask-answer">
-            {paragraphs.map((p, i) => (
+            {finalParagraphs.map((p, i) => (
               <p key={i}>{p}</p>
             ))}
           </article>
 
-          {response.citations.length > 0 && (
+          {citations.length > 0 && (
             <section className="ask-sources" aria-label="Sources">
               <h2>Sources</h2>
               <ol>
-                {response.citations.map((c, i) => {
+                {citations.map((c, i) => {
                   const parts = citationParts(c);
                   return (
                     <li key={`${c.item_id}-${i}`}>
