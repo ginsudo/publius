@@ -87,6 +87,7 @@ export function AskForm() {
     setError(null);
 
     try {
+      // TODO: stream response from /api/ask for better perceived latency
       const res = await fetch('/api/ask', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
