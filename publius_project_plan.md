@@ -190,6 +190,7 @@ Volume I is more immediately relevant to constitutional interpretation — insti
 - Corpus selector or implicit detection from query
 - Reader navigates both corpora
 - Filter UI updated for Tocqueville structure (Volume/Part/Chapter vs. numbered papers)
+- **Original/translation toggle for Tocqueville reading view.** English translation shown by default; French source available on demand via toggle. This is the structural converse of the Federalist plain-English toggle: for Federalist, the original is the default and plain English is the convenience rendering; for Tocqueville, the translation is the default and the French is the verification layer. Visual treatment is identical to the Federalist toggle; label language differs (`ENGLISH · FRANÇAIS`). See DECISIONS.md ("Tocqueville display architecture") and DESIGN.md ("The original/modern toggle") for the full rationale.
 
 ## Phase 6 — Supreme Court Cases
 
