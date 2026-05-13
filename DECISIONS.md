@@ -608,6 +608,24 @@ The relocation of `prompts/eval/lib.ts` to `lib/ask.ts` was forced by the gitign
 
 ---
 
+## Tocqueville display architecture: translation as retrieval surface, French as verification layer
+
+**Decision:** The Tocqueville corpus uses the owner-authored English translation as the retrieval surface — chunked, embedded, and indexed — with the French source preserved for user-facing display on demand. This is the structural converse of the Federalist display architecture.
+
+**Retrieval layer:** English translation text (`tocqueville.translation`) is chunked paragraph-by-paragraph and embedded. User queries in English hit English vectors. The French source (`paragraphs`) never enters the vector store.
+
+**Display layer:** The English translation is shown by default in the reading view. A toggle in the reading column header reveals the French source for readers who want to verify the translation against the original or read Tocqueville's prose directly.
+
+**Why this is the right inversion:** For the Federalist Papers, the original *is* the retrieval surface — Hamilton and Madison wrote in English, and the plain-English rendering is a display convenience for readers who find 18th-century rhetorical prose difficult. For Tocqueville, the translation *is* the intellectual work being offered; the French is the evidence that the work is honest. The toggle in each corpus serves the same function — letting the reader move between the retrieval surface and the source — even though the direction is inverted.
+
+**Implication for translation quality:** The toggle makes the translation checkable. A reader who switches to French and finds the English rendering doesn't match what Tocqueville wrote will lose trust immediately. The editorial gate before Tocqueville enters production is real and non-negotiable: only reviewed and accepted translations ship in the index.
+
+**Implication for Phase 5 sequencing:** Tocqueville cannot enter the vector store until the English translation is editorially complete for the volume being shipped. Embedding draft or unreviewed translation text and replacing it later requires a full re-embed and re-index pass. Wait for editorial stability before indexing.
+
+**Schema note:** No schema changes required. The French source already lives in `paragraphs[]` (universal base field); the English translation already lives in `tocqueville.translation[]` (corpus extension field). The application resolves a retrieval hit to a paragraph index and serves either field depending on toggle state. The French never touches the embedding pipeline.
+
+---
+
 # Open observations
 
 Items in this section are observed behaviors or tensions not yet decided. They are recorded here so they don't get lost between sessions, and so that a future decision has the original observation in front of it rather than a paraphrase. When an item resolves into a standing decision, it moves up into the main decision list and is removed from here.
