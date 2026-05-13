@@ -169,7 +169,7 @@ Generous — but not undifferentiated. Whitespace should be doing structural wor
 
 **Specific guidance:** The space between the end of a paper title block and the start of body text is an intentional pause — 48–64px, enough to signal "you are now in the text." The space between paragraphs in body text is standard paragraph spacing (1em), not the double-space blog convention.
 
-### The original/modern toggle
+### The original/modern toggle — corpus-specific behavior
 
 This is the most design-sensitive element in the reading view because it signals something about the product's relationship to the reader.
 
@@ -178,6 +178,14 @@ This is the most design-sensitive element in the reading view because it signals
 **Recommended treatment:** A small, quiet toggle positioned in the reading column header, styled as a typographic element rather than a button. Consider: `ORIGINAL  ·  MODERN ENGLISH` as a small-caps label pair, with the active mode in the accent color and the inactive mode in the tertiary gray. No icons. No toggle switch metaphor. Just two labels, one active, one not.
 
 When toggling, the text should crossfade (150ms opacity transition) rather than snap. The position in the document should be preserved across the toggle — the reader stays at the same paragraph.
+
+**The toggle is structurally inverted between corpora.** For the Federalist Papers, the original English is the default view and the plain-English rendering is available on demand — the toggle moves from source to convenience rendering. For Tocqueville, the English translation is the default view and the French source is available on demand — the toggle moves from the scholarly product to the verification layer. The visual treatment is identical in both cases; the semantic direction is reversed.
+
+Label language by corpus:
+- **Federalist:** `ORIGINAL  ·  MODERN ENGLISH` (original Hamilton/Madison prose vs. plain-English rendering)
+- **Tocqueville:** `ENGLISH  ·  FRANÇAIS` (owner's translation vs. Tocqueville's French source)
+
+The Tocqueville French-language view is not a reading convenience — it is a scholarly transparency feature. It signals that the translation is accountable to a source. This distinction should inform how the feature is described in any onboarding or help copy, but not how it is visually weighted; the toggle itself looks the same in both corpora.
 
 ---
 
