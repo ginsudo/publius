@@ -229,11 +229,27 @@ The answer:
 - Citation markers inline, styled distinctively but not aggressively — a slightly elevated numeral or a subtle underline that activates on hover.
 - Where authors disagree, the disagreement is surfaced structurally, not in a sidebar or callout. It is in the prose: "Hamilton argues X; Madison disputes this, holding Y."
 
+### Threaded conversation (logged-in only)
+
+Logged-in users can continue a prior exchange. The visual treatment must honor the same register as the stateless Ask interface — this is not a chat product, and threading does not make it one.
+
+**The conversation panel.** A logged-in user on the Ask page sees their prior conversations listed by title (derived from the first query), most recent first. Selecting one opens the thread. Starting a new query without selecting a prior conversation begins a new thread. The panel is secondary to the reading column — it does not dominate the layout.
+
+**Prior turns within a thread.** Each prior turn is rendered as a sequential scholarly record: the question in a quiet label style, then the full answer with citations exactly as they appear in the stateless Ask interface. Prior turns are not compressed, summarized, or styled as dialogue. They are the record of the inquiry so far.
+
+**What prior turns are not.** No chat bubbles. No avatar indicators. No timestamps as a prominent visual element (a small, tertiary date on the conversation title in the panel list is acceptable; timestamps within a thread are not). No "typing" indicators. No read receipts. No affordances borrowed from messaging products.
+
+**The query input within a thread.** Identical to the stateless Ask input. It sits at the bottom of the thread, below the prior turns. The placeholder text should reflect the continuation register: something like "Continue this inquiry..." rather than repeating the generic sample question. Tab-fill and tap-fill behavior unchanged.
+
+**Evaluative follow-ups.** When a follow-up is affect or interpretation rather than a corpus-answerable question — "I didn't know Madison thought that way," "That's a striking argument" — the model redirects toward what the corpus supports rather than validating the user's characterization. The answer does not begin with agreement. This is a system prompt discipline question, not a UI question, but the design should not accidentally encourage this pattern: no "Great question!" affordances, no positive reinforcement UI.
+
+**Conversation naming.** The conversation title is the first query, truncated to ~60 characters. It is not editable in the MVP. It is not AI-generated. The first query is already a good title for a scholarly inquiry; elaborating it adds nothing.
+
 ### Navigation
 
 Minimal. Publius has three top-level destinations: Browse (papers), Read (a paper), Ask (the inquiry interface). The navigation does not need to be more complex than this.
 
-The masthead is present on all views but minimal: the Publius name/wordmark on the left, the three nav items on the right, and nothing else. No utility bar, no user account UI (until there's a reason for one), no search bar in the masthead (search is part of Browse or Ask).
+The masthead is present on all views but minimal: the Publius name/wordmark on the left, the three nav items on the right, and nothing else. No utility bar, no search bar in the masthead (search is part of Browse or Ask). For logged-in users (Phase 2.5 and later): a minimal account indicator — name or small avatar — and a logout affordance, right-aligned. Nothing more. The account UI does not expand into a dropdown menu or notification center.
 
 ---
 

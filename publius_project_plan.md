@@ -132,6 +132,40 @@ Deploy what exists. Real URL, works on web and mobile. First thing you can show 
 
 Full working product: browse, read dual-mode, ask. This is the second milestone.
 
+## Phase 2.5 — Authentication and Conversation Threading
+
+*Duration: 1 week  ·  Goal: Logged-in accounts, persistent conversations, and corpus-grounded follow-up queries.*
+
+### 2.5.1  Authentication
+
+- Select auth provider: Clerk or NextAuth. Clerk is faster to wire on Next.js/Vercel; NextAuth gives more control over session handling. Decide at phase start.
+- Wire login/logout. Email + password at minimum; OAuth (Google) optional at launch.
+- The anonymous Ask page is unchanged. Auth is additive — logged-in users get additional capability; no existing feature is gated or degraded.
+- No user account UI in the masthead until this phase ships. After: minimal — name or avatar indicator and a logout affordance only.
+
+### 2.5.2  Conversation Storage
+
+- Introduce Turso (managed SQLite) as the conversation store. Schema: `users`, `conversations` (id, user_id, title, created_at), `turns` (id, conversation_id, query, answer, citations_json, created_at).
+- Conversation title: derived from the first query, truncated to ~60 characters. No AI-generated titles — the first query is the title.
+- Retain full turn history in the database. Context injection into `/api/ask` is capped at the last 2–3 turns regardless of stored history length.
+
+### 2.5.3  Conversation API
+
+- `POST /api/conversations` — create a new conversation (authenticated)
+- `GET /api/conversations` — list user's conversations (authenticated)
+- `GET /api/conversations/[id]` — fetch a conversation with its turns (authenticated)
+- `POST /api/conversations/[id]/turns` — append a turn (delegates to `/api/ask` with conversationId)
+- `/api/ask` updated to accept optional `conversationId`; when present, fetches prior 2–3 turns and injects them into system prompt context before retrieval and generation. Anonymous path (no `conversationId`) unchanged.
+
+### 2.5.4  Conversation UI
+
+- Logged-in users see a conversation panel alongside the Ask interface: their named conversations, most recent first, with the ability to continue any prior thread.
+- Within a thread, prior turns are rendered as a sequential scholarly record — question, then answer with citations — not as chat bubbles. The visual register matches the stateless Ask interface; the only difference is that prior turns are visible above the current query input.
+- The query input at the bottom of an active conversation is identical to the stateless Ask input. No affordances that suggest chat (no avatar bubbles, no timestamps displayed prominently, no "typing" indicators).
+- Retrieval test: submit a follow-up query in a threaded conversation; verify that (a) prior turn context reaches the model, (b) retrieval still runs fresh on the follow-up query, (c) the answer is grounded in corpus citations, not just prior-turn inference.
+
+*Decision point before leaving Phase 2.5: Confirm that the threaded conversation system prompt handles evaluative follow-ups (affect, not inquiry) with a redirect toward corpus-answerable questions rather than conversational validation. Do not advance to Phase 3 until this behavior is verified on at least three test cases.*
+
 ## Phase 3 — Plain English — Federalist Papers
 
 *Duration: 3–5 days  ·  Goal: Dual-mode reading fully functional.*
@@ -292,6 +326,10 @@ Content register: nudges toward primary-source learning paths rather than presen
 
 No phase assigned. Likely post-Phase 6 (case corpus) since the panel becomes more valuable as the corpus diversifies.
 
+### Conversation threading — now planned (Phase 2.5)
+
+Moved from deferred to Phase 2.5. See that phase for full scope. The anonymous Ask page remains stateless; threading is available to logged-in users only. Design rationale in `DECISIONS.md`.
+
 ---
 
-*Confidential  ·  April 2026  ·  Updated with Long-Term Architecture section*
+*April 2026  ·  Updated May 2026*

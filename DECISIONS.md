@@ -650,6 +650,31 @@ The relocation of `prompts/eval/lib.ts` to `lib/ask.ts` was forced by the gitign
 
 ---
 
+## Conversation threading gated behind authenticated accounts
+
+**Decision:** The stateless Ask page (anonymous, one query → one answer) remains unchanged as the default product experience. Conversation threading — the ability to ask follow-up questions with prior exchange context — is available only to logged-in users.
+
+**Options considered:**
+- Stateless threading: pass prior exchange as client-side state on each follow-up request, no auth required
+- Session-token threading: issue a short-lived anonymous session token on first query, persist conversation server-side, no login required
+- Auth-gated threading: require login; persist conversations server-side keyed to user
+
+**Reasoning:** The client-side option was ruled out immediately — it requires the client to maintain and re-transmit a growing conversation payload, creating an unbounded request size problem, and it produces no persistent record the user can return to. The anonymous session token option is technically viable but collapses in practice: session tokens expire, users can't access their conversations across devices or browsers, and the feature becomes frustrating rather than useful. Auth-gated threading is the only path that delivers the product the feature actually implies: named, persistent conversations a scholar can return to, continue, and reference.
+
+Auth-gating also makes a product design statement. Conversation threading is a different mode of engagement from the stateless query — closer to a running seminar than a reference lookup. Requiring login signals that distinction. It also creates the user identity infrastructure needed for any future premium features without requiring a second auth migration.
+
+**What changes at the API layer:** `/api/ask` accepts an optional `conversationId`. When present, the route fetches the prior exchange (last 2–3 turns) from the conversation store and injects it into the system prompt context before retrieval and generation. The anonymous path (no `conversationId`) is unchanged. Retrieval still runs fresh on every turn — the new query triggers a new vector search; prior citations inform but don't replace it.
+
+**What the conversation threading feature is not:** It is not a chat interface. Prior turns are passed as scholarly context, not rendered as a dialogue transcript. The system prompt discipline — cite specifically, attribute to authors, surface disagreements — applies with equal force in turn 4 of a conversation as in turn 1. Follow-ups that are evaluative affect rather than corpus-answerable inquiries ("I didn't know Madison thought that way") are redirected toward what the corpus actually supports rather than validated conversationally.
+
+**Conversation length discipline:** Context injection is capped at the last 2–3 prior turns, not the full conversation history. This is both a token economy decision and a product design statement — Publius conversations have natural scope, and the tool does not encourage open-ended rambling.
+
+**Auth provider:** Clerk or NextAuth. Decision deferred to Phase 2.5 when implementation begins. Clerk is faster to wire on a Next.js/Vercel stack; NextAuth gives more control over session handling. The conversation store will use Turso (managed SQLite), consistent with the vector store decision, rather than introducing a second database service.
+
+**Revisit if:** The anonymous session token approach improves enough (e.g., a browser-standard identity layer) that persistent anonymous conversations become genuinely viable without degrading UX.
+
+---
+
 # Open observations
 
 Items in this section are observed behaviors or tensions not yet decided. They are recorded here so they don't get lost between sessions, and so that a future decision has the original observation in front of it rather than a paraphrase. When an item resolves into a standing decision, it moves up into the main decision list and is removed from here.
