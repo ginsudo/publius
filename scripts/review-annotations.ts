@@ -78,6 +78,10 @@ interface CorpusAdapter {
     total: number,
     reviewed: number,
   ): string;
+  // Short single-line locator-style description for use in the launch
+  // summary's "first unreviewed unit" line. Adapter-specific because the
+  // human-readable identifier differs by corpus (paper number vs item_id).
+  describeUnit(unit: StreamUnit): string;
   parseLocator(rest: string[]): LocatorResolve;
   getEditorialState(unit: StreamUnit): EditorialState;
   getFlags(unit: StreamUnit): NormalizedFlag[];
@@ -278,6 +282,14 @@ function createFederalistAdapter(): CorpusAdapter {
         return paper.paper_number === paperN && u.paragraphIndex === paraI;
       };
       return { ok: true, predicate, describe };
+    },
+
+    describeUnit(unit): string {
+      if (unit.kind !== 'paragraph') {
+        throw new Error('federalist adapter received non-paragraph stream unit');
+      }
+      const paper = ann.papers[unit.itemAnnIdx];
+      return `Federalist No. ${paper.paper_number}, paragraph ${unit.paragraphIndex}`;
     },
 
     getEditorialState(unit): EditorialState {
@@ -693,6 +705,14 @@ function createTocquevilleAdapter(): CorpusAdapter {
       };
     },
 
+    describeUnit(unit): string {
+      const itemId = ann.items[unit.itemAnnIdx].item_id;
+      if (unit.kind === 'paragraph') {
+        return `${itemId} ¶${unit.paragraphIndex}`;
+      }
+      return `${itemId} ${unit.marker}`;
+    },
+
     getEditorialState: getState,
     getFlags: flagsOf,
 
@@ -806,22 +826,34 @@ function runEditor(currentText: string): EditOutcome {
 
 const HELP = `
 Commands:
-  n / next         — advance to next flagged unit
-  p / prev         — back to previous flagged unit
+  n / next         — advance to next flagged unit (skips reviewed if toggle on)
+  p / prev         — back to previous flagged unit (skips reviewed if toggle on)
   g <locator>      — jump to a flagged unit
                      federalist:   g <paper> <para>
                      tocqueville:  g <item_id> <paragraph_index>
                                    g <item_id> <marker>     (e.g. g tocqueville:vol1.part2.ch6 [63])
+  g next | g n     — jump to first unreviewed flagged unit in document order
   a / accept       — set editorial_status = "accepted"; advance
+                     (prompts to overwrite if status is already set)
   e / edit         — open $EDITOR with current rendering; on save, write
                      back to corpus and set status = "edited"; advance
   f / flag         — set editorial_status = "flagged_for_rewrite"; prompts for
                      an optional note; advance
+                     (prompts to overwrite if status is already set)
+  F                — flag for rewrite without note prompt; preserves any
+                     existing note; advance
+                     (prompts to overwrite if status is already set)
   m <note>         — set editorial_note (status unchanged); stay
   u / unset        — clear status and note; stay
+  s                — toggle skip-reviewed mode for n/p navigation
   q / quit         — print summary and exit
   ? / help         — show this help
 `;
+
+type SessionStats = {
+  accepted: number;
+  flagged_for_rewrite: number;
+};
 
 function summarize(
   adapter: CorpusAdapter,
@@ -841,7 +873,64 @@ function summarize(
   return counts;
 }
 
-function printSummary(flagged: StreamUnit[], counts: ReviewSummary): void {
+function findFirstUnreviewed(
+  flagged: StreamUnit[],
+  adapter: CorpusAdapter,
+): number {
+  for (let i = 0; i < flagged.length; i++) {
+    if (adapter.getEditorialState(flagged[i]).editorial_status === null) return i;
+  }
+  return -1;
+}
+
+// Walks from `from` (exclusive) in `direction` (+1 forward, -1 backward) and
+// returns the index of the next unreviewed flagged unit, or -1 if none. Used
+// by n/p when skip-reviewed mode is on.
+function findNextUnreviewedFrom(
+  flagged: StreamUnit[],
+  adapter: CorpusAdapter,
+  from: number,
+  direction: 1 | -1,
+): number {
+  for (let i = from + direction; i >= 0 && i < flagged.length; i += direction) {
+    if (adapter.getEditorialState(flagged[i]).editorial_status === null) return i;
+  }
+  return -1;
+}
+
+const BAR_WIDTH = 40;
+
+function renderProgressBar(reviewed: number, total: number): string {
+  const filled = total === 0 ? 0 : Math.round((reviewed / total) * BAR_WIDTH);
+  const bar = '█'.repeat(filled) + '░'.repeat(BAR_WIDTH - filled);
+  return `[${bar}] ${reviewed}/${total}`;
+}
+
+function printLaunchSummary(
+  adapter: CorpusAdapter,
+  flagged: StreamUnit[],
+  counts: ReviewSummary,
+): void {
+  const reviewed = flagged.length - counts.unreviewed;
+  const firstIdx = findFirstUnreviewed(flagged, adapter);
+  const firstDesc =
+    firstIdx < 0 ? 'all reviewed' : adapter.describeUnit(flagged[firstIdx]);
+  console.log('');
+  console.log('=== STATUS ===');
+  console.log(`Total flagged:         ${flagged.length}`);
+  console.log(`Reviewed:              ${reviewed}`);
+  console.log(`Unreviewed:            ${counts.unreviewed}`);
+  console.log(`Accepted:              ${counts.accepted}`);
+  console.log(`Flagged for rewrite:   ${counts.flagged_for_rewrite}`);
+  console.log(`First unreviewed:      ${firstDesc}`);
+  console.log('==============');
+}
+
+function printSummary(
+  flagged: StreamUnit[],
+  counts: ReviewSummary,
+  session: SessionStats,
+): void {
   console.log('');
   console.log('=== REVIEW SUMMARY ===');
   console.log(`Flagged units:         ${flagged.length}`);
@@ -849,6 +938,9 @@ function printSummary(flagged: StreamUnit[], counts: ReviewSummary): void {
   console.log(`  edited:              ${counts.edited}`);
   console.log(`  flagged_for_rewrite: ${counts.flagged_for_rewrite}`);
   console.log(`  unreviewed:          ${counts.unreviewed}`);
+  console.log('--- this session ---');
+  console.log(`  accepted:            ${session.accepted}`);
+  console.log(`  flagged_for_rewrite: ${session.flagged_for_rewrite}`);
   console.log('=======================');
 }
 
@@ -903,12 +995,30 @@ async function main(): Promise<void> {
 
   let cursor = 0;
   let running = true;
+  let skipReviewed = false;
+  const sessionStats: SessionStats = { accepted: 0, flagged_for_rewrite: 0 };
 
   const rl = createInterface({ input: process.stdin, output: process.stdout });
+
+  // Confirms overwrite of an existing non-null status. Returns true to proceed,
+  // false to abort. Anything other than y/yes counts as no.
+  async function confirmOverwrite(currentStatus: EditorialStatus): Promise<boolean> {
+    const answer = (
+      await rl.question(`This unit is already ${currentStatus} — overwrite? (y/n) `)
+    ).trim().toLowerCase();
+    return answer === 'y' || answer === 'yes';
+  }
+
+  // Launch summary — printed once before the first unit renders.
+  printLaunchSummary(adapter, flagged, summarize(adapter, flagged));
 
   while (running) {
     const counts = summarize(adapter, flagged);
     const reviewed = flagged.length - counts.unreviewed;
+    const bar = renderProgressBar(reviewed, flagged.length);
+    const mode = skipReviewed ? '[skip-reviewed ON]' : '[skip-reviewed OFF]';
+    console.log('');
+    console.log(`${bar}  ${mode}`);
     process.stdout.write(
       adapter.renderUnit(flagged[cursor], cursor + 1, flagged.length, reviewed),
     );
@@ -930,17 +1040,38 @@ async function main(): Promise<void> {
           console.log('(use `m <note>` to set a note; `n` alone advances)');
           break;
         }
-        if (cursor < flagged.length - 1) cursor++;
-        else console.log('(end of flagged stream)');
+        if (skipReviewed) {
+          const next = findNextUnreviewedFrom(flagged, adapter, cursor, 1);
+          if (next < 0) console.log('(no further unreviewed units)');
+          else cursor = next;
+        } else {
+          if (cursor < flagged.length - 1) cursor++;
+          else console.log('(end of flagged stream)');
+        }
         break;
       }
       case 'p':
       case 'prev': {
-        if (cursor > 0) cursor--;
-        else console.log('(start of flagged stream)');
+        if (skipReviewed) {
+          const prev = findNextUnreviewedFrom(flagged, adapter, cursor, -1);
+          if (prev < 0) console.log('(no earlier unreviewed units)');
+          else cursor = prev;
+        } else {
+          if (cursor > 0) cursor--;
+          else console.log('(start of flagged stream)');
+        }
         break;
       }
       case 'g': {
+        // `g next` / `g n` — jump to first unreviewed in document order.
+        // Intercepted before the adapter locator parser since neither corpus's
+        // locator accepts a single non-numeric token.
+        if (rest.length === 1 && (rest[0] === 'next' || rest[0] === 'n')) {
+          const idx = findFirstUnreviewed(flagged, adapter);
+          if (idx < 0) console.log('(all flagged units have been reviewed)');
+          else cursor = idx;
+          break;
+        }
         const loc = adapter.parseLocator(rest);
         if (!loc.ok) {
           console.log(`(usage: ${loc.usage})`);
@@ -958,7 +1089,13 @@ async function main(): Promise<void> {
       }
       case 'a':
       case 'accept': {
+        const oldStatus = adapter.getEditorialState(unit).editorial_status;
+        if (oldStatus !== null) {
+          const ok = await confirmOverwrite(oldStatus);
+          if (!ok) break;
+        }
         adapter.acceptUnit(unit);
+        if (oldStatus !== 'accepted') sessionStats.accepted++;
         if (cursor < flagged.length - 1) cursor++;
         break;
       }
@@ -986,8 +1123,27 @@ async function main(): Promise<void> {
       }
       case 'f':
       case 'flag': {
+        const oldStatus = adapter.getEditorialState(unit).editorial_status;
+        if (oldStatus !== null) {
+          const ok = await confirmOverwrite(oldStatus);
+          if (!ok) break;
+        }
         const note = (await rl.question('Note (optional, blank to skip): ')).trim();
         adapter.flagUnit(unit, note.length > 0 ? note : null);
+        if (oldStatus !== 'flagged_for_rewrite') sessionStats.flagged_for_rewrite++;
+        if (cursor < flagged.length - 1) cursor++;
+        break;
+      }
+      case 'F': {
+        const state = adapter.getEditorialState(unit);
+        const oldStatus = state.editorial_status;
+        if (oldStatus !== null) {
+          const ok = await confirmOverwrite(oldStatus);
+          if (!ok) break;
+        }
+        // Preserve any existing note: F is a fast-pass flag, not a note clear.
+        adapter.flagUnit(unit, state.editorial_note);
+        if (oldStatus !== 'flagged_for_rewrite') sessionStats.flagged_for_rewrite++;
         if (cursor < flagged.length - 1) cursor++;
         break;
       }
@@ -1002,6 +1158,11 @@ async function main(): Promise<void> {
       case 'u':
       case 'unset': {
         adapter.unsetUnit(unit);
+        break;
+      }
+      case 's': {
+        skipReviewed = !skipReviewed;
+        console.log(`(skip-reviewed mode: ${skipReviewed ? 'ON' : 'OFF'})`);
         break;
       }
       case 'q':
@@ -1022,7 +1183,7 @@ async function main(): Promise<void> {
   }
 
   rl.close();
-  printSummary(flagged, summarize(adapter, flagged));
+  printSummary(flagged, summarize(adapter, flagged), sessionStats);
 }
 
 // Direct-invocation guard: only run main() when executed directly. Prevents
