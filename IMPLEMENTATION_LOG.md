@@ -781,6 +781,18 @@ The system prompt emits `---` on its own line as a structural separator followed
 
 **Correction (same day).** Smoke testing two real responses showed the model's actual structural device is a standalone paragraph that is entirely `**bolded text**` (e.g., `**The functional case (Federalist No. 23)**`), not `---` followed by a label. The `---` device appears, but typically as a horizontal rule before a closing summary paragraph — the segment after it is long prose, not a short label. `parseBlocks` updated in `app/ask/AskForm.tsx` to detect both patterns: a segment whose pre-strip value matches `^\*\*(.+)\*\*$` and is ≤ 84 raw chars (80 + 4 for the markers) is promoted to a header directly; the `---`-promotes-next rule keeps its semantics but only fires when the following segment's stripped text is ≤ 80 chars, otherwise the segment renders as a paragraph. Verified against both probe responses: bold short labels become headers; the 481-char closing-summary paragraph that previously would have been mis-promoted now stays a paragraph.
 
+### Phase 2.3 follow-up — client-side error handling and dead CSS cleanup (2026-05-15)
+
+Two changes, both scoped to the client. No route changes, no contract changes, no new dependencies.
+
+**Client-side error handling (`app/ask/AskForm.tsx`).** The Ask page was rendering raw JSON error objects from the Anthropic API directly in the UI — visible as `{"type":"error","error":{"type":"overloaded_error",...}}`. Root cause: the pre-stream HTTP error path was surfacing `data.error` verbatim, and the in-stream `error` event handler was passing `event.message` (which can be a raw SDK JSON dump) directly to `setError`.
+
+Fixed by adding `friendlyError({ status, code, raw })` — a small mapper that returns one of two curated prose messages: `BUSY_MESSAGE` for overload/rate-limit signals (matched via HTTP status 503/529, route error code `'overload'`/`'rate_limit'`, or regex `/overload|529|rate[_ ]?limit/i` on the raw string), and `GENERIC_ERROR_MESSAGE` for everything else. All four error paths (`!res.ok`, `!res.body`, in-stream `event.type === 'error'`, outer catch) now route through `friendlyError`. Error render switched from `<p className="ask-status ask-status--error" role="alert">` to `<article className="ask-answer" aria-live="polite"><p>{error}</p></article>` so error messages render in the same prose style as answers — no red, no alert box.
+
+**Dead CSS cleanup (`app/globals.css`).** `.ask-status--error` rule (4 lines) removed. It was the former error styling, now unreferenced after the render change above. `.ask-status` (used by the loading phrase animator in `AskForm.tsx`) is intact.
+
+`npx tsc --noEmit` clean after both changes.
+
 ## Current state of the repository
 
 **What exists in the repo:**

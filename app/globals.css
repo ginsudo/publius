@@ -151,10 +151,6 @@ main {
   color: var(--text-tertiary);
 }
 
-.ask-status--error {
-  color: var(--text-secondary);
-}
-
 @keyframes phraseIn {
   from { opacity: 0; }
   to   { opacity: 1; }

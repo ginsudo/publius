@@ -49,6 +49,27 @@ function getSessionQuestion(): string {
   return sampleQuestions[Math.floor(Math.random() * sampleQuestions.length)].question;
 }
 
+const BUSY_MESSAGE =
+  'The service is temporarily busy — please try again in a moment.';
+const GENERIC_ERROR_MESSAGE = 'Something went wrong — please try again.';
+
+// The route's pre-stream error body is `{ error, code }` (see classifyError in
+// lib/observability.ts: 503/529 → code 'overload'). The in-stream error event
+// carries `streamError.message` straight from the Anthropic SDK, which can be
+// a raw JSON dump like `{"type":"error","error":{"type":"overloaded_error",…}}`.
+// Both paths funnel through here so the user only ever sees curated prose.
+function friendlyError(args: {
+  status?: number;
+  code?: string;
+  raw?: string;
+}): string {
+  const { status, code, raw } = args;
+  if (status === 503 || status === 529) return BUSY_MESSAGE;
+  if (code === 'overload' || code === 'rate_limit') return BUSY_MESSAGE;
+  if (raw && /overload|529|rate[_ ]?limit/i.test(raw)) return BUSY_MESSAGE;
+  return GENERIC_ERROR_MESSAGE;
+}
+
 function stripMarkdown(s: string): string {
   return s
     .replace(/^#{1,3}\s+/gm, '')
@@ -238,22 +259,22 @@ export function AskForm() {
       });
 
       if (!res.ok) {
-        let message = 'Something went wrong.';
+        let code: string | undefined;
+        let raw: string | undefined;
         try {
-          const data = (await res.json()) as { error?: unknown };
-          if (typeof data?.error === 'string' && data.error.length > 0) {
-            message = data.error;
-          }
+          const data = (await res.json()) as { error?: unknown; code?: unknown };
+          if (typeof data?.code === 'string') code = data.code;
+          if (typeof data?.error === 'string') raw = data.error;
         } catch {
-          // fall through with default message
+          // body unreadable — friendlyError falls back to the generic message
         }
-        setError(message);
+        setError(friendlyError({ status: res.status, code, raw }));
         setLoading(false);
         return;
       }
 
       if (!res.body) {
-        setError('Something went wrong.');
+        setError(GENERIC_ERROR_MESSAGE);
         setLoading(false);
         return;
       }
@@ -288,13 +309,13 @@ export function AskForm() {
             setLoading(false);
             setStreamingAnswer('');
           } else if (event.type === 'error') {
-            setError(event.message);
+            setError(friendlyError({ raw: event.message }));
             setLoading(false);
           }
         }
       }
     } catch {
-      setError('Something went wrong.');
+      setError(GENERIC_ERROR_MESSAGE);
       setLoading(false);
     }
   }
@@ -366,9 +387,9 @@ export function AskForm() {
       )}
 
       {!loading && error && (
-        <p className="ask-status ask-status--error" role="alert">
-          {error}
-        </p>
+        <article className="ask-answer" aria-live="polite">
+          <p>{error}</p>
+        </article>
       )}
 
       {!loading && blocks && (
