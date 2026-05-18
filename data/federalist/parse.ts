@@ -142,7 +142,7 @@ type Item = {
   paragraphs: string[];
   footnotes: Footnote[];
   plain_english: null;
-  constitutional_section: null;
+  constitutional_section: string[] | null;
   topic_tags: never[];
   federalist: {
     number: number;

@@ -41,7 +41,7 @@ type Item = {
   paragraphs: string[];
   footnotes: never[];
   plain_english: null;
-  constitutional_section: null;
+  constitutional_section: never[];
   topic_tags: string[];
   constitution: ConstitutionExt;
 };
@@ -66,7 +66,7 @@ function bodyClause(opts: {
     paragraphs: typeof opts.text === 'string' ? [opts.text] : opts.text,
     footnotes: [],
     plain_english: null,
-    constitutional_section: null,
+    constitutional_section: [],
     topic_tags: [],
     constitution: {
       kind: 'body_clause',
@@ -102,7 +102,7 @@ function amendmentClause(opts: {
     paragraphs: typeof opts.text === 'string' ? [opts.text] : opts.text,
     footnotes: [],
     plain_english: null,
-    constitutional_section: null,
+    constitutional_section: [],
     topic_tags: [],
     constitution: {
       kind: 'amendment_clause',
@@ -136,7 +136,7 @@ const preamble: Item = {
   ],
   footnotes: [],
   plain_english: null,
-  constitutional_section: null,
+  constitutional_section: [],
   topic_tags: [],
   constitution: {
     kind: 'preamble',
