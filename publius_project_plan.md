@@ -247,11 +247,12 @@ Structural categories:
 
 ### 6.2  Corpus Acquisition
 
-- CourtListener (Free Law Project) API — full opinion text, free, public domain
-- Alternatively: Justia — full text to founding era, reasonably clean HTML
-- Structure: case name, year, constitutional provision(s) at issue, majority author, concurrences, dissents, holding summary
+- **Caselaw Access Project (CAP)** (`case.law`) — Harvard Law, 6.9M US decisions from 1600s–2020. Free bulk API (registration required). Preferred source for historical opinions: structured JSON with full opinion text, court metadata, and reporter information. Verify current access terms before Phase 6 begins, as the access model has shifted since initial open release.
+- **CourtListener** (Free Law Project) — 9M+ opinions, updated live. Covers post-2020 opinions that CAP lacks. Free API. Use as supplement for recent cases.
+- **Justia** — fallback for clean HTML if CAP or CourtListener text quality is problematic for specific cases.
 
-**Constitution as first-class corpus.** Acquire the U.S. Constitution and its amendments and structure them as a `constitution:` corpus conforming to the cross-corpus base schema (`data/SCHEMA.md`). At the same time, migrate the universal `constitutional_section` field from a free-text string label to an ID reference into the `constitution:` corpus. SCOTUS items reference the constitutional provisions they interpret by ID; Federalist items already organized around constitutional structure get the same treatment. This makes the base-text-plus-corpora-in-conversation relationship latent in the data without requiring any product surface change. The schema migration is deferred until this Phase 6 work begins — recorded in `DECISIONS.md`, not pre-emptively applied to existing corpora.
+**Metadata layer:**
+- **Supreme Court Database (SCDB)** (`scdb.wustl.edu`) — structured data on all SCOTUS cases since 1791: votes, outcomes, justice ideology scores, issue area codes, constitutional provisions. This is the metadata layer for the opinion corpus — not a substitute for opinion text, but the structured schema for querying by issue area and for enabling retrieval diversity (surfacing ideologically opposed readings of the same provision). SCDB issue-area codes can supplement the `constitutional_section` ID references that point into the Constitution corpus, for cross-corpus linkage.
 
 ### 6.3  Chunking Strategy — Different from Essays
 
@@ -301,6 +302,7 @@ Things to decide before each phase. Your call on all of them.
 | Fourth epistemic category | Before any Phase 8+ corpus | The argument/observation/holding taxonomy breaks when CLS or political theory enters. What the fourth mode is called, and how the system prompt handles incommensurable frameworks, must be resolved before adding any new corpus. See Long-Term Architecture section. |
 | Theoretical texts in corpus | Phase 6+ | Dworkin, George, Murphy, Bell as extensible corpora? Inform prompts first, add corpus later. User composes the dialogue — do not add a corpus without resolving its epistemic tag. |
 | Monetization | Post-launch | Free, freemium, or institutional licensing — decide after you see who's using it |
+| Probe set / eval infrastructure | Before Phase 5 | Build 20–30 queries with hand-labeled correct chunks before Phase 5 migration. Without this, embedding model comparisons produce anecdotes, not evidence. See DECISIONS.md embedding entry. |
 
 ## What You're Actually Building
 

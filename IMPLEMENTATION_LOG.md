@@ -815,6 +815,34 @@ Surgical additions to `scripts/review-annotations.ts` to make the editorial revi
 
 **Conclusion.** The CLI is now meaningfully faster for the common case ("walk to the next thing I haven't looked at and either F-confirm or accept") while harder to use destructively (the overwrite prompt catches the common slip of pressing `a`/`f` after navigation when you meant to navigate further). Help text reflects the additions; quit summary tells you what you did this session, not just the cumulative state.
 
+### Constitution corpus built; `constitutional_section` redefined as ID reference (2026-05-18)
+
+The Phase 6 seam flagged in `DECISIONS.md` ("Meta-product generalization: refused; two architectural seams kept open") was resolved pre-Phase-1.2. The U.S. Constitution is now a first-class `constitution:` corpus alongside Federalist and Tocqueville, and the universal `constitutional_section` field has been redefined to reference Constitution corpus IDs instead of free-text strings.
+
+**Path.**
+
+*Step 1 audit changed the scope.* The original migration plan said: audit existing free-text `constitutional_section` values on Federalist items and map them to Constitution IDs. Reading the Federalist JSON revealed every one of the 85 papers carries `constitutional_section: null`; the field was never populated. Tocqueville the same — all 124 items null. The free-text representation existed only in `data/SCHEMA.md` prose. So Step 4 collapsed from "audit and rewrite N values" to "define the field correctly before it is ever used." This finding shifted the work from data migration to schema and infrastructure.
+
+*Schema design — the clause is the item.* The cross-corpus base schema requires `paragraphs`, `authors`, `date`, `title`. None of these have a self-evident mapping to constitutional text: is an "item" the whole Constitution, a single article, a section, or a clause? The clause won because it is the smallest independently citable unit. Articles and Sections are navigational containers in the locator (`art1.sec8.cl3`) but not items. This produced 153 items: 1 preamble, 84 body clauses, 68 amendment clauses. The locator carries only as much depth as is needed — `constitution:art5` for an article with no sections, `constitution:art3.sec1` for a single-clause section, `constitution:amdt14.sec1.cl4` when sub-clauses exist within a section.
+
+*Clause-split decisions inside amendments.* The 14th Amendment's Section 1 splits into four canonical clauses (Citizenship, Privileges or Immunities, Due Process, Equal Protection) because each has a stable short name and is independently cited in case law. The 5th Amendment splits similarly (Grand Jury, Double Jeopardy, Self-Incrimination, Due Process, Takings). The 4th splits into Unreasonable Search-and-Seizure and Warrant Clauses despite being textually intertwined — courts treat them separately. The 6th was kept as a single item over my initial proposal to split: the amendment reads as continuous prose with no source-text breakpoints, and the eight rights it enumerates are scholarly distinctions, not enumerated clauses. The owner pushed back on splitting it; the unitary form held.
+
+*Authors and dates.* `authors: ["Framers"]` for Articles I–VII; per-amendment proposing Congress thereafter (`["1st Congress"]` for amendments 1–10 and 27; `["39th Congress"]` for the 14th, etc.). `date` is ratification: `1788-06-21` (New Hampshire as ninth state) for the body, `1791-12-15` for the Bill of Rights, per-amendment ratification date thereafter. The 27th Amendment is an oddity — proposed 1789, ratified 1992; `authors: ["1st Congress"]`, `date: "1992-05-07"`.
+
+*Source and verification.* Three National Archives transcription pages, fetched via `curl` and converted to plain text via `pandoc`. The parser at `data/constitution/parse.ts` does not text-parse the raw — instead it carries declarative data tables of clause text, locator, short names, and supersession links. Verification asserts that every clause's text (with bracketed elisions and source-level annotations stripped) appears as a substring of the corresponding raw file. This catches transcription errors at parse time without depending on fragile text-pattern recognition for clause boundaries (which the source doesn't mark anyway). 15 `superseded_by` links encoded from the structural facts the source itself flags: the Fugitive Slave Clause superseded by the 13th Amendment Section 1; the original electoral procedure superseded by the 12th; the 18th Amendment by the 21st Section 1; and so on.
+
+*Schema redefinition with three states.* `constitutional_section` is now `string[] | null` of Constitution corpus IDs. `null` means "not yet editorially reviewed" — preserved on every Federalist and Tocqueville item, so the existing JSON files needed no rewrite. `[]` means "reviewed, no provision asserted." Non-empty means "reviewed, with cited provisions." On Constitution items the field is always `[]` — the Constitution is the referent. The null state was chosen over a binary `string[]` because it lets the editorial workflow audit which items still need cross-reference review; Federalist coverage is expected to be dense once the editorial pass runs.
+
+*Parser non-idempotence discovered, mid-step.* Attempting a sanity re-run of `data/federalist/parse.ts` after a type annotation change wiped every `plain_english` array back to `null`. Reverted via `git checkout`. The parser doesn't read back its own output and unconditionally emits `plain_english: null`; the population happens in `scripts/generate-plain-english.ts` after the baseline parse. Same shape applies to Tocqueville's `translation` field. This is a parser-design bug — the parsers look idempotent but are not — and is now documented in `CLAUDE.md` so future sessions don't repeat the mistake. The Constitution parser does not have this property; it carries no externally-populated fields and is freely re-runnable.
+
+**What this means for downstream work.**
+
+- The `constitutional_section` field is type-stable and ready to be populated by an editorial pass when Phase 6 (SCOTUS ingestion) or earlier brings the cross-reference workflow online.
+- The Q&A system prompt work in Phase 1.2 onward can reference constitutional provisions by stable ID. The Constitution items are indexable on the same retrieval terms as the other corpora.
+- The "two architectural seams kept open" decision now tracks only one open seam: parameterized modes of authority in the Phase 1.2 system prompt. The Constitution-as-corpus seam is closed.
+
+**Conclusion.** The corpus seam that was deferred to Phase 6 closed pre-Phase-1.2 because the migration cost was zero (no values to migrate) and the schema gain was real (Phase 1.2 onward can cite by ID). One parser-design bug surfaced and is documented; one architectural seam is closed; the schema now has explicit editorial-status semantics.
+
 ## Current state of the repository
 
 **What exists in the repo:**
@@ -854,7 +882,7 @@ Surgical additions to `scripts/review-annotations.ts` to make the editorial revi
 - Add a UI ahead of the system prompt being tested.
 - Change the chunk format without re-running the probe set and re-getting owner sign-off.
 - Strip retrieval metadata before passing to the model. The Q&A layer needs `corpus`, `kind`, `authorship_status`, paper number, and authors to do its job.
-- Propose generalizing Publius into a meta-product (configurable for any base text + corpora). Refused per `DECISIONS.md` ("Meta-product generalization: refused; two architectural seams kept open"). Two seams are intentionally preserved: parameterized modes of authority in the Phase 3.2 system prompt, and Constitution-as-first-class-corpus at Phase 6 with `constitutional_section` migrating to an ID reference. The corresponding `data/SCHEMA.md` migration is deferred until Phase 6 begins — flagged in `DECISIONS.md` so it does not fall off the radar.
+- Propose generalizing Publius into a meta-product (configurable for any base text + corpora). Refused per `DECISIONS.md` ("Meta-product generalization: refused; two architectural seams kept open"). One seam remains preserved (parameterized modes of authority in the Phase 1.2 system prompt). The other — Constitution-as-first-class-corpus — was resolved 2026-05-18 ahead of schedule; the corpus is built and `constitutional_section` now references Constitution IDs. See `DECISIONS.md` entry "Constitution as first-class corpus".
 
 **Do consider:**
 - How citations should appear in the model's answer. The frozen results artifact shows the metadata we have; the Q&A interface needs to decide which subset is shown to the user and which is system-internal.

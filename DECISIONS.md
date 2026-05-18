@@ -356,7 +356,7 @@ A failure in any of these surfaces in `data/tocqueville/data_quality_issues.md` 
 
 1. **Phase 3.2 system prompt: parameterized modes.** Author the Q&A system prompt so its modes of authority are a list the prompt operates over, not three named things baked into prose. The discipline (no flattening, surface disagreement, attribute precisely) is durable. The specific modes (argument / observation / holding / eventual fourth) are configuration. Phase 3 ships with one mode (argument); Phase 5 adds observation; Phase 6 adds holding. This change is structural to the prompt, not to the product surface. Recorded in the Phase 3.2 directive in `publius_project_plan.md`.
 
-2. **Phase 6 Constitution-as-corpus.** Model the U.S. Constitution as a first-class `constitution:` corpus conforming to the cross-corpus base schema. Migrate the universal `constitutional_section` field from a free-text string label to an ID reference into that corpus. SCOTUS items reference the constitutional provisions they interpret by ID; Federalist items get the same treatment. This makes the base-text-plus-corpora-in-conversation relationship latent in the data without requiring any product surface change. Recorded in the Phase 6.2 directive in `publius_project_plan.md`. **The actual `data/SCHEMA.md` edit and the data migration are deferred until Phase 6 work begins** — flagged here so it doesn't fall off the radar; not pre-emptively applied to Federalist or Tocqueville.
+2. **Constitution-as-corpus** — *resolved 2026-05-18, ahead of schedule.* The U.S. Constitution is now a first-class `constitution:` corpus (153 items at clause-level granularity). The `constitutional_section` field has been redefined as `string[] | null` of Constitution corpus IDs. Built pre-Phase-1.2 because the Federalist corpus was the only one needing migration and doing it now means doing it while there is one corpus to migrate, not three. See the "Constitution as first-class corpus" entry below for full detail.
 
 **Explicitly refused (not designed before Publius itself ships):**
 - Instance infrastructure (multi-instance hosting, isolation, deployment per tenant)
@@ -672,6 +672,51 @@ Auth-gating also makes a product design statement. Conversation threading is a d
 **Auth provider:** Clerk or NextAuth. Decision deferred to Phase 2.5 when implementation begins. Clerk is faster to wire on a Next.js/Vercel stack; NextAuth gives more control over session handling. The conversation store will use Turso (managed SQLite), consistent with the vector store decision, rather than introducing a second database service.
 
 **Revisit if:** The anonymous session token approach improves enough (e.g., a browser-standard identity layer) that persistent anonymous conversations become genuinely viable without degrading UX.
+
+---
+
+## Embedding model: Voyage (current) with documented revisit conditions
+
+**Decision:** Continue with Voyage embeddings through Phase 5. Do not switch embedding models before Phase 5 migration.
+
+**Rationale:** Switching embedding models requires re-embedding the entire corpus. The natural moment for this is Phase 5 (vector store migration), when re-embedding is unavoidable anyway. An earlier switch would incur the cost without the forcing function.
+
+**What "embedding is a bottleneck" actually means:** Three distinct failure modes require different responses:
+1. *Retrieval precision/recall is poor* — measured by hit rate on a probe set with known-good answers. This is the meaningful failure mode. Not diagnosable without a probe set.
+2. *Inter-query variance is high* — same query, different embedding runs, different hits. Characterized in Phase 1.3. A different model may have better or worse variance, but this is somewhat orthogonal to quality.
+3. *Semantic distinctions not encoded* — the Federalist/Tocqueville/Court epistemic boundaries may not be well-separated in a general-purpose embedding space. Only diagnosable against the probe set.
+
+**Revisit if:** Probe set hit rate (once built) falls below ~80% at top-10, or within-session variance (Phase 1.3 characterization) is high enough to materially affect retrieval reliability.
+
+**Primary alternative:** Kanon 2 (`isaacus/kanon-2`) — currently #1 on the MLEB legal embedding benchmark (Oct 2025), 16K token context, designed for legal semantic search and RAG. Note: Voyage's general-purpose strength may actually outperform legal-specialist models on the Federalist Papers and Tocqueville, which are argumentative prose, not case law or statutory text. Only the probe set can settle this.
+
+**Prerequisite for any comparison:** A probe set of 20–30 queries with hand-labeled correct chunks must exist before any model comparison is meaningful. "Model B surfaces different results" is not evidence that Model B is better.
+
+---
+
+## Constitution as first-class corpus: pulled forward from Phase 6
+
+**Decision:** The U.S. Constitution is modeled as a first-class corpus (`constitution:` slug) conforming to the cross-corpus base schema, with the Preamble, 84 body clauses across Articles I–VII, and 68 amendment clauses across Amendments I–XXVII as addressable items (153 total). Built 2026-05-18, pre-Phase-1.2, rather than at the originally-scheduled Phase 6.
+
+**Why now rather than Phase 6:**
+- The architecture seam was already open in `DECISIONS.md`. The schema migration to support it was the only thing deferred.
+- Doing it pre-Phase-1.2 means migrating one corpus (Federalist) at most rather than three (Federalist + Tocqueville + SCOTUS). In fact zero migration was needed: every Federalist and Tocqueville item carried `constitutional_section: null`, never a free-text value.
+- The Q&A system prompt work in Phase 1.2 onward benefits from being able to reference constitutional provisions by stable ID, even before the editorial pass populates the cross-references.
+
+**Granularity rule:** The clause is the smallest independently citable unit. Articles and Sections are navigational containers, not items. ID format: `constitution:art1.sec8.cl3` (Commerce Clause), `constitution:amdt14.sec1.cl4` (Equal Protection Clause), `constitution:preamble`. The locator carries only as much depth as is needed to address the item — `constitution:art5` for an article with no sections, `constitution:art3.sec1` for a single-clause section.
+
+**`constitutional_section` schema** (replacing the prior free-text definition): `string[] | null` of Constitution corpus IDs. Three states with editorial meaning:
+- `null` — not yet reviewed for cross-references (default after parse).
+- `[]` — reviewed, no provision asserted.
+- Non-empty array — reviewed, with one or more cited provisions.
+
+On Constitution corpus items themselves, the field is always `[]` (the Constitution is the referent, not a referrer).
+
+**Editorial calls encoded in the parse:** clause boundaries follow conventional legal-treatise practice; the source text marks Articles and Sections but not clauses. Where canonical sub-clauses exist with widely-used short names (e.g., the four clauses of the 14th Amendment's Section 1, the five clauses of the 5th Amendment), the section is split. Where the text reads as continuous prose with no canonical sub-divisions (e.g., the 6th Amendment), it is kept as a single item even when it enumerates multiple rights. Article I §8 clauses 2–18 carry a bracketed editorial prefix `[The Congress shall have Power]` so each is independently readable; the bracketed text is stripped during text-in-raw verification. 15 `superseded_by` links capture the structural-textual supersession relationships flagged in the source (e.g., the Fugitive Slave Clause `art4.sec2.cl3` ← `amdt13.sec1`; the original electoral procedure `art2.sec1.cl3` ← `amdt12`).
+
+**Source:** National Archives transcriptions of the engrossed Constitution and the ratified amendments, fetched 2026-05-18. Three SHA-256-anchored raw files committed under `data/constitution/raw/`. The parser asserts at build time that every clause's text appears verbatim in the corresponding raw file (modulo bracketed elisions and source-level annotations).
+
+**Revisit if:** SCOTUS ingestion at Phase 6 surfaces a need for further sub-clause granularity (e.g., the four clauses of the 14th §1 are already split, but case law might attach to even finer distinctions); or the editorial pass that populates `constitutional_section` arrays on Federalist and Tocqueville reveals that the current clause boundaries don't match how scholarly sources cite provisions.
 
 ---
 

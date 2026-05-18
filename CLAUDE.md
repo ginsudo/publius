@@ -75,6 +75,19 @@ Do not add scope to a later phase at the expense of a current one.
 
 ---
 
+## Parser idempotence — Federalist and Tocqueville parsers are not safe to re-run
+
+`data/federalist/parse.ts` and `data/tocqueville/parse.ts` look like idempotent rebuild scripts. They are not. Re-running them will wipe externally-populated editorial fields back to `null`:
+
+- **Federalist** — `plain_english` arrays are populated by `scripts/generate-plain-english.ts` *after* the parser produces the baseline JSON. The parser does not read back its own output and unconditionally emits `plain_english: null` on every paper. A naive re-run regresses every populated translation.
+- **Tocqueville** — same pattern applies to the `translation` field in the Tocqueville extension. Populated by `scripts/generate-translation.ts`; not re-read by the parser.
+
+Before running either parser: confirm there is no externally-populated state in the current JSON, or stash the populated values and re-merge after. The Constitution parser (`data/constitution/parse.ts`) does not have this property — it is freely re-runnable because it carries no externally-populated fields.
+
+This is a parser-design issue worth fixing properly (read existing populated values before emitting) but the fix is out of scope for any session that isn't explicitly about parser refactoring.
+
+---
+
 ## The System Prompt
 
 The system prompt for the Q&A layer is the highest-stakes artifact in the project. Claude Code drafts and runs tests against it; the project owner sets it. Do not treat a system prompt that produces plausible-sounding output as done — test it against 10–15 questions spanning easy and hard cases, including cases where genuine disagreement should surface and where a naive model would flatten it.
