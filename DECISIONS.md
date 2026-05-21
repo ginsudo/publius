@@ -766,6 +766,38 @@ Re-triage policy is structural rather than convention-based: when the triage scr
 
 ---
 
+## Triage rubric v2 — tables are EXHAUSTIVE, no reactive additions (May 2026)
+
+**Decision:** Both per-corpus triage rubrics (Federalist, Tocqueville) are marked v2. The single substantive rubric change is to add explicit EXHAUSTIVE language to every settled-substitution and established-rendering table — the classifier must treat each table as closed, not as illustrative examples of an open pattern. No table entries are added in this revision.
+
+**Background — what the v1 smoke run found.** A 20-flag smoke run of the v1 Federalist rubric against `--limit 20` produced 3 accepts and 1 rewrite. Two of the three accepts were rubric violations: the classifier auto-accepted \`contracted → limited\` and \`adverted to → considered\` (Federalist 9 ¶4), and \`proportionably → proportionally\` (Federalist 8 ¶11), describing all three as "settled substitutions" although none of them is in the 8-entry "Consistent substitutions accepted" table. The classifier read the table as illustrative of an "archaic-to-modern lexical update" pattern and then judged for itself which novel substitutions belonged to that pattern.
+
+This is the exact asymmetric-tolerance failure the rubric exists to prevent. The accept tier is the only tier where a wrong call ships without human inspection; the rubric was supposed to keep that tier tight.
+
+**Two failure modes, not one.** Sealing the tables fixes the over-generalization. But the Federalist table is also genuinely thin — derived from only ~55 reviewed Federalist paragraphs, with 825 still un-reviewed. There exist legitimate settled substitutions the table never had the chance to record. Both facts are true; they must not be conflated.
+
+**Why no entries are added in this revision.** Adding entries to the table reactively from triage output would let the classifier shape the editorial standard it is meant to be measured against. The standard must be owner-derived from actual review work, not classifier-derived from misfires. The smoke run's three candidate additions were considered and all three rejected on substantive grounds:
+
+- \`proportionably → proportionally\`: the flag itself noted register loss ("precise calibrated relationship vs. rough approximation"). A substitution the flagging pass raised a concern about is by definition not settled.
+- \`contracted → limited\`: slightly off-axis from Montesquieu's point (he means a SMALL territory, not merely a bounded one).
+- \`adverted to → considered\`: closer to a viable mapping, but still a live editorial call rather than a settled rule.
+
+All three route to NEEDS JUDGMENT under v2. If the owner judges any of them table-worthy during deliberate Federalist review, they will be added then, in context. The Tocqueville table is left at its existing entries (it was derived from a complete Volume I review, so the same thin-table problem does not apply).
+
+**Concrete v2 changes:**
+
+- Federalist rubric: "Consistent substitutions accepted" and "Preserve these words" tables explicitly marked exhaustive. Classifier instruction: a substitution qualifies for "accept" only if the flag's term is a verbatim member of the substitution table AND the rendering uses the table's right-hand value verbatim. Similarity is not membership.
+- Tocqueville rubric: "Established term renderings," "Untranslated terms," and "Spelling standardizations" tables explicitly marked exhaustive. Same verbatim-membership instruction.
+- File-level version bumps: \`federalist-v1\` → \`federalist-v2\`; \`tocqueville-v1\` → \`tocqueville-v2\`. The structural re-triage policy (DECISIONS.md "Confidence-tiered flag triage pipeline") will re-classify the 20 already-tagged smoke-run records on the next run; no manual revert needed.
+
+**Validation gate.** The v2 rubric is validated against Tocqueville Volume I as a labeled test set — 378 already-reviewed units (296 accepted, 82 flagged_for_rewrite by the owner) form an empirical comparison surface. The safety-critical metric is how many units the v2 classifier tiers \`accept\` that the owner actually flagged_for_rewrite. That number must be at or very near zero. If not, v2 is not done; do not proceed to the Federalist full triage. The back-test result is recorded under IMPLEMENTATION_LOG.md.
+
+**Reactive-addition discipline going forward.** This entry establishes the standing principle: triage-classifier output is not a source of additions to either rubric's settled tables. The classifier is measured against the tables; the tables are owner-derived from review. If the classifier's persistent misfires reveal a pattern the owner agrees should be settled, the addition happens during deliberate review, not during pipeline tuning.
+
+**Revisit if:** a back-test against a labeled set surfaces a failure mode v2 does not catch; the verbatim-membership instruction proves too strict in a way the owner did not intend (e.g., capitalization variants of an established rendering blocking otherwise-clean accepts); or the deferred rubric-calibration loop (recorded as point f of the v1 entry) is built.
+
+---
+
 # Open observations
 
 Items in this section are observed behaviors or tensions not yet decided. They are recorded here so they don't get lost between sessions, and so that a future decision has the original observation in front of it rather than a paraphrase. When an item resolves into a standing decision, it moves up into the main decision list and is removed from here.

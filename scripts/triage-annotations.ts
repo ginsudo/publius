@@ -25,6 +25,7 @@ import { readFileSync, writeFileSync, renameSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
+import { loadEnv } from '../data/eval/lib.ts';
 
 // ---------------------------------------------------------------------------
 // Model and request parameters.
@@ -57,6 +58,8 @@ const SYSTEM_PROMPT_HEADER = `You are triaging editorial flags on a literary tra
 
 ASYMMETRIC ERROR TOLERANCE: misrouting a flag to "manual" costs nothing — the editor reviews it the same way they would have anyway. Misrouting a flag to "accept" is a real error — the rendering ships without human inspection. When in doubt, output "manual". Never output "accept" if anything about the flag, the original, or the rendering gives you pause.
 
+THE TABLES BELOW ARE EXHAUSTIVE, NOT ILLUSTRATIVE. A substitution or rendering qualifies for "accept" only if it is a VERBATIM member of the relevant table. Similarity to a table entry is NOT membership. Pattern-matching beyond the literal table contents — concluding "this looks like the kind of substitution the table sanctions" — is exactly the failure mode this instruction exists to prevent. If the flag's term or rendering is not literally in the table, the answer is "manual", regardless of how reasonable the substitution may look.
+
 The corpus-specific rubric below tells you which patterns qualify for "accept" or "rewrite". If a flag does not match an explicit pattern in the rubric, output "manual".`;
 
 // ---------------------------------------------------------------------------
@@ -64,7 +67,7 @@ The corpus-specific rubric below tells you which patterns qualify for "accept" o
 // flagged unreviewed records on next run. Source: EDITORIAL_REVIEW_HANDOFF.md.
 // ---------------------------------------------------------------------------
 
-const FEDERALIST_RUBRIC_VERSION = 'federalist-v1';
+const FEDERALIST_RUBRIC_VERSION = 'federalist-v2';
 
 const FEDERALIST_RUBRIC = `CORPUS: Federalist Papers (English → modern English transliteration)
 
@@ -116,12 +119,12 @@ HARD GUARDS — never output "accept" if any of these is true:
     all-caps emphasis present in the original.
   - The rendering has any visible sign of truncation or syntactic incompleteness.
 
-PRESERVE THESE WORDS — having the flag's term match any of these forces NOT-accept:
+PRESERVE THESE WORDS (EXHAUSTIVE LIST) — having the flag's term match any of these forces NOT-accept. These 16 entries are the complete list; any other archaic-sounding word is NOT covered by this guard, but is also NOT auto-acceptable just because it's missing — route to "manual":
   emoluments, sated, culpable, specious, pretended, deluged, denominate,
   "spirit of enterprise", implacable, haughty, "certain characters", trite,
   liberal (18c sense), pernicious, signal (adj.), "not too highly wrought"
 
-CONSISTENT SUBSTITUTIONS ACCEPTED — flag's term matching the left side AND rendering using the right side is a candidate for "accept":
+CONSISTENT SUBSTITUTIONS ACCEPTED (EXHAUSTIVE LIST OF 8) — these 8 mappings are the COMPLETE set of substitutions that may be auto-accepted. A substitution qualifies for "accept" only if (a) the flag's term is a verbatim member of the left side of one of these rows, AND (b) the rendering uses the right-hand value verbatim. Any substitution not in this exact list — including ones that look "similar" or "obviously of the same kind" — routes to "manual". The classifier does NOT have license to extend this table:
   - laws of nations → international law
   - sanguine → optimistic
   - candor → fairness / openness
@@ -138,7 +141,7 @@ OUTPUT FORMAT — respond with strict JSON, no markdown, no preamble:
 // Tocqueville rubric.
 // ---------------------------------------------------------------------------
 
-const TOCQUEVILLE_RUBRIC_VERSION = 'tocqueville-v1';
+const TOCQUEVILLE_RUBRIC_VERSION = 'tocqueville-v2';
 
 const TOCQUEVILLE_RUBRIC = `CORPUS: Democracy in America (Tocqueville, French → English)
 
@@ -201,14 +204,14 @@ HARD GUARDS — never output "accept" if any of these is true:
   - The rendering softens, modernizes, or euphemizes any period vocabulary term.
   - The rendering contains an inline translator's note (route to "rewrite" instead).
 
-PERIOD VOCABULARY — these terms must never appear in an "accept" tier, even if the rendering looks correct:
+PERIOD VOCABULARY (EXHAUSTIVE LIST of hard-guard terms) — these terms must never appear in an "accept" tier, even if the rendering looks correct. This guard is closed: terms outside this list are not hard-guarded by this rule, but they are also NOT auto-acceptable just because they're missing — route to "manual" if anything else gives you pause:
   sauvages, sauvage, nègres, moeurs, mœurs, commune, buffles, patrie, liberté,
   néant, élan, cité, peuplade, métis
 
-UNTRANSLATED TERMS — TERM flag for these, preserved-italicized in rendering, is candidate for "accept":
+UNTRANSLATED TERMS (EXHAUSTIVE LIST OF 4) — TERM flag for these, preserved-italicized in rendering, is candidate for "accept". This is the COMPLETE list; any other untranslated French term is NOT covered, regardless of how plausible the editorial reasoning for leaving it untranslated may seem. Verbatim membership only:
   raison d'État, Ancien Régime, bourgeois, bourgeoisie, arrondissement
 
-ESTABLISHED TERM RENDERINGS — TERM flag where rendering uses the right-hand value verbatim is a candidate for "accept" (selected entries; rendering must match exactly):
+ESTABLISHED TERM RENDERINGS (EXHAUSTIVE LIST) — TERM flag where the flag's french is a VERBATIM member of the left side AND the rendering uses the right-hand value verbatim is a candidate for "accept". This is the COMPLETE list. Similarity is not membership; the classifier may not extend this table by analogy. Variants of established renderings (different word order, partial overlap, "spirit of the table") do NOT qualify. The list:
   - principe générateur → generative principle
   - loi de la représentation → principle of representation
   - corps constituant → constituent body
@@ -244,7 +247,7 @@ ESTABLISHED TERM RENDERINGS — TERM flag where rendering uses the right-hand va
   - les ressorts du gouvernement → the springs of government
   - promenant la torche → carrying the torch
 
-SPELLING STANDARDIZATIONS — READING flag where rendering applied the standard form is candidate for "accept":
+SPELLING STANDARDIZATIONS (EXHAUSTIVE LIST OF 4) — READING flag where rendering applied the standard form is candidate for "accept". Verbatim membership only; any other spelling normalization is NOT covered:
   - Meaupou → Maupeou
   - Hecwelder → Heckewelder
   - Blakstone → Blackstone
@@ -765,6 +768,8 @@ function parseArgs(argv: string[]): Args {
 // ---------------------------------------------------------------------------
 
 async function main(): Promise<void> {
+  loadEnv();
+
   const args = parseArgs(process.argv.slice(2));
   const adapter =
     args.corpus === 'federalist' ? createFederalistAdapter() : createTocquevilleAdapter();

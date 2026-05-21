@@ -871,6 +871,32 @@ The one-at-a-time flag review CLI (`scripts/review-annotations.ts`, Federalist +
 
 **Conclusion.** The throughput improvement is concentrated in the rewrite-tier diff flow and the pre-filled rationale on the manual tier; the accept-tier batch is small by design (asymmetric tolerance, no carve-out for period vocabulary). The schema is structurally safe against rubric drift across stateless sessions because the file-level version field is checked on every run. The half-built rubric-calibration feedback loop is documented as deferred, not accidental.
 
+### Phase 3.2 review — triage rubric v2 (exhaustive tables) and Volume I back-test (2026-05-22)
+
+A 20-flag Federalist smoke run of the v1 classifier surfaced a rubric-adherence bug: the model read the settled-substitution tables as illustrative rather than exhaustive, auto-accepting three substitutions that were not table entries. v2 tightens the rubric language to make the tables verbatim-exhaustive and validates the fix against Tocqueville Volume I as a labeled test set.
+
+**Path.**
+
+*The v1 smoke run.* `node --experimental-strip-types scripts/triage-annotations.ts --corpus federalist --limit 20` classified the first 20 unreviewed Federalist flags. 3 accepts, 1 rewrite, 16 manual. The rewrite (Federalist 8 ¶12) caught a genuine truncation — `felicity` dropped, leaving `"This peculiar of situation"` — that matches the rubric's CLEAR REWRITE pattern. One of the three accepts (Federalist 9 ¶9, `assemblage` preserved verbatim against a substitution-risk flag) was a clean false-alarm match. The other two were the problem: Federalist 8 ¶11 auto-accepted `proportionably → proportionally` and Federalist 9 ¶4 auto-accepted `contracted → limited` and `adverted to → considered`, with rationales describing all three as "settled substitutions" — although none appears in the 8-entry "Consistent substitutions accepted" table. The model had read the table as illustrative of an "archaic-to-modern adverbial update" pattern and was judging novel substitutions against that pattern.
+
+*The asymmetric-tolerance read.* This is precisely the failure mode the rubric was designed to prevent. The accept tier is the one tier where a wrong call ships without human inspection. The Stage 1 audit had shown the rule worked when applied strictly; the v1 prompt did not make strictness explicit enough. "Accepts only on verbatim table membership" had been the intent; the rubric text did not say so.
+
+*Owner consultation before any rubric edit.* Per the task discipline, the smoke-run output was presented to the owner with full renderings before any code change. Two interpretive options were on the table: (a) seal the tables and route the three substitutions to NEEDS JUDGMENT; (b) add the three substitutions as legitimate settled mappings. The owner rejected (b) on substantive grounds and on a procedural-discipline ground:
+
+- `proportionably → proportionally`: the v1 flag itself noted register loss ("precise calibrated relationship vs. rough approximation"). A substitution the flagging pass raised a concern about is by definition not settled.
+- `contracted → limited`: slightly off-axis from Montesquieu's point (Montesquieu argues for a SMALL republic, not merely a bounded one).
+- `adverted to → considered`: closer to viable but still a live editorial call.
+
+The procedural-discipline point: the Federalist table is thin because Federalist review is barely started (55 of 880 paragraphs reviewed). Adding entries reactively from triage output would let the classifier shape the editorial standard it is meant to be measured against. The standard must be owner-derived from review work in context. This established the standing principle that the triage classifier is not a source of additions to the substitution tables — recorded in `DECISIONS.md` "Triage rubric v2 — tables are EXHAUSTIVE, no reactive additions."
+
+*v2 rubric tightening.* Both rubrics gain explicit EXHAUSTIVE markers on every settled-substitution and established-rendering table, plus an explicit instruction: a substitution qualifies for "accept" only if the flag's term is a verbatim member of the table AND the rendering uses the table's right-hand value verbatim. Similarity is not membership. Version constants bump from `federalist-v1`/`tocqueville-v1` to `federalist-v2`/`tocqueville-v2`. The structural re-triage policy (file-level `triage_rubric_version` compared against the code constant on every run) will re-classify the 20 already-tagged smoke-run records on the next run.
+
+*Classifier QoL fixes accompanying v2.* The `parse_failures` metric is renamed `parse_retries`, and a separate `parse_terminal` counter is added for the actual "defaulted to manual" cases — the v1 metric conflated retries with terminal failures. `max_tokens` bumps from 256 to 512 as defense-in-depth against truncation-driven parse failures (smoke-run rationales averaged 178 chars, peaked at 226). Raw output on first-attempt parse failure logs to `/tmp/triage-debug-<corpus>.log` for diagnosability.
+
+*Volume I back-test as validation gate.* Tocqueville Volume I is fully reviewed — 378 units, 296 accepted, 82 flagged_for_rewrite, all real owner decisions. It is a labeled test set. The v2 classifier is run against the already-decided units (compute and record `triage_tier` only; never modify `editorial_status`). A confusion matrix is built. The safety-critical metric is how many units the classifier tiers `accept` that the owner actually flagged_for_rewrite. That number must be at or very near zero; if not, v2 is not done. The back-test result is recorded immediately below this paragraph once Step 4 of the v2 build completes — see follow-up entry "Volume I back-test result" (this entry is updated in place when the back-test runs).
+
+**Out of scope for this session.** The full Federalist triage (825 unreviewed paragraphs) is deferred. The Federalist rubric is known-incomplete; running the full triage before the owner has resumed review and grown the substitution table from real work would be premature. No corpus content edits in this session. No `review --tier=accept` against the smoke-run records before the v2 re-triage completes.
+
 ## Current state of the repository
 
 **What exists in the repo:**
