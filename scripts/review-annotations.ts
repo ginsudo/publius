@@ -7,6 +7,22 @@
 //   node --experimental-strip-types scripts/review-annotations.ts --corpus federalist
 //   node --experimental-strip-types scripts/review-annotations.ts --corpus tocqueville
 //
+// Per-tier flows (requires triage_tier populated by scripts/triage-annotations.ts):
+//   node --experimental-strip-types scripts/review-annotations.ts --corpus federalist --tier accept
+//   node --experimental-strip-types scripts/review-annotations.ts --corpus federalist --tier rewrite
+//   node --experimental-strip-types scripts/review-annotations.ts --corpus federalist --tier manual
+//
+// --tier accept   — show the full batch of accept-tier units (triage_tier
+//                   "accept", editorial_status null), one confirm prompt,
+//                   auto-apply (sets editorial_status to "accepted") on y.
+// --tier rewrite  — per-unit review filtered to rewrite-tier units. The
+//                   triage rationale is shown inline; rewrites are NEVER
+//                   auto-applied (use `f` to confirm flag-for-rewrite, or
+//                   override with `a`/`e`).
+// --tier manual   — per-unit review filtered to manual-tier units. The
+//                   triage rationale is shown inline as a first opinion;
+//                   the owner uses the full command set as before.
+//
 // The script pages through a flat stream of reviewable units in document
 // order. A reviewable unit is a paragraph (federalist) or a paragraph or
 // footnote (tocqueville). Only units with flags appear in the stream;
@@ -37,6 +53,16 @@ type NormalizedFlag = {
 type EditorialState = {
   editorial_status: EditorialStatus;
   editorial_note: string | null;
+};
+
+// Triage tier assigned by scripts/triage-annotations.ts. null when the
+// unit has not been triaged (either pre-triage or rubric version mismatch).
+type Tier = 'accept' | 'rewrite' | 'manual';
+
+type TriageState = {
+  triage_tier: Tier | null;
+  triage_rationale: string | null;
+  triage_generated_at: string | null;
 };
 
 type StreamUnit =
@@ -84,6 +110,7 @@ interface CorpusAdapter {
   describeUnit(unit: StreamUnit): string;
   parseLocator(rest: string[]): LocatorResolve;
   getEditorialState(unit: StreamUnit): EditorialState;
+  getTriageState(unit: StreamUnit): TriageState;
   getFlags(unit: StreamUnit): NormalizedFlag[];
   readEditTarget(unit: StreamUnit): EditTarget | null;
   // Mutators — each writes through to disk atomically.
@@ -159,6 +186,9 @@ type FedParagraphAnn = {
   flags: FedFlagEntry[];
   editorial_status: EditorialStatus;
   editorial_note: string | null;
+  triage_tier: Tier | null;
+  triage_rationale: string | null;
+  triage_generated_at: string | null;
 };
 
 type FedPaperAnn = {
@@ -241,6 +271,12 @@ function createFederalistAdapter(): CorpusAdapter {
       lines.push(
         `--- ${it.authors.join(', ')} | Paragraph ${unit.paragraphIndex} of ${it.paragraphs.length} | flagged ${position}/${total} | reviewed ${reviewed}/${total}`,
       );
+      if (pa.triage_tier !== null) {
+        lines.push('');
+        lines.push(
+          `TRIAGE: ${pa.triage_tier}${pa.triage_rationale !== null ? ' — ' + pa.triage_rationale : ''}`,
+        );
+      }
       lines.push('');
       lines.push('ORIGINAL:');
       lines.push(original);
@@ -297,6 +333,15 @@ function createFederalistAdapter(): CorpusAdapter {
       return {
         editorial_status: pa.editorial_status,
         editorial_note: pa.editorial_note,
+      };
+    },
+
+    getTriageState(unit): TriageState {
+      const pa = paraAnn(unit);
+      return {
+        triage_tier: pa.triage_tier,
+        triage_rationale: pa.triage_rationale,
+        triage_generated_at: pa.triage_generated_at,
       };
     },
 
@@ -412,6 +457,9 @@ type TocParagraphAnn = {
   flags: TocFlagEntry[];
   editorial_status: EditorialStatus;
   editorial_note: string | null;
+  triage_tier: Tier | null;
+  triage_rationale: string | null;
+  triage_generated_at: string | null;
 };
 
 type TocFootnoteAnn = {
@@ -419,6 +467,9 @@ type TocFootnoteAnn = {
   flags: TocFlagEntry[];
   editorial_status: EditorialStatus;
   editorial_note: string | null;
+  triage_tier: Tier | null;
+  triage_rationale: string | null;
+  triage_generated_at: string | null;
 };
 
 type TocItemAnn = {
@@ -480,6 +531,15 @@ function createTocquevilleAdapter(): CorpusAdapter {
     return {
       editorial_status: a.editorial_status,
       editorial_note: a.editorial_note,
+    };
+  }
+
+  function getTriage(unit: StreamUnit): TriageState {
+    const a = unit.kind === 'paragraph' ? paraAnn(unit) : footnoteAnn(unit);
+    return {
+      triage_tier: a.triage_tier,
+      triage_rationale: a.triage_rationale,
+      triage_generated_at: a.triage_generated_at,
     };
   }
 
@@ -593,6 +653,12 @@ function createTocquevilleAdapter(): CorpusAdapter {
         lines.push(
           `--- Paragraph ${unit.paragraphIndex} of ${it.paragraphs.length} | flagged ${position}/${total} | reviewed ${reviewed}/${total}`,
         );
+        if (pa.triage_tier !== null) {
+          lines.push('');
+          lines.push(
+            `TRIAGE: ${pa.triage_tier}${pa.triage_rationale !== null ? ' — ' + pa.triage_rationale : ''}`,
+          );
+        }
         lines.push('');
         lines.push('ORIGINAL (FR):');
         lines.push(original);
@@ -632,6 +698,12 @@ function createTocquevilleAdapter(): CorpusAdapter {
       lines.push(
         `--- Footnote ${unit.marker} | flagged ${position}/${total} | reviewed ${reviewed}/${total}`,
       );
+      if (fnAnn.triage_tier !== null) {
+        lines.push('');
+        lines.push(
+          `TRIAGE: ${fnAnn.triage_tier}${fnAnn.triage_rationale !== null ? ' — ' + fnAnn.triage_rationale : ''}`,
+        );
+      }
       lines.push('');
       lines.push('ORIGINAL (FR):');
       lines.push(originalBody);
@@ -714,6 +786,7 @@ function createTocquevilleAdapter(): CorpusAdapter {
     },
 
     getEditorialState: getState,
+    getTriageState: getTriage,
     getFlags: flagsOf,
 
     readEditTarget(unit): EditTarget | null {
@@ -951,8 +1024,12 @@ function printSummary(
 const SUPPORTED_SLUGS = ['federalist', 'tocqueville'] as const;
 type Slug = (typeof SUPPORTED_SLUGS)[number];
 
-function parseArgs(argv: string[]): { slug: Slug } {
+const SUPPORTED_TIERS = ['accept', 'rewrite', 'manual'] as const;
+type TierFilter = (typeof SUPPORTED_TIERS)[number];
+
+function parseArgs(argv: string[]): { slug: Slug; tier: TierFilter | null } {
   let slug: Slug = 'federalist';
+  let tier: TierFilter | null = null;
   for (let i = 0; i < argv.length; i++) {
     if (argv[i] === '--corpus') {
       const v = argv[i + 1];
@@ -963,11 +1040,20 @@ function parseArgs(argv: string[]): { slug: Slug } {
       }
       slug = v as Slug;
       i++;
+    } else if (argv[i] === '--tier') {
+      const v = argv[i + 1];
+      if (typeof v !== 'string' || !(SUPPORTED_TIERS as readonly string[]).includes(v)) {
+        throw new Error(
+          `--tier requires one of: ${SUPPORTED_TIERS.join(', ')}`,
+        );
+      }
+      tier = v as TierFilter;
+      i++;
     } else {
       throw new Error(`unknown argument: ${argv[i]}`);
     }
   }
-  return { slug };
+  return { slug, tier };
 }
 
 function buildAdapter(slug: Slug): CorpusAdapter {
@@ -980,16 +1066,102 @@ function buildAdapter(slug: Slug): CorpusAdapter {
 }
 
 // ---------------------------------------------------------------------------
+// Tier filter — when --tier is set, restrict the stream to units whose
+// triage_tier matches AND whose editorial_status is null. Units the owner
+// has already decided on are excluded from the per-tier flow (no action to
+// take); the no-flag invocation still shows them.
+// ---------------------------------------------------------------------------
+
+function filterByTier(
+  flagged: StreamUnit[],
+  adapter: CorpusAdapter,
+  tier: TierFilter,
+): StreamUnit[] {
+  return flagged.filter((u) => {
+    const t = adapter.getTriageState(u);
+    if (t.triage_tier !== tier) return false;
+    const e = adapter.getEditorialState(u);
+    return e.editorial_status === null;
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Accept-tier batch flow — show every accept-tier unit (locator + rationale
+// + flag summary) so the owner can scroll the full batch, then a single
+// confirm. On y, walks the batch and calls acceptUnit on each (atomic write
+// per record). BULK BUT NOT BLIND — the full list is shown before any write.
+// ---------------------------------------------------------------------------
+
+async function runAcceptBatch(
+  adapter: CorpusAdapter,
+  units: StreamUnit[],
+  rl: ReturnType<typeof createInterface>,
+): Promise<void> {
+  console.log('');
+  console.log(`=== ACCEPT-TIER BATCH (${adapter.slug}) ===`);
+  console.log(`${units.length} units will be set to editorial_status = "accepted" on confirmation.`);
+  console.log('');
+  for (let i = 0; i < units.length; i++) {
+    const u = units[i];
+    const t = adapter.getTriageState(u);
+    const flagSummary = adapter.getFlags(u).map((f) => f.kind).join(',');
+    const rationale = t.triage_rationale ?? '(no rationale recorded)';
+    console.log(`  ${String(i + 1).padStart(4)}. ${adapter.describeUnit(u)}  [${flagSummary}]`);
+    console.log(`         ${rationale}`);
+  }
+  console.log('');
+  console.log(`=== END BATCH (${units.length} units) ===`);
+  const answer = (
+    await rl.question(`Auto-accept all ${units.length} units? (y/N) `)
+  ).trim().toLowerCase();
+  if (answer !== 'y' && answer !== 'yes') {
+    console.log('(no units accepted; exiting)');
+    return;
+  }
+  let applied = 0;
+  for (const u of units) {
+    adapter.acceptUnit(u);
+    applied++;
+  }
+  console.log(`Applied: ${applied} units now editorial_status = "accepted".`);
+}
+
+// ---------------------------------------------------------------------------
 // Main loop — adapter-agnostic.
 // ---------------------------------------------------------------------------
 
 async function main(): Promise<void> {
-  const { slug } = parseArgs(process.argv.slice(2));
+  const { slug, tier } = parseArgs(process.argv.slice(2));
   const adapter = buildAdapter(slug);
 
-  const flagged = adapter.buildStream();
-  if (flagged.length === 0) {
+  const fullStream = adapter.buildStream();
+  if (fullStream.length === 0) {
     console.log('No flagged units found in annotations file. Nothing to review.');
+    return;
+  }
+
+  // When --tier is set, restrict the stream. The accept-tier flow is special:
+  // batch-display + single confirm + auto-apply + exit, no per-unit loop.
+  let flagged: StreamUnit[];
+  if (tier !== null) {
+    flagged = filterByTier(fullStream, adapter, tier);
+    if (flagged.length === 0) {
+      console.log(
+        `No units with triage_tier === "${tier}" and editorial_status === null. Nothing to do for this tier.`,
+      );
+      return;
+    }
+  } else {
+    flagged = fullStream;
+  }
+
+  if (tier === 'accept') {
+    const rl = createInterface({ input: process.stdin, output: process.stdout });
+    try {
+      await runAcceptBatch(adapter, flagged, rl);
+    } finally {
+      rl.close();
+    }
     return;
   }
 
@@ -999,6 +1171,11 @@ async function main(): Promise<void> {
   const sessionStats: SessionStats = { accepted: 0, flagged_for_rewrite: 0 };
 
   const rl = createInterface({ input: process.stdin, output: process.stdout });
+
+  if (tier !== null) {
+    console.log('');
+    console.log(`(filtered to triage_tier === "${tier}", editorial_status === null — ${flagged.length} units)`);
+  }
 
   // Confirms overwrite of an existing non-null status. Returns true to proceed,
   // false to abort. Anything other than y/yes counts as no.
