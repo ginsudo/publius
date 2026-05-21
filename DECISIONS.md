@@ -720,6 +720,52 @@ On Constitution corpus items themselves, the field is always `[]` (the Constitut
 
 ---
 
+## Confidence-tiered flag triage pipeline (May 2026)
+
+**Decision:** The flag review pipeline is reworked from a single one-at-a-time interactive flow into a two-stage process: (1) a non-interactive triage classifier sorts unreviewed flags into three confidence tiers, and (2) the interactive review CLI gains a `--tier` filter so the owner can clear each tier through the workflow appropriate to its risk. The change is corpus-agnostic infrastructure; both the Federalist and Tocqueville annotations files participate.
+
+**Options considered:**
+- Keep the one-at-a-time flow and accept the throughput cost on the ~825 unreviewed Federalist paragraphs and forthcoming Volume II Tocqueville backlog.
+- Add a triage step but auto-apply both accepts and rewrites once classified.
+- Add a triage step with auto-apply on accepts only; rewrites remain per-unit review; the "needs judgment" tier keeps the existing one-at-a-time flow with the classifier's rationale pre-displayed.
+
+**Reasoning — six points:**
+
+**(a) Tier design and asymmetric-error rationale.** The classifier sorts each flag into one of three tiers: `accept`, `rewrite`, or `manual`. The cost asymmetry is the load-bearing premise: a flag wrongly routed to `manual` costs nothing — the owner reviews it the same way they would have anyway. A flag wrongly routed to `accept` is a real error, because the rendering then ships without human inspection. The classifier is therefore tuned to dump anything ambiguous into `manual`. "When uncertain, do not auto-accept" is the operative rule. The Stage 1 audit (30 already-reviewed Tocqueville Volume I flags) confirmed the asymmetry holds: zero of the audit's CLEAR ACCEPT classifications had been rewritten by the owner; zero of the CLEAR REWRITE classifications had been accepted.
+
+**(b) Auto-apply asymmetry.** Accepts may be auto-applied after the owner confirms the batch — accepting an existing rendering is low-risk and reversible. Rewrites are NEVER auto-applied — a rewrite is newly-generated text that must be shown to the owner as a proposed diff for individual approval. The CLI displays the full list of accept-tier flags before any batch action so the owner can scroll and confirm; bulk but not blind. The `manual` tier drops into the existing one-at-a-time review flow with the triage rationale pre-displayed as a first opinion.
+
+**(c) Full three-command build despite small CLEAR ACCEPT bin.** The Volume I audit showed lopsided tier ratios under the asymmetric rule: ~6% of accepts qualified as CLEAR ACCEPT (1/18 sampled), ~42% of rewrites qualified as CLEAR REWRITE (5/12 sampled), and ~80% landed in NEEDS JUDGMENT. The CLEAR ACCEPT bin is small enough that the throughput win from auto-applying it is modest. The full three-command pipeline was built anyway because (i) the rewrite-diff flow is the larger throughput win — Constitution and Jefferson back-translations classify reliably as CLEAR REWRITE — and (ii) the practical value of the whole pipeline lives in the pre-filled triage rationale shown on the NEEDS JUDGMENT tier. The rationale folds the owner's current "paste into a chat for a second opinion" step directly into the CLI. The audit ratios are Volume I figures; Federalist may distribute differently and the classifier must not be tuned to Volume I's specific bin shape.
+
+**(d) No carve-out for period vocabulary.** A flag-only carve-out for settled-policy terms like *moeurs* or *liberté* was considered and rejected. The failure mode it would address — softening period vocabulary — lives in the RENDERING, not in the flag. A flag-only carve-out cannot detect it. Even where a standing policy is in force (e.g., `moeurs → mores`, italicized), period-vocabulary flags route to NEEDS JUDGMENT. The Stage 1 audit found all 14 sampled `moeurs`-only flags had been accepted by the owner — but the cost of routing them to NEEDS JUDGMENT is only that the owner sees the rationale and presses `a`; the cost of auto-accepting one where the rendering actually softened is a mistranslation in the shipped product. Asymmetric tolerance applied consistently.
+
+**(e) Triage vs. retry pass — separated by design.** The retry pass (handoff doc §"Three-pass structure" for Federalist; §"Resuming Tocqueville work" item 2 for Tocqueville) refines prose translation policy by regenerating `flagged_for_rewrite` units against an owner-approved refined system prompt. The triage pipeline classifies flags into tiers. The two workflows read different state and write different state. Triage writes only the new `triage_*` fields; the retry pass reads `editorial_status === 'flagged_for_rewrite'` and `editorial_note` and writes new rendered text into the corpus file. The schema additions are deliberately independent of `editorial_status` and `editorial_note` so the retry pass's dependencies are untouched.
+
+**(f) Deferred rubric-calibration loop.** The schema keeps `triage_tier` independent of `editorial_status` so owner overrides (classifier said `accept` but the owner flagged for rewrite, or vice versa) are captured as telemetry on every record. NOTHING in this build consumes that telemetry. The per-corpus rubric is extracted once from `EDITORIAL_REVIEW_HANDOFF.md` and is otherwise static. A future rubric-calibration step — reading accumulated triage-vs-decision divergences, summarizing where the classifier and the owner disagree, and presenting that to the owner for a human decision on whether the rubric needs revision — is explicitly DEFERRED, not built. The half-built feedback loop is documented rather than accidental. Rubric calibration is distinct from the retry pass: the retry pass refines prose translation policy via owner-approved system-prompt synthesis; rubric calibration would refine the triage classifier's structured rules. Both are human-gated; neither auto-updates editorial standards.
+
+**Schema additions:**
+
+Each annotation record (paragraph and footnote, both corpora) gains three nullable fields:
+- `triage_tier`: `null | 'accept' | 'rewrite' | 'manual'`
+- `triage_rationale`: `string | null` — one-sentence explanation from the classifier
+- `triage_generated_at`: `string | null` — ISO-8601 timestamp
+
+Each annotation file gains two file-level fields (mirroring the existing top-level `prompt_version` / `prompt_sha256` for the flag-generation prompt):
+- `triage_rubric_version`: human-readable string (e.g., `federalist-v1`, `tocqueville-v1`). Primary value; legible when reading the annotation file directly.
+- `triage_rubric_sha256`: hex sha-256 of the canonicalized rubric definition. Auxiliary; lets a future tool detect drift even within a single named version if the rubric source mutates without a version bump.
+
+Re-triage policy is structural rather than convention-based: when the triage script runs, it compares the file-level `triage_rubric_version` against the version constant in code. On mismatch, all records are re-triaged. This avoids the failure mode where a stateless future session forgets that the rubric changed and continues using stale tier assignments.
+
+**Dependency note — Tocqueville rubric and pending batch fixes.** The Tocqueville rubric encodes the established term renderings from §"Established term renderings" of the handoff document, including `avènement → advent`, `commune → township`, and the `moeurs` italicization policy. The handoff document also lists these under §"Pending batch fixes" — corpus-content operations that have not yet run. The pipeline is safe because triage skips already-`accepted` units. But the rubric encodes a policy the corpus does not yet fully reflect on its accepted units. The pending batch fixes (handoff §"Pending batch fixes" items 1, 3, 4, 5) must run before the next round of accepted-unit cross-reference work; until then, this dependency is latent rather than active. Recorded here so it is visible.
+
+**Observability — not wired on the triage script.** `lib/observability.ts` provides Langfuse instrumentation for the production `/api/ask` route and the harness. The existing batch-generation scripts (`scripts/generate-translation.ts`, `scripts/generate-plain-english.ts`, `scripts/retry-flagged.ts`) do not import it; they call the Anthropic SDK directly with no tracing. The triage script matches the batch-generation pattern: no Langfuse tracing. Adding it to batch jobs is a separate decision, not silently bundled into this build. Per CLAUDE.md ("Observability: Helicone or Langfuse — wired from day one, not added later"), observability is wired for the production Q&A path; whether batch jobs should be on the same observation plane is open.
+
+**Two-script structure.** The triage runner (`scripts/triage-annotations.ts`) is non-interactive and calls the Anthropic API. The review CLI (`scripts/review-annotations.ts`) is interactive and uses `$EDITOR` + readline. Splitting them keeps the dependency surfaces clean — the interactive CLI has no API client, and the API runner has no terminal-IO complications.
+
+**Revisit if:** the override telemetry accumulates enough signal to justify building the rubric-calibration step (point f); the auto-apply asymmetry needs to be revisited because the accept-tier-batch flow proves error-prone in practice; or a corpus-specific failure mode emerges that the current rubrics don't catch.
+
+---
+
 # Open observations
 
 Items in this section are observed behaviors or tensions not yet decided. They are recorded here so they don't get lost between sessions, and so that a future decision has the original observation in front of it rather than a paraphrase. When an item resolves into a standing decision, it moves up into the main decision list and is removed from here.

@@ -180,6 +180,8 @@ Full working product: browse, read dual-mode, ask. This is the second milestone.
 
 This is your work, not Claude Code's. Read through flagged passages. Set exact wording on anything that feels off. Papers most likely to require attention: Federalist 10, 51, 78, 79 — these do precise legal and philosophical work where rendering matters.
 
+*Pipeline reworked May 2026.* The review flow is now a two-stage process: a non-interactive triage classifier (`scripts/triage-annotations.ts`) sorts unreviewed flags into three confidence tiers, and the existing interactive CLI (`scripts/review-annotations.ts`) gains a `--tier` filter so each tier clears through its own workflow. Accepts may be auto-applied as a batch after owner confirmation; rewrites are never auto-applied; the manual tier reuses the existing one-at-a-time review with the classifier's rationale pre-displayed. Rationale and constraints in `DECISIONS.md` ("Confidence-tiered flag triage pipeline"); narrative trace in `IMPLEMENTATION_LOG.md`. The pipeline is corpus-agnostic — applies to Federalist, Tocqueville Volume I and II, and future corpora.
+
 ### 3.3  Wire Up the Toggle
 
 - Plain English mode pulls from parallel corpus
