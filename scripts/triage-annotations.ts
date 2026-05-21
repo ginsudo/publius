@@ -21,8 +21,9 @@
 // Build path: IMPLEMENTATION_LOG.md "Phase 3.2 review — flag review reworked into a confidence-tiered triage pipeline."
 
 import Anthropic from '@anthropic-ai/sdk';
-import { readFileSync, writeFileSync, renameSync } from 'node:fs';
+import { readFileSync, writeFileSync, renameSync, appendFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { loadEnv } from '../data/eval/lib.ts';
@@ -32,7 +33,10 @@ import { loadEnv } from '../data/eval/lib.ts';
 // ---------------------------------------------------------------------------
 
 const MODEL = 'claude-sonnet-4-6';
-const MAX_TOKENS = 256;
+// 512 is generous given expected JSON output ~70-100 tokens; v1's 256 was
+// tight enough that occasional long rationales (smoke-run max 226 chars)
+// were a plausible source of the observed ~25% first-attempt parse retries.
+const MAX_TOKENS = 512;
 const TEMPERATURE = 0;
 
 // ---------------------------------------------------------------------------
@@ -586,7 +590,11 @@ type ClassificationResult = {
   tier: Tier;
   rationale: string;
   rawOutput: string;
-  parseFailures: number;
+  // True when the first attempt failed JSON parsing and the retry was used.
+  // The retry may itself have succeeded (terminal === false) or failed
+  // (terminal === true, defaulted to manual).
+  retried: boolean;
+  terminal: boolean;
 };
 
 function parseClassification(raw: string): { tier: Tier; rationale: string } | null {
@@ -617,8 +625,10 @@ async function classify(
   client: Anthropic,
   systemPrompt: string,
   userMessage: string,
+  locator: string,
+  debugLogPath: string,
 ): Promise<ClassificationResult> {
-  let parseFailures = 0;
+  let retried = false;
   let lastRaw = '';
 
   for (let attempt = 0; attempt < 2; attempt++) {
@@ -657,18 +667,42 @@ async function classify(
 
     const parsed = parseClassification(raw);
     if (parsed) {
-      return { tier: parsed.tier, rationale: parsed.rationale, rawOutput: raw, parseFailures };
+      return { tier: parsed.tier, rationale: parsed.rationale, rawOutput: raw, retried, terminal: false };
     }
-    parseFailures++;
+
+    // First-attempt parse failure — log the raw output for diagnosis. The
+    // log is append-only; one record per failure. Identified by locator so
+    // the operator can correlate against the classified record.
+    if (attempt === 0) {
+      retried = true;
+      try {
+        appendFileSync(
+          debugLogPath,
+          `--- ${new Date().toISOString()}  ${locator}  (first-attempt parse failure)\n${raw}\n\n`,
+        );
+      } catch {
+        // Debug logging is best-effort; do not derail classification if the
+        // log path is unwritable.
+      }
+    }
   }
 
-  // Both attempts failed JSON parsing. Default to manual; record the failure
-  // in the rationale so the operator can investigate.
+  // Both attempts failed JSON parsing. Default to manual; record the
+  // terminal failure in the rationale so the operator can investigate.
+  try {
+    appendFileSync(
+      debugLogPath,
+      `--- ${new Date().toISOString()}  ${locator}  (TERMINAL parse failure; defaulted to manual)\n${lastRaw}\n\n`,
+    );
+  } catch {
+    // best-effort
+  }
   return {
     tier: 'manual',
     rationale: '(classifier output unparseable after retry; defaulted to manual)',
     rawOutput: lastRaw,
-    parseFailures,
+    retried: true,
+    terminal: true,
   };
 }
 
@@ -825,19 +859,19 @@ async function main(): Promise<void> {
   const systemPrompt = buildSystemPrompt(adapter.rubric);
   const ts = () => new Date().toISOString();
 
+  const debugLogPath = resolve(tmpdir(), `triage-debug-${adapter.slug}.log`);
+  console.log(`[triage] debug log:   ${debugLogPath} (first-attempt parse failures and terminals)`);
+
   const counts: Record<Tier, number> = { accept: 0, rewrite: 0, manual: 0 };
-  let parseFailures = 0;
-  let inputTokensTotal = 0;
-  let outputTokensTotal = 0;
-  let cacheReadTotal = 0;
-  let cacheWriteTotal = 0;
+  let parseRetries = 0;
+  let parseTerminal = 0;
 
   for (let i = 0; i < candidates.length; i++) {
     const c = candidates[i];
     const userMessage = buildUserMessage(c, adapter.slug);
     let result: ClassificationResult;
     try {
-      result = await classify(client, systemPrompt, userMessage);
+      result = await classify(client, systemPrompt, userMessage, c.locator, debugLogPath);
     } catch (e) {
       console.error(`[triage] API error on ${c.locator}: ${(e as Error).message}`);
       console.error('[triage] stopping run; existing writes are durable. Re-run to resume.');
@@ -846,11 +880,12 @@ async function main(): Promise<void> {
 
     c.apply(result.tier, result.rationale, ts());
     counts[result.tier]++;
-    parseFailures += result.parseFailures;
+    if (result.retried) parseRetries++;
+    if (result.terminal) parseTerminal++;
 
     if ((i + 1) % 25 === 0 || i + 1 === candidates.length) {
       console.log(
-        `[triage] ${i + 1}/${candidates.length}  accept=${counts.accept} rewrite=${counts.rewrite} manual=${counts.manual}  parse_fail=${parseFailures}`,
+        `[triage] ${i + 1}/${candidates.length}  accept=${counts.accept} rewrite=${counts.rewrite} manual=${counts.manual}  retries=${parseRetries} terminal=${parseTerminal}`,
       );
     }
   }
@@ -863,7 +898,11 @@ async function main(): Promise<void> {
   console.log(`  accept:           ${counts.accept}`);
   console.log(`  rewrite:          ${counts.rewrite}`);
   console.log(`  manual:           ${counts.manual}`);
-  console.log(`  parse failures:   ${parseFailures} (counted; classified as manual)`);
+  console.log(`  parse retries:    ${parseRetries} (first attempt failed JSON, second succeeded)`);
+  console.log(`  parse terminal:   ${parseTerminal} (both attempts failed; defaulted to manual)`);
+  if (parseRetries > 0 || parseTerminal > 0) {
+    console.log(`  debug log:        ${debugLogPath}`);
+  }
   console.log('======================');
 }
 
