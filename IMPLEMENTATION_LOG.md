@@ -1048,52 +1048,73 @@ Both renderings chose English over preserved French; `italicizedIn` correctly re
 
 **What exists in the repo:**
 - Cross-corpus schema documentation (`data/SCHEMA.md`).
-- Federalist corpus (raw text, parser, parsed JSON, source-fixup layer).
-- Tocqueville corpus (raw French text per volume, parser, parsed JSON with `translation: null` placeholders).
-- Phase 1.1 retrieval test (`data/eval/`): probe set, library helpers, index builder, query CLI, probe runner, retrieval-test definition, operational README, frozen results artifact for the sign-off.
-- Standing-decision docs at the project root (`CLAUDE.md`, `DECISIONS.md`, `README.md`).
-- Per-session notes under `notes/` (chronological, not authoritative).
-- Vercel project pointed at `ginsudo/publius`, currently serving a 404 because no app code exists.
+- Three parsed corpora: Federalist (85 papers, `data/federalist/`), Tocqueville (124 items across both volumes, `data/tocqueville/`), Constitution (153 clauses, `data/constitution/`). Each conforms to the universal base + namespaced-extension schema.
+- Phase 1.1 retrieval test (`data/eval/`): probe set, library helpers, index builder, query CLI, probe runner, retrieval-test definition, operational README, frozen results artifact. Both `sqlite-vec` binaries (`vec0.dylib` macOS arm64 + `vec0.so` Linux x86_64, both v0.1.6) and `data/eval/index.sqlite` are committed.
+- Q&A application code: `app/api/ask` (NDJSON streaming) and `app/api/retrieve` endpoints; `lib/ask.ts` (shared Q&A primitives — `extractPrompt`, `formatHits`, `askClaude`); `lib/observability.ts` (Langfuse via OTel); `instrumentation.ts`.
+- The canonical Q&A system prompt at `config/system-prompt.md` (v0.2, locked).
+- UI under `app/`: `/ask` (rotating sample-question affordance, streamed answer with rotating loading phrases, friendly error mapping), `/browse` (filterable 85-paper list), `/paper/[number]` (server-rendered reading view with footnote panels, hash-deep-linking, ORIGINAL · MODERN ENGLISH crossfade toggle), masthead at `components/Masthead.tsx`, hand-rolled `app/globals.css`.
+- Editorial generation pipeline: `scripts/generate-plain-english.ts` (Federalist Batch API), `scripts/generate-translation.ts` (Tocqueville Batch API, Opus 4.7 with 300K-output beta), `scripts/retry-flagged.ts` (Federalist retry runner against `prompts/retry-v0.2.1.md`).
+- Editorial review pipeline: `scripts/review-annotations.ts` (corpus-parameterized terminal CLI with `--corpus` and `--tier` filters), `scripts/triage-annotations.ts` (non-interactive confidence-tiered classifier with deterministic Tocqueville pre-checks at `tocqueville-v3`), `scripts/triage-annotations.test.ts` (18 unit assertions for deterministic helpers), `scripts/migrate-triage-schema.mjs`, `scripts/apply-moeurs-policy.mjs` and `scripts/apply-moeurs-substitution.mjs` (one-shot convention enforcers).
+- Per-corpus annotations files: `data/federalist/federalist-annotations.json` (1,303 paragraph entries, 1,502 flags across 880 flagged paragraphs, `editorial_status: accepted` on 55, `triage_rubric_version: null` — not yet triaged) and `data/tocqueville/tocqueville-annotations.json` (Vol I only — 39 items, 3,364 paragraph entries + 316 footnote entries, 475 flags across 378 flagged units; `editorial_status: accepted` on 296 paragraphs + `flagged_for_rewrite` on 82 = full Vol I review complete; `triage_rubric_version: tocqueville-v3`, triage tier counts 17 accept / 14 rewrite / 347 manual).
+- Sample-question bank at `data/sample-questions.json` (SQ01–SQ20) consumed by `/ask`.
+- Vercel deployment at `https://publius-one.vercel.app` serving `/ask` and `/browse` 200 (root 307s to `/ask`); Langfuse Cloud traces emit with `source=route`.
+- Standing-decision docs at the project root (`CLAUDE.md`, `DECISIONS.md`, `DESIGN.md`, `EDITORIAL_REVIEW_HANDOFF.md`, `README.md`, `publius_project_plan.md`).
+- Historical session notes under `notes/` (preserved as record only; new session entries go in this file per the Phase 1.3-era session-close decision).
 
-**What is stubbed:**
-- The `translation` field on every Tocqueville item is `null`. Tocqueville will not enter the retrieval index until the owner populates this field. This is a deliberate gate, not a TODO.
-- The probe set has three probes (P14, P15, P16) flagged `phase_5_only: true` — two cross-corpus probes and one Tocqueville end-note probe. They are recorded for design intent and skipped by the current runner.
-- The local index file `data/eval/index.sqlite` and the `sqlite-vec` extension binary in `data/eval/vendor/` are gitignored and rebuilt per machine.
+**What is stubbed or in progress:**
+- Tocqueville Volume II: all 85 items still carry `tocqueville.translation: null`. Volume I (39/39) is populated. Vol II will not enter the retrieval index until its translations are populated and editorially reviewed.
+- Federalist editorial review: 55 of 880 flagged paragraphs accepted (`editorial_status: accepted`); the remaining 825 are unreviewed (`editorial_status: null`). Resume position recorded in user memory as `g 8 6`.
+- Federalist triage: all paragraphs at `triage_tier: null`. The full Federalist triage is deferred until a labeled Federalist back-test set exists (see DECISIONS.md "Triage rubric v3").
+- The probe set has three probes (P14, P15, P16) flagged `phase_5_only: true` — two cross-corpus and one Tocqueville end-note probe. Recorded for design intent and skipped by the current runner.
+- The universal `constitutional_section` field is `null` on every Federalist and Tocqueville item — schema-ready but not yet editorially populated.
+- Tocqueville Vol I retrieval: the translation is populated and editorially reviewed, but Tocqueville is not yet embedded into `data/eval/index.sqlite`. The index remains Federalist-only.
+- The `/api/retrieve` endpoint ships open with a Phase 7 TODO comment; no auth or IP-allowlist yet.
 
 **What does not exist yet:**
-- No Q&A or generation code. `queryIndex()` returns hits; nothing reads them and prompts a model.
-- No system prompt. The Q&A system prompt is identified in `CLAUDE.md` as the highest-stakes artifact in the project; it has not been drafted.
-- No HTTP boundary, no Next.js routes, no `app/` directory contents, no UI.
-- No observability wiring (Helicone or Langfuse). Per `DECISIONS.md` this is wired at the first Vercel deploy with Q&A, not earlier.
-- No production vector store. `index.sqlite` is local-only. The Turso vs. Pinecone production decision is deferred to Phase 5.
-- No SCOTUS corpus, no fourth-corpus epistemic tag, no critical-theory corpus.
-- No reranker, no hybrid retrieval, no cross-encoder. The Phase 1.1 sign-off found `voyage-4-large` raw similarity ranking adequate; `voyage-law-2` is documented as the next thing to try if results regress.
+- No SCOTUS corpus.
+- No production vector store migration; sqlite-vec on Vercel is the production store. Phase 5's comparison is now "stay on sqlite-vec" vs. "migrate to Pinecone" (Turso self-deselected at Phase 1.4 — see DECISIONS.md "Phase 1.4 Vercel deploy").
+- No reranker, no hybrid retrieval, no cross-encoder.
+- No conversation threading; `/api/ask` is one query → one answer, anonymous. Auth-gated threading is recorded in DECISIONS.md as a future feature.
+- No Tocqueville reading view; `/paper/[number]` hard-codes Federalist-specific assumptions in the header. A corpus-aware shell is Phase 5 work.
+- No retry pipeline for Tocqueville (the existing `retry-flagged.ts` is Federalist-specific).
+- No automatic check that production code never imports from a gitignored path (flagged at the 2026-04-29 `prompts/` history rewrite).
+- No startup-time auth probe for Langfuse credentials (known limitation in DECISIONS.md).
+- No fourth corpus and no fourth epistemic tag.
+- No browser/Playwright e2e fixtures committed to the repo (one-shot scripts used for verification in `/tmp`).
 
-## What a fresh advisor needs to know to advise on Phase 1.2 onward
+## What a fresh advisor needs to know
 
-**The next slice is Phase 1.2 — Q&A layer.** This means wrapping `queryIndex()` with a Claude API call (Sonnet 4.6 per `DECISIONS.md`), passing the retrieved hits as structured context, asking the model the user's question, and returning an answered text with citations back to the chunks. Two things should be designed before code:
+**Where the project actually is.** Phase 1.1 retrieval, Phase 1.2 Q&A (system prompt + HTTP boundary), Phase 1.3 observability, Phase 1.4 first Vercel deploy, Phase 2.1 Browse UI, Phase 2.3 Ask UI (with NDJSON streaming, rotating sample questions, error mapping, typed block renderer), Phase 2.4 Paper reading view, Phase 3.1 plain-English generation, Phase 3.2 annotations layer + corpus-parameterized review CLI + confidence-tiered triage pipeline (v3 Tocqueville-only), Phase 3.3 ORIGINAL · MODERN ENGLISH toggle, and Phase 4 Tocqueville Volume I translation are all landed. The Constitution corpus seam was resolved 2026-05-18 ahead of schedule. Active editorial work: Federalist review (55/880 flagged) and Tocqueville post-Vol-I-review retry decisions. The most recent slice (2026-05-22) passed the v3 triage safety gate against the Vol I back-test.
 
-1. **The system prompt.** This is the artifact `CLAUDE.md` calls highest-stakes. It must enforce the no-flattening discipline — never synthesize a false consensus across authors or modes; surface Hamilton-vs-Madison disagreement and (later) majority-vs-dissent disagreement when present. It must also handle the case where retrieval returns hits the question doesn't actually need, and the case where the question is out-of-corpus (the negative-space probe P13 was designed against this scenario at the retrieval layer; the system prompt has to handle it at the answer layer). Drafting the system prompt is owner-set; testing it against 10–15 real questions is a Claude Code job per `CLAUDE.md`.
-
-2. **The HTTP boundary.** Phase 1.2 is the natural moment to introduce Next.js. An API route at `/app/api/ask` that takes a question, calls `queryIndex()`, calls Claude, returns the text plus citations. Still no UI — UI is Phase 1.4 onward. The Phase 1.4 work (Vercel deploy + observability) follows from this boundary existing.
+**Most likely next slices (none committed; the editorial pass is owner-driven):**
+1. Federalist editorial review continued. Resume at `g 8 6` per user memory; the 21 paragraphs retried via `prompts/retry-v0.2.1.md` reappear in document order as null-status entries.
+2. Tocqueville retry pipeline for the 82 `flagged_for_rewrite` Vol I units (no runner yet — `retry-flagged.ts` is Federalist-only).
+3. Tocqueville Vol I retrieval: embedding the populated `translation` field into the index. This is the editorial-stability gate referenced in DECISIONS.md "Tocqueville display architecture."
+4. Tocqueville Volume II translation: 85 items still `null`. Same workflow as Vol I via `generate-translation.ts`.
 
 **Do not:**
-- Add a fourth corpus before resolving its epistemic tag (the argument/observation/holding taxonomy is adequate for the first three corpora; a fourth needs a fourth category, owner's call).
-- Migrate to Turso or Pinecone yet — that's Phase 5.
-- Add a UI ahead of the system prompt being tested.
-- Change the chunk format without re-running the probe set and re-getting owner sign-off.
-- Strip retrieval metadata before passing to the model. The Q&A layer needs `corpus`, `kind`, `authorship_status`, paper number, and authors to do its job.
-- Propose generalizing Publius into a meta-product (configurable for any base text + corpora). Refused per `DECISIONS.md` ("Meta-product generalization: refused; two architectural seams kept open"). One seam remains preserved (parameterized modes of authority in the Phase 1.2 system prompt). The other — Constitution-as-first-class-corpus — was resolved 2026-05-18 ahead of schedule; the corpus is built and `constitutional_section` now references Constitution IDs. See `DECISIONS.md` entry "Constitution as first-class corpus".
+- Add a fourth corpus before resolving its epistemic tag (argument/observation/holding plus a fourth category — owner's call). The argument/observation/holding taxonomy is in `CLAUDE.md`.
+- Migrate the vector store to Pinecone yet — Phase 5, and only against a re-run probe set with owner sign-off.
+- Change the chunk format in `data/eval/lib.ts` without re-running the probe set and re-getting owner sign-off.
+- Strip retrieval metadata before passing to the Q&A model. `Citation` (in `data/eval/query.ts`) preserves all metadata the Q&A layer needs except `text`/`score`/`distance`/`rank`/`id`.
+- Re-run `data/federalist/parse.ts` or `data/tocqueville/parse.ts` without first stashing externally-populated fields. Both parsers are non-idempotent — Federalist's `plain_english` and Tocqueville's `translation` are written by separate generation scripts and are unconditionally re-emitted as `null` on re-parse. See `CLAUDE.md`.
+- Propose generalizing Publius into a meta-product. Refused per `DECISIONS.md` ("Meta-product generalization: refused"); the Constitution-as-corpus seam closed 2026-05-18, and the only remaining open seam is parameterized modes of authority in the Phase 1.2 system prompt.
+- Add table entries to the triage rubrics reactively from classifier misfires. Per `DECISIONS.md` "Triage rubric v2": the tables are owner-derived from review work; the classifier is measured against them, not a source of additions to them.
 
 **Do consider:**
-- How citations should appear in the model's answer. The frozen results artifact shows the metadata we have; the Q&A interface needs to decide which subset is shown to the user and which is system-internal.
-- How to handle the disputed-twelve papers in citations. `authorship_status: "disputed"` is in every Hit; the Q&A layer should not silently pick one attribution.
-- How the answer should behave when retrieval returns out-of-corpus or weak matches. P13 demonstrated the embedding space separates in-domain from out-of-domain; the Q&A layer needs to take advantage of this rather than confabulating from weak matches.
+- The asymmetric-error discipline in the triage pipeline (`accept`-tier mistakes ship without inspection; `manual`-tier mistakes cost only editor time). Any future triage tuning preserves this.
+- The Tocqueville moeurs convention recorded in `DECISIONS.md` "Triage rubric v3" (no untranslated moeurs/mœurs in any finished rendering, enforced by deterministic Rewrite 4). A future phase that legitimately needs to retain French *moeurs* must revise the convention explicitly.
+- Voyage embedding non-determinism (DECISIONS.md "Voyage embeddings are not bit-stable across API calls"). Any test asserting retrieval equivalence needs tolerance bands, not exact equality. Within-session stability is ≤0.004 on top-10 scores; cross-session drift is observed.
+- Span lifecycle for the streaming `/api/ask` is asymmetric with the harness path (documented inline in `app/api/ask/route.ts`). The `?transport=json` escape hatch preserves the non-streaming code path for incident diagnosis.
 
 **Reference points across the project files:**
-- `CLAUDE.md` — standing project decisions, including the epistemic distinction and the no-flattening rule.
-- `DECISIONS.md` — architectural decisions with reasoning, including the Phase 1.1 sign-off entry.
+- `CLAUDE.md` — standing project decisions: epistemic distinction, no-flattening rule, parser non-idempotence, session-close discipline.
+- `DECISIONS.md` — architectural decisions with reasoning; most recent entries (triage v3, NDJSON streaming, Constitution as first-class corpus) are at the bottom.
+- `DESIGN.md` — visual/typographic register for the UI.
+- `EDITORIAL_REVIEW_HANDOFF.md` — authoritative source for the per-corpus triage rubrics (preserve-words tables, established renderings, pending batch fixes).
 - `data/SCHEMA.md` — the cross-corpus data schema.
-- `data/eval/RETRIEVAL_TEST.md` — what the retrieval test proves and what is deliberately out of scope.
-- `data/eval/results-phase1-1.md` — the frozen sign-off artifact.
+- `data/eval/RETRIEVAL_TEST.md` and `data/eval/results-phase1-1.md` — Phase 1.1 sign-off artifacts.
+- `config/system-prompt.md` — the live Q&A system prompt (v0.2; sha256-pinned at the `/api/ask` boundary and in every annotations file's `prompt_sha256`).
+- `prompts/retry-v0.2.1.md` — Federalist retry pass system prompt (gitignored; on-disk only).
+- `prompts/tocqueville-translation-system.md` — Tocqueville translation system prompt v1.1 (gitignored; on-disk only).
 - `publius_project_plan.md` — the long-form project plan.
