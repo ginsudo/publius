@@ -12,20 +12,9 @@
       "paragraphs": [
         {
           "paragraph_index": 0,
-          "flags": [
-            {
-              "kind": "READING",
-              "french": "avénement",
-              "note": "Tocqueville uses *avènement* in its full weight of \"coming\" or \"advent,\" with quasi-messianic resonance. \"Arrival\" is chosen here as plain and forceful; \"advent\" is available if the owner wants the theological undertone preserved."
-            },
-            {
-              "kind": "TERM",
-              "french": "Démocratie",
-              "note": "Tocqueville capitalizes throughout. The owner should decide whether to follow this convention in English or treat it as a common noun."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"avènement\" as \"advent\" throughout — preserves the quasi-messianic register Tocqueville intends. \"Arrival\" is too flat. Render \"Démocratie\" as \"Democracy\" (capitalized) throughout — Tocqueville's capitalization signals Democracy as a historical force, not merely a political system. Preserve this convention consistently in both volumes.",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "READING flag on Tocqueville's voice and theological resonance of 'avènement'; also, established rendering is 'advent' but current rendering uses 'arrival' — requires editorial judgment.",
           "triage_generated_at": "2026-05-22T06:55:04.583Z"
@@ -87,23 +76,13 @@
           "paragraph_index": 5,
           "flags": [
             {
-              "kind": "READING",
+              "kind": "TERM",
               "french": null,
-              "note": "\"une république agitée ou une république tranquille\" etc. — Tocqueville builds a series of six paired antitheses. The translation preserves each pair in order. The owner should verify the rhythm reads naturally aloud in English."
-            },
-            {
-              "kind": "TERM",
-              "french": "droits sacrés de la propriété et de la famille",
-              "note": "\"the sacred rights of property and the family\" is literal. \"Sacred\" carries Tocqueville's full polemical weight here; no softening is recommended."
-            },
-            {
-              "kind": "TERM",
-              "french": "liberté démocratique / tyrannie démocratique",
-              "note": "the antithesis is precise and should be kept exact in any revision."
+              "note": "liberté démocratique / tyrannie démocratique — the precise antithesis is preserved."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "\"Suivant que\" and similar French conditional constructions should render as \"depending on whether\" rather than \"according as\" — \"according as\" is hyper-literal and sounds archaic. For this sentence: \"The destiny of the world will differ depending on whether we achieve democratic liberty or democratic tyranny; and one may say that it depends on us today whether the republic ends by being established everywhere or abolished everywhere.\"",
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "[deterministic] period-vocabulary term \"liberté\" present in original (guard)",
           "triage_generated_at": "2026-05-22T06:55:18.445Z"
@@ -113,17 +92,12 @@
           "flags": [
             {
               "kind": "READING",
-              "french": "intronisé",
-              "note": "literally \"enthroned.\" \"Installed\" is chosen as direct English prose; \"enthroned\" is available if the owner wants the ironic ceremonial echo."
-            },
-            {
-              "kind": "READING",
-              "french": "presque toute l'Europe était bouleversée",
-              "note": "written at the start of 1848, this sentence was almost immediately overtaken by the revolutions of that year, which lends the whole preface its peculiar urgency. No translation note needed, but the owner may wish to flag this in an editorial note."
+              "french": null,
+              "note": "presque toute l'Europe était bouleversée — written at the start of 1848, this sentence was almost immediately overtaken by the revolutions of that year."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"intronisé\" as \"enthroned\" rather than \"installed\" — preserve the ironic ceremonial echo throughout. Tocqueville's irony here is intentional.",
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "[deterministic] period-vocabulary term \"commune\" present in original (guard)",
           "triage_generated_at": "2026-05-22T06:55:18.454Z"
@@ -334,15 +308,9 @@
         },
         {
           "paragraph_index": 18,
-          "flags": [
-            {
-              "kind": "READING",
-              "french": "vilain",
-              "note": "rendered \"villein\" to preserve the feudal-legal sense; \"peasant\" would lose the specific status against which \"noble\" stands."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"vilain\" as \"serf\" rather than \"villein\" — \"villein\" is too obscure even for a scholarly audience; \"serf\" preserves the feudal unfreedom that stands against \"noble\" in the sentence.",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "[deterministic] period-vocabulary term \"liberté\" present in original (guard)",
           "triage_generated_at": "2026-05-22T06:55:20.945Z"
@@ -504,18 +472,13 @@
           "paragraph_index": 34,
           "flags": [
             {
-              "kind": "TERM",
-              "french": "moeurs",
-              "note": "recurrence in chapter; italicized only."
-            },
-            {
               "kind": "READING",
-              "french": "le matériel de la société",
-              "note": "rendered \"the material substance of society\"; the alternative \"material conditions\" would import a later vocabulary."
+              "french": null,
+              "note": "le matériel de la société — rendered \"the material substance of society\"; the alternative \"material conditions\" would import a later vocabulary."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French.",
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "[deterministic] period-vocabulary term \"moeurs\" present in original (guard)",
           "triage_generated_at": "2026-05-22T06:55:26.611Z"
@@ -654,12 +617,12 @@
           "flags": [
             {
               "kind": "READING",
-              "french": "l'ardeur des croyances",
-              "note": "rendered \"the ardor of religious belief\"; the bare \"beliefs\" reads too thin in English, but the religious specification is interpretive."
+              "french": null,
+              "note": "croyances — rendered \"religious faith\" per editorial direction; the French is bare \"beliefs\" with the religious register implicit from *enthousiasme* and *ardeur*."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"À défaut de\" as \"Without\" — direct and natural. Render \"croyances\" as \"religious faith\" rather than \"religious belief\" — \"faith\" carries the devotional and motivational weight Tocqueville intends; \"belief\" is too cognitive. Full phrase: \"Without the enthusiasm and ardor of religious faith.\"",
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "READING flag on interpretive content; also 'lumières' in the paragraph is a period-vocabulary term, triggering the hard guard against auto-accept.",
           "triage_generated_at": "2026-05-22T06:55:30.884Z"
@@ -1005,12 +968,12 @@
           "flags": [
             {
               "kind": "READING",
-              "french": "pensée-mère",
-              "note": "rendered \"mother-thought\" with the hyphen; alternatives like \"guiding idea\" or \"central thought\" would smooth out a deliberately compound French coinage."
+              "french": null,
+              "note": "pensée-mère — rendered \"root idea\" per editorial direction; the French compound's maternal/generative figure becomes botanical in English."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"pensée-mère\" as \"root idea\" — recovers the organic metaphor of the French compound coinage, reads naturally in English, and carries the right intellectual weight. \"Mother-thought\" is awkward; \"governing idea\" or \"central thought\" lose the metaphor entirely.",
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "READING flag on argumentative/stylistic content (compound coinage rendering) requires editorial judgment; no rubric pattern auto-accepts or auto-rewrites this.",
           "triage_generated_at": "2026-05-22T06:55:33.479Z"
@@ -1150,12 +1113,12 @@
           "flags": [
             {
               "kind": "TEXTURE",
-              "french": "terre-plein",
-              "note": "Tocqueville uses this engineering term (a raised flat area, a rampart-top) to evoke something deliberately constructed and level. \"Flatland\" or \"plateau\" both work but lose the slightly architectural feeling. The owner may prefer \"tableland.\""
+              "french": null,
+              "note": "terre-plein — engineering term (a raised, level expanse) carrying a faintly architectural sense; \"plain\" preserves the flatness and avoids repeating \"plateau\" but loses the constructed register."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"terre-plein\" as \"plain\" — the geographical noun (as in Great Plains), preserves the flat elevated sense of the French engineering term without the casual register of \"flatland\" or the repetition of \"plateau\" already used in the same sentence.",
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "TEXTURE flag raises genuine editorial judgment about architectural connotation of 'terre-plein'; 'flatland' is not a verbatim established rendering and the choice among options requires human review.",
           "triage_generated_at": "2026-05-22T06:55:38.810Z"
@@ -1468,20 +1431,9 @@
         },
         {
           "paragraph_index": 31,
-          "flags": [
-            {
-              "kind": "TERM",
-              "french": "sauvages",
-              "note": "Tocqueville uses this term throughout as a technical-descriptive category (people living in the state of nature / wilderness dwellers), not purely as a slur. In the period register it sits between \"wild\" and \"savage.\" It has been translated as \"savages\" where it is a noun and \"wild\" or \"savage\" where adjectival, following period usage. The owner will need to decide on a consistent policy for this term across the entire translation."
-            },
-            {
-              "kind": "TERM",
-              "french": "nègres",
-              "note": "rendered as \"Africans\" here, since the referent is racial identity rather than condition of servitude. The owner must decide on a consistent translation policy for this term throughout."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "render \"nègres\" as \"Negroes\" and \"sauvages\" as \"savages\" per standing policy established at vol1.part1.ch1 ¶31",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "[deterministic] period-vocabulary term \"sauvages\" present in original (guard)",
           "triage_generated_at": "2026-05-22T06:56:08.438Z"
@@ -1595,15 +1547,9 @@
         },
         {
           "paragraph_index": 42,
-          "flags": [
-            {
-              "kind": "TERM",
-              "french": "monticules",
-              "note": "earthen mounds, the archaeological \"mounds\" of the Mississippian and related cultures. \"Burial mounds\" is used, though not all were funerary. The owner may prefer simply \"mounds.\""
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "change \"burial mounds\" to \"earthen mounds\"",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "Flag notes 'burial mounds' is inaccurate for non-funerary mounds; preferred rendering 'mounds' differs from current. Requires editorial judgment on accuracy vs. precision.",
           "triage_generated_at": "2026-05-22T06:56:17.173Z"
@@ -1636,18 +1582,18 @@
           "paragraph_index": 45,
           "flags": [
             {
-              "kind": "TERM",
-              "french": "usufruit",
-              "note": "\"usufruct,\" the legal right to use and enjoy another's property without destroying it. A deliberate legal metaphor. Kept as \"usufruct\"; the owner may wish to gloss it."
+              "kind": "READING",
+              "french": null,
+              "note": "en attendant — rendered \"*pending*\" to keep the provisional, quasi-legal sense alongside *usufruit*. Alternative not taken: \"merely *in the interim*.\""
             },
             {
               "kind": "TERM",
-              "french": "en attendant",
-              "note": "Tocqueville italicizes this phrase, emphasizing its provisional, almost legal sense: \"pending,\" \"in the interim,\" \"in expectation.\" Rendered as *in expectation* in italics. The owner may prefer \"merely *waiting*\" or \"only *provisionally*.\""
+              "french": null,
+              "note": "usufruit — kept as \"usufruct\"; the legal metaphor (use without ownership, terminable by the true proprietor) is load-bearing against *ne le possédaient pas* above."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "replace \"Providence, in placing them amid the riches of the New World, seemed to have granted them only a brief usufruct; they were there, in a sense, merely *in expectation*.\" with \"Providence, in placing them amid the riches of the New World, seemed to have given them only temporary use rights; they were there, as it were, until further notice.\"",
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "[deterministic] period-vocabulary term \"sauvages\" present in original (guard)",
           "triage_generated_at": "2026-05-22T06:56:17.196Z"
@@ -1798,11 +1744,11 @@
             {
               "kind": "TERM",
               "french": null,
-              "note": "\"fucus\" / \"algues marines\" — Tocqueville follows Malte-Brun's language. \"Fucus\" is a genus of brown algae (bladderwrack); \"algues marines\" is a general term for seaweed. Rendered as \"kelp\" and \"sea-wrack\" respectively for texture. The owner may prefer more neutral \"seaweed\" for both."
+              "note": "fucus — kept in Latin as in the French, since Tocqueville (following Malte-Brun) uses the genus name rather than a vernacular term."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"algues marines\" as \"seaweed\" rather than \"sea-wrack\" — \"sea-wrack\" is too obscure; \"seaweed\" is plain and sufficient here.",
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "TERM flag concerns botanical/naturalist vocabulary ('fucus'/'algues marines') not in the established term renderings table; editorial judgment required on 'kelp' vs 'sea-wrack' vs 'seaweed'.",
           "triage_generated_at": "2026-05-22T06:56:24.301Z"
@@ -3831,18 +3777,13 @@
           "paragraph_index": 1,
           "flags": [
             {
-              "kind": "TEXTURE",
-              "french": null,
-              "note": "\"enseveli\" (buried/entombed) has a stronger, more funereal weight than \"buried\" alone conveys — consider \"entombed\" for the theological/mystical register Tocqueville is building toward \"ténèbres du sanctuaire.\""
-            },
-            {
               "kind": "TERM",
-              "french": "sanctuaire",
-              "note": "carries both religious and political-institutional resonance; \"sanctuary\" preserves the ambiguity but the owner may wish to make the irony more explicit."
+              "french": null,
+              "note": "sanctuaire — preserves both the religious and political-institutional resonance; the irony is left for the reader."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "change \"buried\" to \"entombed\"",
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "Neither flag qualifies for accept or rewrite: TEXTURE flag concerns Tocqueville's rhetorical voice; TERM flag on 'sanctuaire' has no established rendering in the table.",
           "triage_generated_at": "2026-05-22T06:56:59.609Z"
@@ -3869,15 +3810,9 @@
         },
         {
           "paragraph_index": 3,
-          "flags": [
-            {
-              "kind": "TERM",
-              "french": "moeurs",
-              "note": "rendered here as \"custom,\" which is defensible, but the owner should decide whether \"mores,\" \"habits,\" or \"manners\" better fits the running usage across the translation as a whole. This is a structurally important Tocquevillian term."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "change \"custom\" to \"mores\" per standing policy",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "[deterministic] period-vocabulary term \"moeurs\" present in original (guard)",
           "triage_generated_at": "2026-05-22T06:57:13.797Z"
@@ -3981,15 +3916,9 @@
         },
         {
           "paragraph_index": 11,
-          "flags": [
-            {
-              "kind": "READING",
-              "french": "La loi des successions",
-              "note": "Tocqueville refers to the abolition of primogeniture and entail, discussed more fully in Vol. 1, Part 2. \"Laws of inheritance\" (plural) is accurate; \"inheritance law\" (singular, generic) is also possible. Owner may prefer the more explanatory option if this chapter stands alone."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "change \"laws of inheritance\" to \"the law of inheritance\"; change \"completed the work of breaking up local concentrations of influence\" to \"completed the breaking of local influences\"",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "READING flag on argumentative content requiring editorial judgment about singular vs. plural and explanatory framing; no rubric pattern auto-accepts or rewrites this.",
           "triage_generated_at": "2026-05-22T06:57:30.286Z"
@@ -4141,15 +4070,9 @@
         },
         {
           "paragraph_index": 1,
-          "flags": [
-            {
-              "kind": "TEXTURE",
-              "french": "engagées, et, si je puis m'expliquer ainsi, emboîtées l'une dans l'autre",
-              "note": "the French has a hesitation before the technical metaphor (*emboîtées*, \"nested\"); the translation preserves the aside but renders *emboîtées* as \"fitted... inside\" rather than the more mechanical \"nested.\""
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "change \"fitted one inside the other\" to \"nested one inside the other\"",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "TEXTURE flag concerns a metaphor rendering choice ('fitted inside' vs 'nested'); this is an argumentative/stylistic judgment not covered by any accept pattern in the rubric.",
           "triage_generated_at": "2026-05-22T06:57:44.544Z"
@@ -4183,15 +4106,9 @@
         },
         {
           "paragraph_index": 5,
-          "flags": [
-            {
-              "kind": "TERM",
-              "french": "commune",
-              "note": "left untranslated here would risk obscurity, but \"township\" is the standard rendering for the New England case and \"commune\" for the French case. Tocqueville uses *commune* throughout as a general term that he then specifies. The translation uses \"commune\" to preserve his general usage; \"township\" appears in his own gloss below."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "change \"commune\" to \"township\"",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "[deterministic] period-vocabulary term \"commune\" present in original (guard)",
           "triage_generated_at": "2026-05-22T06:57:44.558Z"
@@ -4258,15 +4175,9 @@
         },
         {
           "paragraph_index": 12,
-          "flags": [
-            {
-              "kind": "TERM",
-              "french": "moeurs",
-              "note": "first occurrence in chapter; translator's note appended per policy."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "remove the inline translator's note on \"mores\" — not needed for this audience; if desired, address once in translator's preface",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "rewrite",
           "triage_rationale": "[deterministic] inline translator's note in rendering (Rewrite 3)",
           "triage_generated_at": "2026-05-22T06:57:44.575Z"
@@ -7601,15 +7512,9 @@
         },
         {
           "paragraph_index": 25,
-          "flags": [
-            {
-              "kind": "TERM",
-              "french": "raison d'État",
-              "note": "\"reason of state\" is the standard English equivalent; owner to confirm."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Leave *raison d'État* untranslated, italicized. \"Reason of state\" has drifted to political expediency in English; the French preserves the philosophical sense of the state's justifying principle.",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "\"raison d'État\" is not in the Established Term Renderings table; cannot auto-accept despite the rendering being plausible standard English.",
           "triage_generated_at": "2026-05-22T06:58:13.247Z"
@@ -7729,20 +7634,9 @@
         },
         {
           "paragraph_index": 36,
-          "flags": [
-            {
-              "kind": "TERM",
-              "french": "déni de justice",
-              "note": "\"denial of justice\" is the standard English legal term. Owner to confirm."
-            },
-            {
-              "kind": "TEXTURE",
-              "french": "les devoirs étroits",
-              "note": "\"narrow duties\" — the sense is duties strictly defined, not mean or unworthy ones; owner may prefer \"the strict duties\" or \"the precise duties.\""
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "\"les devoirs étroits\" → \"strict duties\" preferred over \"narrow duties\"; \"strict\" captures rigorously defined rather than merely limited in scope.",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "Neither flag matches established term renderings or structural element patterns; both require editorial judgment on legal equivalence and stylistic word choice.",
           "triage_generated_at": "2026-05-22T06:58:35.543Z"
@@ -7929,30 +7823,18 @@
         },
         {
           "paragraph_index": 55,
-          "flags": [
-            {
-              "kind": "TEXTURE",
-              "french": "énormités",
-              "note": "\"enormities\" in the older sense of outrageous abuses, not merely great size; retained as such. Owner may prefer \"outrages\" or \"monstrosities.\""
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "\"énormités\" → \"outrages\" per standing policy (established earlier in review pass).",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "TEXTURE flag on a lexical/semantic choice ('enormities') with editorial note suggesting alternatives; this is a judgment call about period sense, not a structural element.",
           "triage_generated_at": "2026-05-22T06:58:46.556Z"
         },
         {
           "paragraph_index": 56,
-          "flags": [
-            {
-              "kind": "TERM",
-              "french": "décretait de prise de corps",
-              "note": "a formal order of arrest issued by the Parlement; \"warrant of arrest\" is approximate. Owner may wish to note the technical term."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "\"décret de prise de corps\" → \"arrest warrant\" (not \"warrant of arrest\"); invert word order for natural English idiom.",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "Flag notes 'warrant of arrest' is approximate for a technical legal term; no established rendering in the table covers this phrase, requiring editorial judgment.",
           "triage_generated_at": "2026-05-22T06:58:48.866Z"
@@ -8262,12 +8144,17 @@
           "flags": [
             {
               "kind": "READING",
-              "french": "section 4, art. 1er",
-              "note": "Tocqueville's citation is inverted relative to the actual U.S. Constitution (Article II, Section 4); rendered literally as in the French."
+              "french": null,
+              "note": "section 4, art. 1er — Tocqueville's citation inverts the actual reference (Article II, Section 4 of the U.S. Constitution); rendered as written in the French, per house policy against inline translator's notes. Editor may wish to add an endnote."
+            },
+            {
+              "kind": "TERM",
+              "french": null,
+              "note": "haute trahison, la corruption, ou autres grands crimes et délits — restored to the original English of Article II, Section 4 (\"Treason, Bribery, or other high Crimes and Misdemeanors\") rather than back-translated from Tocqueville's French."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Quoted constitutional text must restore original English from Article II, Section 4, not back-translate from Tocqueville's French. Actual text: \"Treason, Bribery, or other high Crimes and Misdemeanors.\" Also note Tocqueville's citation (section 4, art. 1) is inverted — render as written, but add translator's note flagging the inversion.",
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "READING flag on a citation inversion and constitutional quotation accuracy requires editorial judgment; not covered by any accept/rewrite pattern.",
           "triage_generated_at": "2026-05-22T06:58:53.460Z"
@@ -8452,15 +8339,9 @@
         },
         {
           "paragraph_index": 8,
-          "flags": [
-            {
-              "kind": "READING",
-              "french": null,
-              "note": "l'empire — rendered \"authority\" rather than \"empire\" or \"rule\"; in this context it denotes the dominion the federal power had been exercising, not an empire in the political sense."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "*l'empire* → \"dominion\" preferred over \"authority\"; \"dominion\" preserves the weight of what was being relinquished — Tocqueville's point depends on the magnitude of the abdication.",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "READING flag on a nuanced lexical choice ('empire' vs 'authority' vs 'rule') requires editorial judgment; no rubric pattern auto-accepts or auto-rewrites this.",
           "triage_generated_at": "2026-05-22T06:58:56.418Z"
@@ -8471,11 +8352,11 @@
             {
               "kind": "TEXTURE",
               "french": null,
-              "note": "étouffant d'une main l'incendie qui dévorait ses entrailles, et de l'autre promenant la torche autour d'elle — the rhetorical antithesis (one hand / the other) is preserved; \"promenant la torche\" is rendered \"carrying the torch around her,\" losing some of the deliberate parading quality of *promener*."
+              "note": "promenant la torche autour d'elle — \"brandishing the torch around her\" captures the menacing sweep of *promener* but loses some of the parading, leisurely-display quality the verb also carries."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "\"promenant la torche\" → \"brandishing the torch around her\" preferred; *promener* implies deliberate, sweeping movement — menacing rather than merely carrying.",
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "Rendering adds 'around her' beyond the verbatim established entry, and the flag raises a rhetorical/voice concern about the deliberate quality of *promener*, requiring editorial judgment.",
           "triage_generated_at": "2026-05-22T06:59:01.441Z"
@@ -8905,15 +8786,9 @@
         },
         {
           "paragraph_index": 57,
-          "flags": [
-            {
-              "kind": "READING",
-              "french": null,
-              "note": "intérêt d'individualité — rendered \"interest of separate identity\"; \"individuality\" in English carries personal-psychological overtones that miss Tocqueville's meaning of the State as a distinct corporate body."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "*intérêt d'individualité* → \"interest of particularity\" preferred over \"separate identity\"; captures the state's distinct corporate existence as a political unit without the personal-psychological overtones of \"individuality.\"",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "READING flag on 'intérêt d'individualité' rendered as 'interest of separate identity' rather than established 'interest of particularity'; requires editorial judgment.",
           "triage_generated_at": "2026-05-22T06:59:09.203Z"
@@ -13324,15 +13199,9 @@
         },
         {
           "paragraph_index": 2,
-          "flags": [
-            {
-              "kind": "TERM",
-              "french": "peuplade",
-              "note": "a small or tribal people, with a slight diminutive or ethnographic connotation. \"Community\" softens this; alternatives include \"tribe\" or \"band.\" The owner should decide on a consistent rendering throughout the volume."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "*peuplade* → \"tribe\" throughout; \"community\" is too neutral and loses the ethnographic register. Establish as standing policy for Volume I and II.",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "[deterministic] period-vocabulary term \"peuplade\" present in original (guard)",
           "triage_generated_at": "2026-05-22T06:59:26.103Z"
@@ -13455,15 +13324,9 @@
         },
         {
           "paragraph_index": 12,
-          "flags": [
-            {
-              "kind": "READING",
-              "french": "Hecwelder",
-              "note": "likely John Heckewelder (1743–1823), the Moravian missionary and ethnographer. The spelling in the French source omits the internal *k*. The owner should standardize to the accepted English spelling."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "\"Hecwelder\" → \"Heckewelder\" (John Heckewelder, 1743–1823); standardize to accepted English spelling throughout.",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "rewrite",
           "triage_rationale": "[deterministic] spelling not applied: Hecwelder → Heckewelder (Rewrite 2)",
           "triage_generated_at": "2026-05-22T06:59:38.613Z"
@@ -13541,15 +13404,9 @@
         },
         {
           "paragraph_index": 2,
-          "flags": [
-            {
-              "kind": "READING",
-              "french": "supplice",
-              "note": "means an execution accompanied by torture, not merely a death sentence. Rendered as \"execution\" here but \"ordeal\" or \"torture\" might be more precise depending on the owner's preference."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "*supplice* → \"act of torture\" or \"torture-death\" preferred over \"execution\"; *supplice* specifically denotes death by torture, not mere execution. \"Execution\" loses the cruelty that is Tocqueville's point.",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "TERM flag for 'supplice' rendered as 'execution'; established table requires 'torture/torture-death/act of torture', not 'execution', so this is not a settled rendering and needs editorial review.",
           "triage_generated_at": "2026-05-22T06:59:48.017Z"
@@ -13559,17 +13416,12 @@
           "flags": [
             {
               "kind": "READING",
-              "french": "supplice, accompagné de toutes les horreurs dont nous parlerons dans la suite",
-              "note": "Charlevoix is promising further description in his own work. The pronoun \"nous\" is Charlevoix's, not Tocqueville's. This is clear in context but worth confirming."
-            },
-            {
-              "kind": "TEXTURE",
-              "french": "avait du coeur",
-              "note": "literally \"had heart\"; rendered as \"had courage.\" The owner may wish to keep a more idiomatic flavor: \"if he was a man,\" or \"if he had any heart in him.\""
+              "french": null,
+              "note": "nous parlerons dans la suite — \"nous\" is Charlevoix's authorial voice, promising further description in his own work; rendered straight as \"we shall speak.\""
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "\"His execution\" → same *supplice* issue as previous paragraph; render as \"torture\" or \"torture-death\" consistent with standing policy established ¶2 of this note.",
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "[deterministic] period-vocabulary term \"sauvages\" present in original (guard)",
           "triage_generated_at": "2026-05-22T06:59:48.027Z"
@@ -13919,15 +13771,9 @@
         },
         {
           "paragraph_index": 7,
-          "flags": [
-            {
-              "kind": "TEXTURE",
-              "french": "ces moeurs chevaleresques qu'on mêlait au négoce",
-              "note": "literally \"those chivalric manners that were mixed into trade.\" The phrasing captures something distinctly Tocquevillian: the collision of codes of honor with commercial motive. \"Blended with commerce\" preserves the paradox without over-explaining it."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French.",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "[deterministic] period-vocabulary term \"moeurs\" present in original (guard)",
           "triage_generated_at": "2026-05-22T06:59:57.293Z"
@@ -14093,12 +13939,12 @@
           "flags": [
             {
               "kind": "TERM",
-              "french": "R. Cotton Mather",
-              "note": "Tocqueville gives the initial \"R.\" but the author is Cotton Mather (1663–1728); the \"R.\" may be an error for \"Rev.\" or a confusion with his father Increase Mather. The owner may wish to note this silently or add a translator's note."
+              "french": null,
+              "note": "R. Cotton Mather — editorial note required an inline translator's note, against the general rule restricting such notes to first name-restorations. Emitted per note instruction."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "\"R. Cotton Mather\" → \"Rev. Cotton Mather\"; Tocqueville's \"R.\" is almost certainly an abbreviation for *Révérend*, consistent with his usage elsewhere in these notes. Add translator's note: \"Tocqueville writes 'R. Cotton Mather'; the initial is almost certainly an abbreviation for *Révérend*.\"",
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "Flag concerns a possible authorial error or confusion ('R.' vs 'Rev.') requiring editorial judgment; no established term rendering or structural pattern applies.",
           "triage_generated_at": "2026-05-22T06:59:59.904Z"
@@ -14610,15 +14456,9 @@
         },
         {
           "paragraph_index": 8,
-          "flags": [
-            {
-              "kind": "READING",
-              "french": "la règle du testateur",
-              "note": "literally \"the rule of the testator,\" meaning the rule imposed on the person making the will. The phrasing is slightly compressed; \"the rule that binds the testator\" is an interpretive expansion. Owner may prefer \"the rule governing the testator\" or a closer rendering."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "\"the rule that binds the testator\" → \"the rule governing the testator\"; \"binds\" is an interpretive expansion not in the French.",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "READING flag on interpretive expansion of 'la règle du testateur'; multiple plausible renderings exist and editorial judgment is required.",
           "triage_generated_at": "2026-05-22T07:00:51.067Z"
@@ -14851,20 +14691,9 @@
         },
         {
           "paragraph_index": 1,
-          "flags": [
-            {
-              "kind": "TEXTURE",
-              "french": null,
-              "note": "The ellipsis at the opening (\"«.........») appears in the original, indicating that Tocqueville is quoting selectively from Malesherbes's remonstrance. It has been preserved. The owner may wish to use a standard editorial ellipsis form."
-            },
-            {
-              "kind": "TERM",
-              "french": null,
-              "note": "\"corps\" and \"communauté de citoyens\" — rendered as \"corporate body\" and \"community of citizens\" respectively. \"Corps\" here means a legally constituted collective entity (a guild, an estate, a town body). The owner may prefer \"body\" or \"corporation.\""
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Standardize opening ellipsis to editorial form […] per scholarly edition convention. \"Corporate body\" confirmed as rendering for *corps*.",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "Neither flag matches an auto-accept pattern: TEXTURE flag concerns editorial preference, not a structural element; TERM flag's french terms are not in the established renderings table.",
           "triage_generated_at": "2026-05-22T07:01:20.530Z"
@@ -14996,20 +14825,9 @@
         },
         {
           "paragraph_index": 1,
-          "flags": [
-            {
-              "kind": "READING",
-              "french": "chancelier Meaupou",
-              "note": "The source text spells the name \"Meaupou,\" which is a variant spelling of \"Maupeou\" (René Nicolas de Maupeou, 1714–1792). The standard spelling is \"Maupeou.\" Owner should confirm preferred rendering."
-            },
-            {
-              "kind": "TEXTURE",
-              "french": null,
-              "note": "The phrase \"ils ont imité en ceci\" carries a quietly ironic register — Tocqueville is drawing an unflattering parallel between a revolutionary settlement and an act of royal despotism. The irony is worth preserving if the owner's rewrite allows it."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "\"Meaupou\" → \"Maupeou\" (René Nicolas de Maupeou, 1714–1792); standardize to accepted spelling throughout.",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "Both flags require editorial judgment: the READING flag is a spelling variant needing owner confirmation, and the TEXTURE flag concerns preservation of ironic register — neither qualifies for auto-accept or rewrite.",
           "triage_generated_at": "2026-05-22T07:01:51.711Z"
@@ -15202,17 +15020,12 @@
           "flags": [
             {
               "kind": "TERM",
-              "french": "tribunaux politiques",
-              "note": "rendered as \"political tribunals.\" Alternative: \"courts of impeachment.\" Flag for owner."
-            },
-            {
-              "kind": "TERM",
-              "french": "l'interdiction des fonctions publiques à l'avenir",
-              "note": "rendered as \"permanent disqualification from holding public office.\" The French does not specify that the disqualification is permanent, only that it extends to future office-holding."
+              "french": null,
+              "note": "tribunaux politiques — rendered as \"political tribunals.\" Alternative: \"courts of impeachment.\""
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "\"permanent disqualification\" → \"disqualification from future public office\"; *à l'avenir* means future-looking, not necessarily permanent. \"Permanent\" is an over-translation.",
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "Neither 'tribunaux politiques' nor 'l'interdiction des fonctions publiques à l'avenir' appears in the established term renderings table; both flags require editorial judgment.",
           "triage_generated_at": "2026-05-22T07:02:15.118Z"
@@ -15353,20 +15166,9 @@
         },
         {
           "paragraph_index": 5,
-          "flags": [
-            {
-              "kind": "READING",
-              "french": "rendre durable... les bienfaits de la liberté",
-              "note": "rendered as \"make lasting... the blessings of liberty\" rather than restoring the canonical English text (\"secure the Blessings of Liberty\"), since the source is Tocqueville's French translation and the brief here is to translate the French. The owner may wish to substitute the original English text of the Constitution throughout this note."
-            },
-            {
-              "kind": "TERM",
-              "french": null,
-              "note": "liberté — \"liberty\" per standing decision."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Restore original English text of the Preamble verbatim: \"We the People of the United States, in Order to form a more perfect Union, establish Justice, insure domestic Tranquility, provide for the common defence, promote the general Welfare, and secure the Blessings of Liberty to ourselves and our Posterity, do ordain and establish this Constitution for the United States of America.\" Do not use back-translation from Tocqueville's French.",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "[deterministic] period-vocabulary term \"commune\" present in original (guard)",
           "triage_generated_at": "2026-05-22T07:02:34.848Z"
@@ -16495,15 +16297,9 @@
         },
         {
           "paragraph_index": 130,
-          "flags": [
-            {
-              "kind": "TERM",
-              "french": null,
-              "note": "liberté — \"liberty\" per standing decision, here applied to \"liberté de la parole ou de la presse.\""
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Restore original English text of the First Amendment verbatim: \"Congress shall make no law respecting an establishment of religion, or prohibiting the free exercise thereof; or abridging the freedom of speech, or of the press; or the right of the people peaceably to assemble, and to petition the Government for a redress of grievances.\"",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "[deterministic] period-vocabulary term \"liberté\" present in original (guard)",
           "triage_generated_at": "2026-05-22T07:02:37.351Z"
@@ -16663,15 +16459,9 @@
         },
         {
           "paragraph_index": 148,
-          "flags": [
-            {
-              "kind": "READING",
-              "french": "ou à ceux qu'elle ne défend pas aux États d'exercer",
-              "note": "the French here is awkward, deviating from the original Tenth Amendment (\"nor prohibited by it to the States\"); translated literally."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Restore original English text of the Tenth Amendment verbatim: \"The powers not delegated to the United States by the Constitution, nor prohibited by it to the States, are reserved to the States respectively, or to the people.\"",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "rewrite",
           "triage_rationale": "The Tenth Amendment is a canonical English-language source; the rendering is a back-translation rather than the verbatim constitutional text.",
           "triage_generated_at": "2026-05-22T07:02:39.575Z"
@@ -17721,13 +17511,13 @@
           "paragraph_index": 264,
           "flags": [
             {
-              "kind": "TERM",
+              "kind": "READING",
               "french": null,
-              "note": "liberté — \"liberty\" per standing decision."
+              "note": "conformément à la loi — restored to \"without due process of law\" per Fifth Amendment verbatim, though the French literally reads \"in conformity with the law.\""
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Restore original English text of the Fifth Amendment verbatim: \"nor shall any person be subject for the same offence to be twice put in jeopardy of life or limb; nor shall be compelled in any criminal case to be a witness against himself, nor be deprived of life, liberty, or property, without due process of law.\"",
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "[deterministic] period-vocabulary term \"liberté\" present in original (guard)",
           "triage_generated_at": "2026-05-22T07:02:39.594Z"
@@ -18659,17 +18449,12 @@
           "flags": [
             {
               "kind": "TERM",
-              "french": "citoyens paisibles",
-              "note": "\"peaceable citizens,\" sometimes rendered \"quiet citizens.\" The word suggests both temperamental calm and political passivity. Owner may wish to distinguish these senses."
-            },
-            {
-              "kind": "READING",
-              "french": "Autour d'eux s'agitent sans cesse les partis",
-              "note": "the verb *s'agiter* carries connotations of restless, somewhat frantic motion. \"Move without rest\" is one solution; \"swirl,\" \"jostle,\" or \"churn\" are more vivid alternatives the owner might consider."
+              "french": null,
+              "note": "citoyens paisibles — \"peaceable citizens\" preserves the ambiguity between temperamental calm and political quietism."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "\"s'agitent sans cesse\" → \"swirl ceaselessly\" preferred over \"move without rest\"; *s'agiter* implies restless, agitated motion, not mere movement.",
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "Both flags require editorial judgment: TERM flag notes contested senses of 'paisibles'; READING flag concerns vivid verb rendering—neither matches an auto-accept or rewrite pattern.",
           "triage_generated_at": "2026-05-22T07:02:52.928Z"
@@ -18739,15 +18524,9 @@
         },
         {
           "paragraph_index": 5,
-          "flags": [
-            {
-              "kind": "TERM",
-              "french": "état social",
-              "note": "rendered throughout as \"social order\" or \"social condition\" depending on context. Here \"social order\" fits the sense of an established arrangement under threat. Owner should decide on a consistent translation for this recurring term."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "*état social* → \"social condition\" as the standing rendering throughout — not \"social order.\" Tocqueville's term encompasses the overall state of society including equality of conditions, manners, and institutions; \"social order\" implies hierarchy and stability that \"social condition\" does not.",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "Flag notes inconsistent rendering of 'état social' as 'social order' vs 'social condition'; established table requires 'social condition', but owner review for consistency is warranted.",
           "triage_generated_at": "2026-05-22T07:03:11.083Z"
@@ -18800,16 +18579,11 @@
             {
               "kind": "TEXTURE",
               "french": null,
-              "note": "\"ils s'échauffent toujours à froid\" is a striking paradox — literally \"they always heat themselves up in cold.\" Rendered as \"they always work themselves into a cold passion,\" preserving the oxymoron. The owner may want to reconsider this."
-            },
-            {
-              "kind": "TERM",
-              "french": "sans foi politique",
-              "note": "literally \"without political faith.\" Rendered as \"without political conviction,\" which captures the sense of having no genuine belief. \"Faith\" could also work and is more literal."
+              "note": "s'échauffent toujours à froid — the paradox \"heat themselves up cold\" preserved literally; the oxymoron is sharper than any idiomatic rendering would allow."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "\"sans foi politique\" → \"without political faith\" preferred over \"without political conviction\"; *foi* carries religious register — the contrast with great parties is between genuine belief and its absence, not merely strong vs. weak conviction.",
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "(classifier output unparseable after retry; defaulted to manual)",
           "triage_generated_at": "2026-05-22T07:03:29.968Z"
@@ -19094,15 +18868,9 @@
         },
         {
           "paragraph_index": 33,
-          "flags": [
-            {
-              "kind": "TERM",
-              "french": "les moeurs et les lois",
-              "note": "a recurring Tocquevillian pair. \"Manners and laws\" is conventional and accurate; the owner may prefer \"mores and laws\" or \"customs and laws\" depending on the preferred translation of *moeurs* throughout the volume."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French.",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "[deterministic] period-vocabulary term \"moeurs\" present in original (guard)",
           "triage_generated_at": "2026-05-22T07:03:52.824Z"
@@ -19212,15 +18980,9 @@
         },
         {
           "paragraph_index": 1,
-          "flags": [
-            {
-              "kind": "TERM",
-              "french": null,
-              "note": "\"moeurs\" rendered as \"mores\" per standing convention — direct Latin cognate, carries all three senses (manners, morals, customs). Recurs throughout the volume."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French.",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "[deterministic] period-vocabulary term \"moeurs\" present in original (guard)",
           "triage_generated_at": "2026-05-22T07:04:01.429Z"
@@ -19360,16 +19122,11 @@
             {
               "kind": "READING",
               "french": null,
-              "note": "\"détrompeur\" is an unusual word — literally \"that which disabuses or undeceives.\" In context it seems to mean the thing that stripped him of his illusions. \"Delusions\" captures the sense. Owner may want to consider \"deceiver\" or \"the thing that stripped him of his illusions\" if more precision is needed. This is a notable lexical difficulty."
-            },
-            {
-              "kind": "TEXTURE",
-              "french": null,
-              "note": "Paragraph 13 in the source is just the attribution line \"(Vincenne's Gazette.)\" — rendered here as a caption. Owner may prefer to fold it into Paragraph 12 as a parenthetical or treat it as a standalone note."
+              "note": "\"blasphémer en liberté contre sa folie\" rendered as \"freely blaspheme against his own folly,\" preserving the religious register of *blasphémer*; alternative would be the weaker \"curse.\""
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "\"jeter loin de lui son détrompeur\" → \"cast aside his illusions\" preferred over \"cast aside his delusions\"; *détrompeur* means the stripping away of false beliefs, not mental pathology. \"Illusions\" is more precise.",
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "[deterministic] period-vocabulary term \"liberté\" present in original (guard)",
           "triage_generated_at": "2026-05-22T07:04:04.302Z"
@@ -19524,15 +19281,9 @@
         },
         {
           "paragraph_index": 25,
-          "flags": [
-            {
-              "kind": "TERM",
-              "french": "les lumières",
-              "note": "literally \"the lights/enlightenment.\" Here it means intellectual life, knowledge, and cultivation — not specifically the historical Enlightenment movement. \"Enlightenment\" may mislead; \"learning\" or \"intellectual life\" are alternatives. Owner to decide on a consistent rendering."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "\"les lumières\" → \"knowledge\" in this instance.",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "Rendering uses 'Enlightenment' for 'lumières', but the established table requires 'learning' or 'knowledge' — 'Enlightenment' is explicitly excluded and must not be auto-accepted.",
           "triage_generated_at": "2026-05-22T07:04:12.825Z"
@@ -19975,20 +19726,9 @@
         },
         {
           "paragraph_index": 8,
-          "flags": [
-            {
-              "kind": "TERM",
-              "french": "colléges électoraux",
-              "note": "\"electoral colleges\" in the technical sense of bodies formed to elect or delegate. Not the same as the U.S. Electoral College for presidential elections; it means simply organized delegating bodies. Owner may prefer \"electoral bodies\" or \"delegating bodies\" to avoid confusion."
-            },
-            {
-              "kind": "TERM",
-              "french": "mandataires",
-              "note": "\"delegates\" or \"mandated representatives.\" Used throughout this passage; rendered as \"delegates\" or \"mandataries\" depending on context. See Paragraph 9 note."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "\"colléges électoraux\" → \"delegating bodies\" preferred over \"electoral colleges\"; the latter will mislead the audience into the U.S. Electoral College, which is not what Tocqueville means. He means organized bodies formed to select and send delegates.",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "(classifier output unparseable after retry; defaulted to manual)",
           "triage_generated_at": "2026-05-22T07:21:58.646Z"
@@ -20146,22 +19886,12 @@
           "flags": [
             {
               "kind": "TERM",
-              "french": "libertés communales",
-              "note": "rendered as \"local liberties.\" This refers to the discussion of township/commune freedoms earlier in the work. \"Municipal liberties\" is another option; owner to decide for consistency with earlier chapters."
-            },
-            {
-              "kind": "TERM",
-              "french": "corps secondaires",
-              "note": "\"secondary bodies.\" This is Tocqueville's term for intermediate institutions — aristocratic guilds, estates, corporations — that stand between the individual and the sovereign. \"Intermediate bodies\" is a common scholarly rendering. Owner to decide."
-            },
-            {
-              "kind": "TERM",
-              "french": "factieux",
-              "note": "\"agitators\" or \"faction-leaders.\" In French the word carries a strong pejorative charge (those who stir up factional trouble). \"Faction leaders\" or \"demagogues\" may be alternatives. See also Paragraph 24."
+              "french": null,
+              "note": "libertés communales — rendered as \"township liberties\" for consistency with the *commune* → \"township\" policy."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "\"corps secondaires\" → \"intermediate bodies\" preferred over \"secondary bodies\"; standard scholarly rendering for Tocqueville's term for institutions standing between individual and sovereign. \"factieux\" → \"faction leaders\" preferred over \"agitators\"; *factieux* implies deliberate stirring of factional trouble, not mere agitation.",
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "(classifier output unparseable after retry; defaulted to manual)",
           "triage_generated_at": "2026-05-22T07:22:16.911Z"
@@ -20186,15 +19916,9 @@
         },
         {
           "paragraph_index": 24,
-          "flags": [
-            {
-              "kind": "TERM",
-              "french": "factieux",
-              "note": "rendered here as \"agitators.\" See note on Paragraph 21. Tocqueville's distinction between \"factieux\" (those who operate openly, however disruptively) and \"conspirateurs\" (those who plot in secret) is the crucial point of the sentence. Owner may wish to use \"faction-leaders\" to keep the contrast sharper."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "\"factieux\" → \"faction leaders\" here per standing policy established ¶21; the contrast with \"conspirators\" is the point of the sentence and \"agitators\" blurs it.",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "[deterministic] period-vocabulary term \"liberté\" present in original (guard)",
           "triage_generated_at": "2026-05-22T07:22:16.922Z"
@@ -20294,15 +20018,9 @@
         },
         {
           "paragraph_index": 34,
-          "flags": [
-            {
-              "kind": "TEXTURE",
-              "french": "ne diffèrent que par des nuances",
-              "note": "\"differ only by shades\" or \"only by degrees.\" The word \"nuances\" in French here means slight gradations or shadings of difference, not fine distinctions of taste. \"Differ only in degree\" or \"differ only by shades\" are both possible. Owner to decide."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "\"ne diffèrent que par des nuances\" → \"differ only by nuances\" — the word is fully naturalized in English and carries the right meaning precisely.",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "Flag explicitly notes two valid renderings and defers to editorial judgment; not a settled TERM rendering and requires owner decision.",
           "triage_generated_at": "2026-05-22T07:22:23.942Z"
@@ -23852,20 +23570,9 @@
         },
         {
           "paragraph_index": 101,
-          "flags": [
-            {
-              "kind": "TERM",
-              "french": "moeurs",
-              "note": "italicized only per policy"
-            },
-            {
-              "kind": "READING",
-              "french": null,
-              "note": "\"polir les moeurs\" alongside \"élever les manières\" — *moeurs* preserved untranslated per standing decision; \"manières\" rendered as \"manners\" so that the two terms remain distinct, as in the French"
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French.",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "[deterministic] period-vocabulary term \"moeurs\" present in original (guard)",
           "triage_generated_at": "2026-05-22T07:23:39.501Z"
@@ -25434,12 +25141,12 @@
           "flags": [
             {
               "kind": "READING",
-              "french": "reculer d'une toise",
-              "note": "*toise* was an old French unit of roughly six feet; rendered as \"a one-foot shift\" would understate, \"a fathom\" would mislead. \"One-foot\" replaced with the more accurate sense; here I have used \"a one-foot shift\" provisionally — owner may wish to substitute \"a few feet\" or \"six feet\" or to retain the figure of speech."
+              "french": null,
+              "note": "reculer d'une toise — literal sense is roughly six feet; \"a few feet\" chosen to preserve the triviality of the dispute without pedantic measurement."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "\"reculer d'une toise\" → \"a few feet\" preferred over \"one-foot shift\"; *toise* is roughly six feet, so \"one-foot\" understates it. The exact measurement is less important than the triviality of the dispute — \"a few feet\" captures this without pedantry.",
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "READING flag on a unit-conversion judgment call (toise ≈ 6 ft vs. 'one-foot'); no established term rendering applies and the flag itself flags the provisional choice as contested.",
           "triage_generated_at": "2026-05-22T07:29:00.190Z"
@@ -26677,15 +26384,9 @@
         },
         {
           "paragraph_index": 62,
-          "flags": [
-            {
-              "kind": "TERM",
-              "french": "moeurs",
-              "note": "in the chapter heading; kept untranslated per policy."
-            }
-          ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Chapter heading renders *moeurs* as untranslated \"*moeurs*\" — should be \"*mores*\" per standing policy throughout. Correct to \"OF THE INFLUENCE OF *MORES* UPON THE MAINTENANCE OF THE DEMOCRATIC REPUBLIC IN THE UNITED STATES.\"",
+          "flags": [],
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "rewrite",
           "triage_rationale": "[deterministic] \"moeurs\" present in rendering (Rewrite 4)",
           "triage_generated_at": "2026-05-22T07:29:08.982Z"
@@ -29440,18 +29141,18 @@
           "paragraph_index": 64,
           "flags": [
             {
-              "kind": "TERM",
-              "french": "moeurs",
-              "note": "italicized only."
+              "kind": "READING",
+              "french": null,
+              "note": "métis — rendered \"mixed-bloods\" rather than \"half-breeds\" (pejorative in modern English) or \"mestizos\" (too narrowly Spanish-American)."
             },
             {
-              "kind": "READING",
-              "french": "métis",
-              "note": "rendered \"mixed-bloods\" rather than \"half-breeds\" (pejorative in modern English) or \"mestizos\" (too narrowly Spanish-American); Tocqueville uses the term descriptively."
+              "kind": "TERM",
+              "french": null,
+              "note": "moeurs — rendered as *mores* per editorial note, overriding the prior italicized-French treatment."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Render \"moeurs\" as \"mores\" throughout — direct Latin cognate, carries all three senses (manners, morals, customs), recognized by the target audience, reads more naturally in English prose than the untranslated French.",
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "manual",
           "triage_rationale": "[deterministic] period-vocabulary term \"sauvages\" present in original (guard)",
           "triage_generated_at": "2026-05-22T07:29:09.035Z"
@@ -35232,17 +34933,17 @@
           "flags": [
             {
               "kind": "READING",
-              "french": "l'opinion acheva de faire justice de la mesure",
-              "note": "literally \"opinion finished making justice of the measure,\" i.e., public opinion ultimately defeated or discredited the law. Rendered as \"public opinion finished off the measure entirely.\" The owner may prefer a more literal phrasing such as \"public opinion ultimately disposed of the measure.\""
+              "french": null,
+              "note": "l'opinion acheva de faire justice de la mesure — rendered as \"public opinion ultimately disposed of the measure\"; alternative: \"public opinion finished off the measure entirely.\""
             },
             {
               "kind": "TEXTURE",
               "french": null,
-              "note": "Note that Tocqueville spells the name \"Francklin\" throughout — this follows an older French orthographic convention for \"Franklin.\" The owner must decide whether to silently correct to \"Franklin\" or retain \"Francklin\" as it appears in the source."
+              "note": "The editorial instruction required a single translator's note on first name-restoration; placed at first occurrence of \"Franklin\" in this paragraph, though \"Francklin\" first appears in the prior paragraph of the source. Editor may wish to relocate the note to the earlier instance."
             }
           ],
-          "editorial_status": "flagged_for_rewrite",
-          "editorial_note": "Standardize \"Francklin\" → \"Franklin\" throughout this note; add single translator's note: \"Tocqueville writes 'Francklin' following a French orthographic convention; the standard English spelling is restored here.\"",
+          "editorial_status": null,
+          "editorial_note": null,
           "triage_tier": "rewrite",
           "triage_rationale": "[deterministic] spelling not applied: Francklin → Franklin (Rewrite 2)",
           "triage_generated_at": "2026-05-22T07:29:13.693Z"

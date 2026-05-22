@@ -1122,6 +1122,25 @@ The other clusters lined up with the task brief: 14 period-vocabulary softening 
 
 **Next slice candidates.** (1) Owner invokes the runner against the 56 targets, reviews the sidecar output, then `--apply`s. After apply the 56 retried units return to `editorial_status: null` for re-review via `scripts/review-annotations.ts`. (2) Manual workflow for the 26 skipped source-restoration / anomaly units — likely a per-source pass (Constitution one session, state constitutions another, Founders Online quotations a third). (3) Tocqueville Vol I retrieval: embedding the (post-retry) populated `translation` into `data/eval/index.sqlite`.
 
+### Phase 4 Tocqueville Vol I retry pass — applied (2026-05-22)
+
+The runner built in the prior entry was executed against the 56 targets and the results applied. All 56 synchronous Opus 4.7 calls completed cleanly; no errors, no truncations. The sidecar was reviewed before `--apply`; 22 units emitted READING/TEXTURE/TERM flags (18 single-flag, 4 double-flag) and were scanned individually for systematic failures before the apply confirmation. None surfaced — the flag content was, as designed, self-disclosure of judgment-required choices.
+
+**Post-apply state of `tocqueville-annotations.json`:**
+- 296 paragraphs/footnotes at `editorial_status: accepted` (unchanged from before retry — accepted entries are not touched by the runner)
+- 56 retried units now at `editorial_status: null` (55 paragraphs + 1 footnote; awaiting re-review through `scripts/review-annotations.ts`)
+- 26 units still at `editorial_status: flagged_for_rewrite` (the SKIP_UNITS set — 20 Cluster A source-restorations without verbatim English in the editorial note, 6 Cluster F source-verification anomalies; manual workflow)
+
+**Auto-process source-restoration substitutions verified.** The 5 units in the auto-process subset (Article II §4 in `part1.ch7 ¶31`; Preamble in `t1.notes.O ¶5`; First Amendment in `¶130`; Tenth Amendment in `¶148`; Fifth Amendment in `¶264`) all carry the canonical English text from the editorial notes, with capitalization, British spelling (*defence*), and constitutional phrasing preserved exactly. This is the design payoff for the option-3 decision.
+
+**One known open item — `vol1.part1.ch7 ¶31` (Article II §4).** The editorial note instructed: *"render as written, but add translator's note flagging the [citation] inversion."* The model substituted the verbatim canonical phrase ("Treason, Bribery, or other high Crimes and Misdemeanors") correctly but **declined to add the inversion translator's note**, deferring to the retry prompt's structural rule that restricts inline notes to first name-restoration (Maupeou, Heckewelder, Franklin). The model self-disclosed in a READING flag: *"Tocqueville's citation inverts the actual reference (Article II, Section 4); rendered as written in the French, per house policy against inline translator's notes. Editor may wish to add an endnote."* The model's call was a strict reading of the structural rule; the editorial note expected the note to be added inline as a third permitted exception. This is a hand-edit candidate during the next review pass — not a re-render case, since the substitution itself is correct.
+
+**Postprocess warnings.** One false positive: `vol1.part2.ch4 ¶21` triggered the "suspicious opening word 'here'" heuristic because the new rendering legitimately opens *"Here I shall express a thought…"* (Tocqueville's *"Ici j'exprimerai une pensée…"*). The heuristic is a defence against preamble leakage ("Here is the translation: …") and produced a benign warning on a legitimate Tocqueville sentence-opener. No action needed.
+
+**One model-vs-editorial-note divergence accepted on the record.** `vol1.t1.notes.G ¶8` — the editorial note suggested *"the rule that binds the testator"* → *"the rule governing the testator"*. The model rendered *"the rule of the testator"* — tighter than the editor's substitution, closer to the literal French (*la règle du testateur*). Owner accepted the model's tighter rendering rather than re-running.
+
+**Next.** (1) Re-review the 56 reset units via `scripts/review-annotations.ts --corpus tocqueville`. (2) Hand-edit `part1.ch7 ¶31` to add the citation-inversion translator's note. (3) Plan the per-source manual workflow for the 26 skipped units (US Constitution provisions, state constitutions, Founders Online quotations, Pagnerre verification anomalies).
+
 ## Current state of the repository
 
 **What exists in the repo:**
