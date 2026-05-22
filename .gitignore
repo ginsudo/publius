@@ -51,6 +51,9 @@ data/tocqueville/.translation-resubmit-state.json
 # Retry pass ephemeral state (retry-tocqueville-flagged.ts)
 data/tocqueville/.retry-results.json
 
+# Title-translation sidecar (translate-tocqueville-titles.ts)
+data/tocqueville/.title-candidates.json
+
 # Phase 1.1 retrieval test — local-only artifacts
 data/eval/results.md
 

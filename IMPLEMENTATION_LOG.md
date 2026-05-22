@@ -1247,6 +1247,32 @@ The single Federalist list at `/browse` was redesigned into a landing page that 
 - No SCOTUS card link target — the card is intentionally dimmed and link-less; the route will come with the Phase 6 corpus.
 - Mobile collapse logic exists (single-column at `≤720px`) but has not been visually verified on a real device or emulator yet.
 
+### Tocqueville Vol I translated titles — schema field added and 39 items populated (2026-05-22)
+
+The Browse entry above noted a deviation: Tocqueville rows in `/browse/tocqueville` had no English-title line because no English-title field existed on the item. The right fix was a schema addition + a generation pass, not a UI hack on first-paragraph body text.
+
+**Schema decision.** The new field is `tocqueville.translated_title` (`string | null`) in the corpus extension, not on the universal base. Reasoning: the universal `title` is preserved verbatim from the canonical source ("Not editorialized," per SCHEMA.md). Cross-language editorial work — both body `translation` and now title rendering — has copyright/review implications that distinguish it from `plain_english`-style register modernization and lives in the per-corpus extension. A universal `translated_title` would be perpetually null on Federalist and SCOTUS (English-source) and would pollute the base.
+
+**Generation workflow.** Built `scripts/translate-tocqueville-titles.ts` with three modes: `--sample` (3 titles, dry-run, no sidecar), `--generate` (all 39 → sidecar at `data/tocqueville/.title-candidates.json`), `--review` (interactive a/w/s loop, writes accepted/rewritten titles back to `tocqueville.json` and initializes `translated_title: null` on every other item, including all Vol II and any skipped Vol I). System prompt at `prompts/tocqueville-title-v1.md` (gitignored alongside other prompt files): "scholar's working title, accurate to the French, modern in register, preserving every distinction the original makes. Not Reeve's archaic renderings. Not compressed modern glosses." Sequential API calls against `claude-opus-4-7`, max_tokens 500. SIGINT in `--review` flushes accepted titles before exiting so a partial session never loses approved work.
+
+**The sample step worked, the full generate pass clean.** All 39 items returned non-error responses on the first generate. Two items came back in ALL CAPS — the model mirrored the source's typographic convention (chapter titles in Pagnerre are printed in caps) instead of normalizing to title case: `vol1.part1.ch7` → `ON POLITICAL JUDGMENT IN THE UNITED STATES` and `vol1.part2.ch5` → `ON THE GOVERNMENT OF DEMOCRACY IN AMERICA`. The other 37 normalized cleanly. The decision was to leave the prompt as-is (the ALL CAPS surface is small enough to fix in review; tightening the prompt to forbid mirroring source case risks new failure modes) and correct the two items post-hoc.
+
+**Three post-review corrections.** After the 39/39 interactive pass:
+1. Typo introduced during a rewrite on `vol1.avertissement`: `Foreward` → `Foreword`.
+2. Title-case normalization on `vol1.part1.ch7`: `ON POLITICAL JUDGMENT IN THE UNITED STATES` → `On Political Judgment in the United States`.
+3. Title-case normalization on `vol1.part2.ch5`: `ON THE GOVERNMENT OF DEMOCRACY IN AMERICA` → `On the Government of Democracy in America`.
+
+All three corrected by direct JSON edit, verified by counting Vol I items with `translated_title !== null` (39/39) and Vol II items with `translated_title !== null` (0/85, as expected — Vol II is initialized to null until its own future pass).
+
+**Side effect on the universal layer:** every Tocqueville item (124) now carries `translated_title` (null on 85 Vol II items + 0 Vol I, populated on 39 Vol I). The field is documented in `data/SCHEMA.md` in both the Tocqueville extension example and the field-semantics bullet list.
+
+**Sidecar at `data/tocqueville/.title-candidates.json` left in place** for reference — not deleted after `--review`. Gitignored to match the existing `.retry-results.json` convention.
+
+**What does not exist yet:**
+- The English-title slot on Tocqueville Browse rows is *data-ready* now but the row layout in `app/browse/tocqueville/TocquevilleBrowseList.tsx` still doesn't render it — the 2026-05-22 deviation in the Browse entry above remains a UI follow-up.
+- No Vol II title-translation pass. The script supports it (just change `TARGET_VOLUME`), but Vol II body translation isn't done yet; titles before bodies would be out of order.
+- The script `translate-tocqueville-titles.ts` runs sequentially. For 39 items this is fine (~few minutes); if the workflow ever covers a larger corpus, Batch API would be the right shape.
+
 ## Current state of the repository
 
 **What exists in the repo:**

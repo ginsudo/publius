@@ -141,7 +141,8 @@ ID format: `federalist:<number>`, e.g., `"federalist:51"`.
   "references_page": null,
   "tome": 2,
   "end_notes_referenced": [],
-  "translation": null
+  "translation": null,
+  "translated_title": null
 }
 ```
 
@@ -154,6 +155,7 @@ ID format: `federalist:<number>`, e.g., `"federalist:51"`.
 - **`tome`** — 1, 2, 3, or 4. Identifies the PG source file the item came from (PG #30513–#30516). Vol I = tomes 1+2; Vol II = tomes 3+4. Carried per-item so end-note ID disambiguation (next bullet) is auditable and so source provenance is retrievable without re-deriving from `volume` + `part`.
 - **`end_notes_referenced`** — array of end-note IDs (e.g., `["tocqueville:vol1.t1.notes.A"]`) that this item references. Populated editorially in Phase 4 once the inline-text → end-note mapping has been hand-verified. Empty array (`[]`) in Phase 0; not derivable from the source by pattern alone (the Pagnerre 1848 edition uses prose references like "voyez la note A" rather than a uniform inline marker), so this stays a deliberate editorial field rather than an auto-generated one.
 - **`translation`** — English translation of the item's body. `string[]` aligned with `paragraphs` — same length, same paragraph order. `null` until populated in Phase 4. Distinct from the universal `plain_english`: translation is cross-language work, authored by the project owner under the editorial standard in DECISIONS.md ("Tocqueville: French original as source of record"), with copyright and review implications that same-language register modernization in `plain_english` does not have. Tocqueville items always carry `plain_english: null`; the modern-English rendering of a Tocqueville item lives here. Footnote-body translation shape is additive when the Phase 4 pipeline is built. See DECISIONS.md, "Translation vs plain-English."
+- **`translated_title`** — English rendering of the item's French `title`. `string | null`. Same cross-language editorial work as `translation`, scoped to the title line: a working scholar's title accurate to the French, modern in register, preserving every distinction the original makes. Lives in the Tocqueville extension rather than the universal layer because the universal `title` is preserved verbatim from the canonical source ("Not editorialized"), and because English-source corpora (Federalist, SCOTUS) would carry a perpetually-null universal field otherwise. `null` until populated through the title-translation workflow; `null` is also the steady state for any item whose title has not been editorially rendered (Vol II items prior to their Phase 5 pass, end-notes whose titles are mechanical, and any item skipped in review). When non-null, the value is the reviewed/accepted English title — there is no intermediate "machine-drafted but unreviewed" state in the corpus file.
 
 The smallest addressable unit is the chapter. Sub-sections (where a chapter has internal headings) are flattened into `paragraphs`. The internal heading appears as its own paragraph in the array if it appears in the source.
 
