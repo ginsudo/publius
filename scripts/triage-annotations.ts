@@ -16,6 +16,9 @@
 //   --dry-run                        enumerate candidates and exit; no API calls, no writes
 //   --limit N                        classify at most N candidates this run (sampling)
 //   --force                          re-classify all candidates regardless of existing tier
+//   --include-reviewed               include records with editorial_status set (back-test
+//                                    mode against owner-decided records). Writes only
+//                                    triage_* fields; never modifies editorial_status.
 //
 // Rationale: DECISIONS.md "Confidence-tiered flag triage pipeline."
 // Build path: IMPLEMENTATION_LOG.md "Phase 3.2 review — flag review reworked into a confidence-tiered triage pipeline."
@@ -411,7 +414,7 @@ interface CorpusAdapter {
   readonly rubricVersion: string;
   readFileVersion(): { version: string | null; sha: string | null };
   writeFileVersion(version: string, sha: string): void;
-  buildCandidates(includeAlreadyTriaged: boolean): Candidate[];
+  buildCandidates(opts: { includeAlreadyTriaged: boolean; includeReviewed: boolean }): Candidate[];
 }
 
 function createFederalistAdapter(): CorpusAdapter {
@@ -438,14 +441,14 @@ function createFederalistAdapter(): CorpusAdapter {
       ann.triage_rubric_sha256 = sha;
       write();
     },
-    buildCandidates: (includeAlreadyTriaged) => {
+    buildCandidates: ({ includeAlreadyTriaged, includeReviewed }) => {
       const out: Candidate[] = [];
       for (const paper of ann.papers) {
         const item = itemByNumber.get(paper.paper_number);
         if (!item) continue;
         for (const para of paper.paragraphs) {
           if (para.flags.length === 0) continue;
-          if (para.editorial_status !== null) continue;
+          if (!includeReviewed && para.editorial_status !== null) continue;
           if (!includeAlreadyTriaged && para.triage_tier !== null) continue;
 
           const original = item.paragraphs[para.paragraph_index] ?? '';
@@ -497,7 +500,7 @@ function createTocquevilleAdapter(): CorpusAdapter {
       ann.triage_rubric_sha256 = sha;
       write();
     },
-    buildCandidates: (includeAlreadyTriaged) => {
+    buildCandidates: ({ includeAlreadyTriaged, includeReviewed }) => {
       const out: Candidate[] = [];
       for (const annItem of ann.items) {
         const item = itemById.get(annItem.item_id);
@@ -505,7 +508,7 @@ function createTocquevilleAdapter(): CorpusAdapter {
 
         for (const para of annItem.paragraphs) {
           if (para.flags.length === 0) continue;
-          if (para.editorial_status !== null) continue;
+          if (!includeReviewed && para.editorial_status !== null) continue;
           if (!includeAlreadyTriaged && para.triage_tier !== null) continue;
 
           const original = item.paragraphs[para.paragraph_index] ?? '';
@@ -530,7 +533,7 @@ function createTocquevilleAdapter(): CorpusAdapter {
 
         for (const fn of annItem.footnotes) {
           if (fn.flags.length === 0) continue;
-          if (fn.editorial_status !== null) continue;
+          if (!includeReviewed && fn.editorial_status !== null) continue;
           if (!includeAlreadyTriaged && fn.triage_tier !== null) continue;
 
           const fnCorpus = item.footnotes.find((x) => x.marker === fn.marker);
@@ -758,6 +761,13 @@ type Args = {
   dryRun: boolean;
   limit: number | null;
   force: boolean;
+  // Validation/back-test mode. When set, the candidate set includes records
+  // with editorial_status !== null (i.e., already-decided by the owner).
+  // The classifier writes only triage_tier / triage_rationale /
+  // triage_generated_at; it NEVER modifies editorial_status. This lets the
+  // already-decided units act as a labeled test set for confusion-matrix
+  // measurement against the classifier's tiering.
+  includeReviewed: boolean;
 };
 
 function parseArgs(argv: string[]): Args {
@@ -765,6 +775,7 @@ function parseArgs(argv: string[]): Args {
   let dryRun = false;
   let limit: number | null = null;
   let force = false;
+  let includeReviewed = false;
 
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
@@ -786,6 +797,8 @@ function parseArgs(argv: string[]): Args {
       i++;
     } else if (arg === '--force') {
       force = true;
+    } else if (arg === '--include-reviewed') {
+      includeReviewed = true;
     } else {
       throw new Error(`unknown argument: ${arg}`);
     }
@@ -794,7 +807,7 @@ function parseArgs(argv: string[]): Args {
   if (corpus === null) {
     throw new Error("--corpus is required (one of: 'federalist', 'tocqueville')");
   }
-  return { corpus, dryRun, limit, force };
+  return { corpus, dryRun, limit, force, includeReviewed };
 }
 
 // ---------------------------------------------------------------------------
@@ -822,9 +835,15 @@ async function main(): Promise<void> {
   console.log(`[triage] code rubric: ${adapter.rubricVersion} (sha ${codeSha.slice(0, 12)}…)`);
   console.log(`[triage] file rubric: ${file.version ?? 'null'} (sha ${(file.sha ?? 'null').slice(0, 12)}…)`);
   console.log(`[triage] action:      ${decision.kind}`);
+  if (args.includeReviewed) {
+    console.log(`[triage] mode:        --include-reviewed (back-test against owner-decided records; editorial_status NOT modified)`);
+  }
 
   const includeAlreadyTriaged = decision.kind === 'reclassify_all' || args.force;
-  let candidates = adapter.buildCandidates(includeAlreadyTriaged);
+  let candidates = adapter.buildCandidates({
+    includeAlreadyTriaged,
+    includeReviewed: args.includeReviewed,
+  });
 
   if (args.limit !== null) candidates = candidates.slice(0, args.limit);
 

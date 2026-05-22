@@ -893,9 +893,48 @@ The procedural-discipline point: the Federalist table is thin because Federalist
 
 *Classifier QoL fixes accompanying v2.* The `parse_failures` metric is renamed `parse_retries`, and a separate `parse_terminal` counter is added for the actual "defaulted to manual" cases — the v1 metric conflated retries with terminal failures. `max_tokens` bumps from 256 to 512 as defense-in-depth against truncation-driven parse failures (smoke-run rationales averaged 178 chars, peaked at 226). Raw output on first-attempt parse failure logs to `/tmp/triage-debug-<corpus>.log` for diagnosability.
 
-*Volume I back-test as validation gate.* Tocqueville Volume I is fully reviewed — 378 units, 296 accepted, 82 flagged_for_rewrite, all real owner decisions. It is a labeled test set. The v2 classifier is run against the already-decided units (compute and record `triage_tier` only; never modify `editorial_status`). A confusion matrix is built. The safety-critical metric is how many units the classifier tiers `accept` that the owner actually flagged_for_rewrite. That number must be at or very near zero; if not, v2 is not done. The back-test result is recorded immediately below this paragraph once Step 4 of the v2 build completes — see follow-up entry "Volume I back-test result" (this entry is updated in place when the back-test runs).
+*Volume I back-test as validation gate.* Tocqueville Volume I is fully reviewed — 378 units, 296 accepted, 82 flagged_for_rewrite, all real owner decisions. It is a labeled test set. The v2 classifier is run against the already-decided units (compute and record `triage_tier` only; never modify `editorial_status`). A confusion matrix is built. The safety-critical metric is how many units the classifier tiers `accept` that the owner actually flagged_for_rewrite. That number must be at or very near zero; if not, v2 is not done.
 
-**Out of scope for this session.** The full Federalist triage (825 unreviewed paragraphs) is deferred. The Federalist rubric is known-incomplete; running the full triage before the owner has resumed review and grown the substitution table from real work would be premature. No corpus content edits in this session. No `review --tier=accept` against the smoke-run records before the v2 re-triage completes.
+To enable the back-test without altering owner decisions, the triage script gains an `--include-reviewed` flag: candidates include records with `editorial_status !== null`, and the apply path is unchanged (writes only `triage_tier` / `triage_rationale` / `triage_generated_at`; never modifies `editorial_status` or `editorial_note`). `--include-reviewed` is a back-test mode by design, not part of the normal pipeline.
+
+*Volume I back-test result — Gate FAILED.* The v2 classifier ran against all 378 Volume I units. Classifier distribution: 18 accept (4.8%), 29 rewrite (7.7%), 331 manual (87.6%). Classifier mechanics improved on v1's smoke run: 22 first-attempt parse retries (5.8%), 2 terminal (0.5%) — well below v1's 25% first-attempt rate, vindicating the max_tokens 256→512 bump.
+
+The confusion matrix:
+
+```
+classifier  → owner:     accepted    flagged_for_rewrite    edited
+  accept                    17        1                       0
+  rewrite                    7       22                       0
+  manual                   272       59                       0
+  ────────────────────────────────────────────────────────────────
+  owner totals             296       82                       0       (n=378)
+```
+
+The safety-critical number is **1 of 378 — not zero**. The one case is `tocqueville:vol1.t1.notes.C ¶12`: the classifier rationale claimed "rendering shows corrected form" of the `Hecwelder → Heckewelder` spelling standardization, but the actual rendering contains `Hecwelder` (uncorrected). The rendering was misread, not misjudged. The rubric's "Spelling standardization not applied → REWRITE" pattern would have fired correctly had the classifier read the rendering accurately; instead the classifier described a rendering that was not there.
+
+This is qualitatively different from a borderline-judgment failure. It is a hallucination about rendering content — the kind of error the exhaustive-tables fix in v2 does not address. v2's tightening fixed rule-overgeneralization; rendering-misreading needs a different mitigation.
+
+*Divergence breakdown — all 8 cases verified case-by-case.* The owner's discipline was to check each divergence individually rather than generalize. The standard applied: does the classifier's rationale make a factual claim about the rendering's content (explicit or implicit through pattern-matching) that is actually true of the rendering?
+
+The 7 classifier-rewrite × owner-accepted cells, audited one by one against the actual translation text:
+
+1. `vol1.part1.ch2 ¶86` (moeurs italicization) — classifier said rendering shows non-italicized "mores"; rendering does. **TRUE claim. Real catch.**
+2. `vol1.part1.ch5 ¶11` (lumières → enlightenment) — classifier said rendering uses "enlightenment"; rendering does, four times. **TRUE claim. Real catch.**
+3. `vol1.part1.ch5 ¶33` (moeurs italicization) — classifier said rendering shows non-italicized "mores"; rendering does. **TRUE claim. Real catch.**
+4. `vol1.part1.ch8 ¶460` (moeurs italicization) — same shape; **TRUE. Real catch.**
+5. `vol1.t1.notes.N ¶4` (Constitution Art II §4 back-translation) — classifier said rendering has "or misdemeanors" diverging from canonical "and Misdemeanors"; rendering does. **TRUE claim. Real catch.**
+6. `vol1.part2.ch5 ¶23` (moeurs + lumières) — classifier said rendering uses "enlightenment and above all mores"; rendering does. **TRUE claim. Real catch.**
+7. `vol1.part2.ch10 ¶451` (chapter heading moeurs) — classifier said rewrite pattern 4 ("Chapter heading with 'moeurs' left untranslated") matches; pattern 4 requires the rendering to contain "moeurs" verbatim. Rendering shows "mores" — correctly translated. The pattern does not match. **FALSE claim (implicit through pattern citation). Hallucination.**
+
+Plus the 1 accept-tier safety failure (`vol1.t1.notes.C ¶12`, Hecwelder, explicit "rendering shows corrected form" assertion when rendering shows uncorrected) — **explicit FALSE claim. Hallucination.**
+
+**Verified totals across the 8 divergences: 2 hallucinations, 6 real catches the owner overrode.** Both hallucinations share a shape — the classifier asserted (or implicitly cited a pattern that asserts) a rendering content that was not present. The other six divergences are exactly the override telemetry the deferred rubric-calibration loop (v1 entry point f) was set up to consume — five `moeurs` italicization gaps (which the handoff document explicitly lists under "Pending batch fixes — moeurs italics pass"), one `lumières → enlightenment` policy violation, and one Constitution Art II §4 back-translation divergence the owner accepted with conscious knowledge of the divergence. The override telemetry concept holds.
+
+v2 is not validated. Per the task discipline ("If the back-test surfaces a failure, STOP and report rather than patching"), the full Federalist triage is not run, and the rendering-misreading mitigation is NOT designed in this session — it is a design decision belonging to a fresh planning session, not a patch under momentum. Candidate mitigation paths (recorded for the future planning session, not chosen here): a verbatim-quoting instruction requiring the classifier to quote the rendering's exact text before tiering on patterns that depend on rendering content; a regex/code pre-check for spelling-standardization patterns and similar deterministic checks, outside the classifier; or removal of the spelling→accept and chapter-heading-moeurs→rewrite pathways from the LLM rubric and migration of those checks to deterministic code. The 378 back-test triage results stay in the annotation file as the v2 measurement record and to seed comparison against any future v3.
+
+**Out of scope for this session.** The full Federalist triage (825 unreviewed paragraphs) is deferred. The Federalist rubric is known-incomplete; running the full triage before the owner has resumed review and grown the substitution table from real work would be premature. No corpus content edits in this session. No `review --tier=accept` against the smoke-run records before v2 is validated (which it is not).
+
+*Federalist file in this commit.* The Federalist annotation file in the working tree at the start of this session carried the 20 v1 smoke-run triage tags from the prior session (uncommitted). Those records were reverted to the post-migration baseline (`triage_rubric_version: null`, no per-record triage_tier) before this Step 4 commit, so the commit's data scope is limited to the Tocqueville Vol I back-test. Verified after revert: file-level `triage_rubric_version: null`, 0 records with `triage_tier` non-null — consistent with the state immediately after the schema-migration commit (`3557559`). The Tocqueville back-test did not touch Federalist (the script only modifies the file matching `--corpus`), and no other Federalist triage runs occurred between the migration commit and the revert; the diff that was reverted was the 20-record v1 smoke-run output and nothing else. The next Federalist triage run will re-classify those 20 records under v2 (or whatever later version) via the structural version-mismatch path.
 
 ## Current state of the repository
 
