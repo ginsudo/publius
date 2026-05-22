@@ -1202,6 +1202,24 @@ Every Tocqueville hit row carries the expected metadata: `corpus: 'tocqueville'`
 2. Owner sign-off pass on `data/eval/results.md` for the three phase-5 probes; act on the must_include / question-phrasing findings.
 3. Resume Federalist editorial review at `g 8 6` per the user memory; orthogonal to this slice's retrieval work.
 
+### Cross-corpus citation href routing — Tocqueville citations now resolve end-to-end (2026-05-22)
+
+Tiny mechanical slice closing the loop the prior Phase 5 entry flagged. `AskForm.citationHref()` now branches on `corpus`: Federalist citations continue to point at `/paper/<paper_number>` with `#fn-…` / `#p-…` fragments as before, Tocqueville citations point at `/item/<item_id>` (full prefixed ID, e.g. `/item/tocqueville:vol1.part2.ch7`), and any other corpus returns `null` so the citation renders as plain text without a broken anchor. The full path — question → retrieval → answer → cross-corpus citation → reading view — now resolves end-to-end because the `/item/[id]` route already exists from earlier 2.5-era work and properly decodes the percent-encoded colon in IDs like `tocqueville%3Avol1.part2.ch7`. (The slice brief expected this to be staging-for-future-routing; verification surfaced that the route was already built, so this slice is fully load-bearing.)
+
+**Locked artifacts (today's work — 2026-05-22):**
+- `app/ask/AskForm.tsx` — `citationHref()` return type widened to `string | null`; corpus-branched; the Sources list's `<li>` wraps the citation body in an `<a href>` only when `citationHref` returns non-null (a defensive guard so a future-but-not-yet-wired corpus like SCOTUS doesn't ship a dead anchor). `citationParts()` is corpus-aware: Federalist citations keep the `Federalist No. <paper_number>` head; Tocqueville citations read `Democracy in America · <locator>` where the locator is built by `tocquevilleLocator()` from the `item_id` path segments — only `vol{N}`/`part{N}`/`ch{N}` segments are emitted (`introduction`, `preamble`, `t1`, `notes`, letter codes are omitted rather than guessed at; the reading view at `/item/[id]` handles full structural display). Authors render as the literal "Tocqueville" for that branch; `paragraph_index` uses the same `¶ N` shape as Federalist. The local `Citation` type and the source-of-truth `Citation` in `data/eval/query.ts` are both widened to `paper_number: number | null` so the type matches reality.
+
+**What was verified:**
+- `npx tsc --noEmit` clean.
+- POST `/api/ask` with a Tocqueville-pulling question ("What did Tocqueville observe about majority tyranny in American democracy?", k=5): all 5 citations returned with `corpus: 'tocqueville'`, `item_id: 'tocqueville:vol1.part2.ch{7,8}'`, `paper_number: null`. Confirms `item_id` is non-null on Tocqueville citations through the existing `toCitation()` projection at `data/eval/query.ts:44`; no Citation type or projection changes were needed.
+- One real question through the dev server via headless Playwright (one-shot script in `/tmp`, consistent with the project's pattern of not committing e2e fixtures). The Sources section rendered 10 `<a>` elements with hrefs of the form `/item/tocqueville:vol1.part2.ch7` and `/item/tocqueville:vol1.part2.ch8`.
+- `curl` against the dev server confirmed both `/item/tocqueville:vol1.part2.ch7` and the percent-encoded form `/item/tocqueville%3Avol1.part2.ch7` return HTTP 200 — the existing `findItem()` in `app/item/[id]/page.tsx` already calls `decodeURIComponent` to handle browser-encoded colons.
+
+**Label format verification.** Playwright through `/ask` with the majority-tyranny question confirmed 10 Sources-list entries reading "Democracy in America · Vol. I, Pt. 2, Ch. 7 · *DE L'OMNIPOTENCE DE LA MAJORITÉ AUX ÉTATS-UNIS…* · Tocqueville" and "…Ch. 8 · *DE CE QUI TEMPÈRE…* · Tocqueville". The "Federalist No. null" head is gone; all hrefs resolve to `/item/tocqueville:vol1.part2.ch{7,8}` and the underlying `/item/[id]` route returns HTTP 200 for both raw and percent-encoded colon forms.
+
+**What does not exist yet at this slice's close:**
+- Tocqueville end-notes and non-chapter items (introduction, avertissement, preamble) render with a shorter locator. `tocquevilleLocator()` only emits `vol{N}`/`part{N}`/`ch{N}` segments, so `tocqueville:vol1.t1.notes.A` becomes "Democracy in America · Vol. I · *{title}* · Tocqueville" — accurate but coarse. A follow-up that teaches the locator about end-note letters (e.g., "Vol. I, End-Note A") would land alongside any reading-view treatment of those items.
+
 ## Current state of the repository
 
 **What exists in the repo:**
@@ -1225,7 +1243,7 @@ Every Tocqueville hit row carries the expected metadata: `corpus: 'tocqueville'`
 - Federalist triage: all paragraphs at `triage_tier: null`. The full Federalist triage is deferred until a labeled Federalist back-test set exists (see DECISIONS.md "Triage rubric v3").
 - The probe set has three probes (P14, P15, P16) flagged `phase_5_only: true` — two cross-corpus and one Tocqueville end-note probe. The Phase 1.1 runner skips them by default; pass `--phase5` to include. As of the 2026-05-22 Tocqueville embedding slice, the three probes have been run and the results recorded in `data/eval/results.md`; owner judgment lines are still pending sign-off.
 - The universal `constitutional_section` field is `null` on every Federalist and Tocqueville item — schema-ready but not yet editorially populated.
-- AskForm's `citationHref` is Federalist-only: Tocqueville hits returned by `/api/ask` render with a `/paper/<paper_number>` href that resolves to nothing (because `paper_number` is null on Tocqueville citations). Routing Tocqueville citations to `/item/<id>` is the natural next slice.
+- AskForm's `citationHref` and `citationParts` are both corpus-aware: Federalist citations render as `Federalist No. N · <title> · Hamilton & Madison · ¶ N` and link to `/paper/<paper_number>#fn-…|#p-…`; Tocqueville citations render as `Democracy in America · Vol. I, Pt. 2, Ch. 7 · <French title> · Tocqueville · ¶ N` and link to `/item/<item_id>` (which resolves to the existing Tocqueville reading view). Non-chapter Tocqueville items (introduction, avertissement, end-notes) drop to a coarser "Vol. I" locator until the locator helper is taught about non-vol/part/ch segments.
 - The `/api/retrieve` endpoint ships open with a Phase 7 TODO comment; no auth or IP-allowlist yet.
 
 **What does not exist yet:**
@@ -1245,10 +1263,9 @@ Every Tocqueville hit row carries the expected metadata: `corpus: 'tocqueville'`
 **Where the project actually is.** Phase 1.1 retrieval, Phase 1.2 Q&A (system prompt + HTTP boundary), Phase 1.3 observability, Phase 1.4 first Vercel deploy, Phase 2.1 Browse UI, Phase 2.3 Ask UI (with NDJSON streaming, rotating sample questions, error mapping, typed block renderer), Phase 2.4 Paper reading view, Phase 3.1 plain-English generation, Phase 3.2 annotations layer + corpus-parameterized review CLI + confidence-tiered triage pipeline (v3 Tocqueville-only), Phase 3.3 ORIGINAL · MODERN ENGLISH toggle, Phase 4 Tocqueville Volume I translation, and Phase 5 Tocqueville Vol I retrieval (the populated translation is now embedded into `data/eval/index.sqlite`) are all landed. The Constitution corpus seam was resolved 2026-05-18 ahead of schedule. Active editorial work: Federalist review (55/880 flagged) and Tocqueville post-Vol-I-review retry decisions.
 
 **Most likely next slices (none committed; the editorial pass is owner-driven):**
-1. Wire AskForm `citationHref` to route Tocqueville citations at `/item/<id>`. Small mechanical change; closes the cross-corpus citation-rendering loop now that Tocqueville hits surface from `/api/ask`.
-2. Owner sign-off on `data/eval/results.md` phase-5 probes (P14 / P15 / P16); act on the must_include kind-vs-kind mismatch and the cross-corpus question-phrasing findings recorded in the 2026-05-22 entry.
-3. Federalist editorial review continued. Resume at `g 8 6` per user memory; the 21 paragraphs retried via `prompts/retry-v0.2.1.md` reappear in document order as null-status entries.
-4. Tocqueville Volume II translation: 85 items still `null`. Same workflow as Vol I via `generate-translation.ts`; Vol II won't enter the retrieval index until translated and editorially reviewed.
+1. Owner sign-off on `data/eval/results.md` phase-5 probes (P14 / P15 / P16); act on the must_include kind-vs-kind mismatch and the cross-corpus question-phrasing findings recorded in the 2026-05-22 entry.
+2. Federalist editorial review continued. Resume at `g 8 6` per user memory; the 21 paragraphs retried via `prompts/retry-v0.2.1.md` reappear in document order as null-status entries.
+3. Tocqueville Volume II translation: 85 items still `null`. Same workflow as Vol I via `generate-translation.ts`; Vol II won't enter the retrieval index until translated and editorially reviewed.
 
 **Do not:**
 - Add a fourth corpus before resolving its epistemic tag (argument/observation/holding plus a fourth category — owner's call). The argument/observation/holding taxonomy is in `CLAUDE.md`.

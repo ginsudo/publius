@@ -10,7 +10,7 @@ type Citation = {
   kind: string;
   paragraph_index: number | null;
   marker: string | null;
-  paper_number: number;
+  paper_number: number | null;
   title: string;
   authors: string[];
   authorship_status: string;
@@ -169,20 +169,66 @@ type CitationParts = {
   para: string;
 };
 
+// Parse a Tocqueville item_id like "tocqueville:vol1.part2.ch7" or
+// "tocqueville:vol1.t1.notes.A" into a human-readable locator. Only vol/part/ch
+// segments are emitted; other segments (preamble, introduction, t1, notes,
+// letter codes) are omitted rather than guessed at. The reading view at
+// /item/[id] handles full structural display.
+function tocquevilleLocator(itemId: string): string {
+  const prefix = 'tocqueville:';
+  const path = itemId.startsWith(prefix) ? itemId.slice(prefix.length) : itemId;
+  const parts: string[] = [];
+  for (const seg of path.split('.')) {
+    const vol = /^vol(\d+)$/.exec(seg);
+    if (vol) {
+      const n = parseInt(vol[1], 10);
+      parts.push(`Vol. ${n === 1 ? 'I' : n === 2 ? 'II' : String(n)}`);
+      continue;
+    }
+    const part = /^part(\d+)$/.exec(seg);
+    if (part) {
+      parts.push(`Pt. ${part[1]}`);
+      continue;
+    }
+    const ch = /^ch(\d+)$/.exec(seg);
+    if (ch) {
+      parts.push(`Ch. ${ch[1]}`);
+      continue;
+    }
+  }
+  return parts.join(', ');
+}
+
 function citationParts(c: Citation): CitationParts {
+  const para = c.paragraph_index != null ? `¶ ${c.paragraph_index}` : '';
+  if (c.corpus === 'tocqueville') {
+    const locator = tocquevilleLocator(c.item_id);
+    return {
+      head: locator ? `Democracy in America · ${locator}` : 'Democracy in America',
+      title: c.title,
+      authors: 'Tocqueville',
+      para,
+    };
+  }
   return {
     head: `Federalist No. ${c.paper_number}`,
     title: c.title,
     authors: c.authors.join(' & '),
-    para: c.paragraph_index != null ? `¶ ${c.paragraph_index}` : '',
+    para,
   };
 }
 
-function citationHref(c: Citation): string {
-  const base = `/paper/${c.paper_number}`;
-  if (c.marker) return `${base}#fn-${c.marker.replace(/[()]/g, '')}`;
-  if (c.paragraph_index != null) return `${base}#p-${c.paragraph_index + 1}`;
-  return base;
+function citationHref(c: Citation): string | null {
+  if (c.corpus === 'federalist') {
+    const base = `/paper/${c.paper_number}`;
+    if (c.marker) return `${base}#fn-${c.marker.replace(/[()]/g, '')}`;
+    if (c.paragraph_index != null) return `${base}#p-${c.paragraph_index + 1}`;
+    return base;
+  }
+  if (c.corpus === 'tocqueville') {
+    return `/item/${c.item_id}`;
+  }
+  return null;
 }
 
 export function AskForm() {
@@ -412,21 +458,25 @@ export function AskForm() {
               <ol>
                 {citations.map((c, i) => {
                   const parts = citationParts(c);
+                  const href = citationHref(c);
+                  const body = (
+                    <>
+                      {parts.head}
+                      {' · '}
+                      <em>{parts.title}</em>
+                      {' · '}
+                      {parts.authors}
+                      {parts.para && (
+                        <>
+                          {' · '}
+                          {parts.para}
+                        </>
+                      )}
+                    </>
+                  );
                   return (
                     <li key={`${c.item_id}-${i}`}>
-                      <a href={citationHref(c)}>
-                        {parts.head}
-                        {' · '}
-                        <em>{parts.title}</em>
-                        {' · '}
-                        {parts.authors}
-                        {parts.para && (
-                          <>
-                            {' · '}
-                            {parts.para}
-                          </>
-                        )}
-                      </a>
+                      {href ? <a href={href}>{body}</a> : body}
                     </li>
                   );
                 })}

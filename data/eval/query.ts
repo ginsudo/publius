@@ -34,7 +34,7 @@ export type Citation = {
   kind: string;
   paragraph_index: number | null;
   marker: string | null;
-  paper_number: number;
+  paper_number: number | null;
   title: string;
   authors: string[];
   authorship_status: string;
