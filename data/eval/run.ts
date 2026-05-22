@@ -65,16 +65,21 @@ async function main() {
 
   const args = process.argv.slice(2);
   let k = 10;
+  let includePhase5 = false;
   for (const a of args) {
     if (a.startsWith('--k=')) k = parseInt(a.slice(4), 10);
+    else if (a === '--phase5' || a === '--include-phase5') includePhase5 = true;
   }
 
   const probesFile = JSON.parse(readFileSync(PROBES_PATH, 'utf8'));
   const allProbes = probesFile.probes as Probe[];
-  const active = allProbes.filter((p) => !p.phase_5_only);
-  const skipped = allProbes.filter((p) => p.phase_5_only);
+  const active = includePhase5 ? allProbes : allProbes.filter((p) => !p.phase_5_only);
+  const skipped = includePhase5 ? [] : allProbes.filter((p) => p.phase_5_only);
 
-  console.log(`Probes: ${active.length} active, ${skipped.length} skipped (phase_5_only)`);
+  console.log(
+    `Probes: ${active.length} active` +
+      (skipped.length > 0 ? `, ${skipped.length} skipped (phase_5_only)` : ' (includes phase_5_only)'),
+  );
   console.log(`Top-K: ${k}`);
   console.log(`Model: ${EMBEDDING_MODEL}`);
 
@@ -86,7 +91,11 @@ async function main() {
   lines.push('');
   lines.push(`Pass criterion is **qualitative owner sign-off**, not an automated metric. The "must-include" check below is a sanity signal — a probe whose must-include items don't appear in top-K is a yellow flag, but a probe with all must-include items present can still fail if the surrounding hits are wrong, and a probe with missing must-include items can still pass if the actual top hits answer the question well. Read the hits, judge them, fill in the "Owner judgment" line.`);
   lines.push('');
-  lines.push(`Skipped (\`phase_5_only: true\`, recorded for design intent): ${skipped.map((p) => p.id).join(', ')}.`);
+  if (skipped.length > 0) {
+    lines.push(`Skipped (\`phase_5_only: true\`, recorded for design intent): ${skipped.map((p) => p.id).join(', ')}.`);
+  } else {
+    lines.push(`Includes \`phase_5_only: true\` probes (run with \`--phase5\`).`);
+  }
   lines.push('');
   lines.push('---');
   lines.push('');

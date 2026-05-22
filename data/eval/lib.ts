@@ -18,6 +18,7 @@ export const VENDOR_DIR = resolve(HERE, 'vendor');
 export const PROBES_PATH = resolve(HERE, 'probes.json');
 export const RESULTS_PATH = resolve(HERE, 'results.md');
 export const FEDERALIST_PATH = resolve(REPO_ROOT, 'data', 'federalist', 'federalist.json');
+export const TOCQUEVILLE_PATH = resolve(REPO_ROOT, 'data', 'tocqueville', 'tocqueville.json');
 
 // =====================================================================
 // Env loading from .env.local — minimal KEY=VALUE parser
@@ -206,6 +207,117 @@ export function federalistChunks(): Chunk[] {
         title,
         authors_json: JSON.stringify(item.authors),
         authorship_status: item.federalist.authorship_status,
+        date: item.date,
+      });
+    }
+  }
+
+  return chunks;
+}
+
+// =====================================================================
+// Tocqueville → chunks (Vol I only; items with translation populated)
+// =====================================================================
+
+function tocquevilleItemLocator(item: any): string {
+  const t = item.tocqueville;
+  const volRoman = t.volume === 1 ? 'I' : 'II';
+  switch (t.kind) {
+    case 'chapter':
+      return `Volume ${volRoman}, Part ${t.part}, Chapter ${t.chapter}: ${item.title}`;
+    case 'end_note': {
+      // ID form: tocqueville:vol1.t1.notes.A → letter = "A"; preserves TN- prefix in Vol II.
+      const m = item.id.match(/\.notes\.([A-Za-z0-9-]+)$/);
+      const letter = m ? m[1] : '?';
+      const page = t.references_page;
+      const pageTail = page == null ? '' : ` (page ${page})`;
+      return `Volume ${volRoman}, End-Note ${letter}${pageTail}`;
+    }
+    case 'introduction':
+      // Two introduction items: vol1.introduction (the Vol I introduction proper)
+      // and vol1.preamble.part2 (the unmarked Part II preamble in tome 2).
+      if (item.id.endsWith('.preamble.part2')) {
+        return `Volume ${volRoman}, Part II Preamble`;
+      }
+      return `Volume ${volRoman}, Introduction`;
+    case 'avertissement':
+      return `Volume ${volRoman}, Avertissement (Tenth Edition)`;
+    case 'appendix':
+      return `Volume ${volRoman}, Appendix`;
+    default:
+      throw new Error(`Unknown tocqueville kind "${t.kind}" on ${item.id}`);
+  }
+}
+
+export function tocquevilleChunks(): Chunk[] {
+  const corpus = JSON.parse(readFileSync(TOCQUEVILLE_PATH, 'utf8'));
+  const chunks: Chunk[] = [];
+
+  for (const item of corpus.items) {
+    const t = item.tocqueville;
+    if (t.volume !== 1) continue;
+    if (t.translation == null) continue;
+
+    const translation = t.translation as string[];
+    const footnotesTranslation = (t.footnotes_translation ?? []) as Array<{
+      marker: string;
+      paragraphs: string[];
+    }>;
+
+    if (translation.length !== item.paragraphs.length) {
+      throw new Error(
+        `Translation length mismatch on ${item.id}: ` +
+          `paragraphs=${item.paragraphs.length}, translation=${translation.length}`,
+      );
+    }
+
+    const locator = tocquevilleItemLocator(item);
+    const itemHeader = `Tocqueville, Democracy in America — ${locator}\nAuthor: Tocqueville`;
+    const authorsJson = JSON.stringify(item.authors);
+
+    // Body paragraphs (English translation)
+    for (let i = 0; i < translation.length; i++) {
+      const para = translation[i];
+      chunks.push({
+        id: `${item.id}:body:${i}`,
+        item_id: item.id,
+        corpus: 'tocqueville',
+        kind: 'body',
+        paragraph_index: i,
+        marker: null,
+        text: `${itemHeader}\n\n${para}`,
+        paper_number: null as unknown as number, // null in DB; Federalist-only field
+        title: item.title,
+        authors_json: authorsJson,
+        authorship_status: 'undisputed',
+        date: item.date,
+      });
+    }
+
+    // Footnotes — each footnote_translation entry is one chunk.
+    // Marker is byte-identical between footnotes[] and footnotes_translation[]
+    // per the Phase 4 parser invariant.
+    for (const fn of footnotesTranslation) {
+      const fnText = fn.paragraphs.join('\n');
+      // Chapter-level locator (volume/part/chapter) in the footnote header lets
+      // the embedding see the host item's structural location alongside the
+      // marker. For non-chapter items the locator already names the kind.
+      const fnHeaderItem =
+        t.kind === 'chapter'
+          ? `Tocqueville, Democracy in America — Volume ${t.volume === 1 ? 'I' : 'II'}, Part ${t.part}, Chapter ${t.chapter}`
+          : `Tocqueville, Democracy in America — ${locator}`;
+      chunks.push({
+        id: `${item.id}:footnote:${fn.marker}`,
+        item_id: item.id,
+        corpus: 'tocqueville',
+        kind: 'footnote',
+        paragraph_index: null,
+        marker: fn.marker,
+        text: `${fnHeaderItem}\nFootnote ${fn.marker}\nAuthor: Tocqueville\n\n${fnText}`,
+        paper_number: null as unknown as number,
+        title: item.title,
+        authors_json: authorsJson,
+        authorship_status: 'undisputed',
         date: item.date,
       });
     }
