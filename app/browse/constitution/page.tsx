@@ -52,21 +52,30 @@ export default function ConstitutionBrowsePage() {
 
       <ol className="browse-list browse-list--const">
         <li className="browse-row-const">
-          <span className="browse-row-const__locator">Preamble</span>
-          <span className="browse-row-const__title">&nbsp;</span>
-          <span className="browse-row-const__meta">1788 · 1 paragraph</span>
+          <Link href="/constitution/preamble" className="browse-row-const__link">
+            <span className="browse-row-const__locator">Preamble</span>
+            <span className="browse-row-const__title">&nbsp;</span>
+            <span className="browse-row-const__meta">1788 · 1 paragraph</span>
+          </Link>
         </li>
         {articleNumbers.map((n) => {
           const count = clauseCounts.get(n) ?? 0;
           return (
             <li key={`art-${n}`} className="browse-row-const">
-              <span className="browse-row-const__locator">Article {ROMAN[n]}</span>
-              <span className="browse-row-const__title">
-                {ARTICLE_SUBTITLES[n] ?? ''}
-              </span>
-              <span className="browse-row-const__meta">
-                {count} {count === 1 ? 'clause' : 'clauses'}
-              </span>
+              <Link
+                href={`/constitution/article-${n}`}
+                className="browse-row-const__link"
+              >
+                <span className="browse-row-const__locator">
+                  Article {ROMAN[n]}
+                </span>
+                <span className="browse-row-const__title">
+                  {ARTICLE_SUBTITLES[n] ?? ''}
+                </span>
+                <span className="browse-row-const__meta">
+                  {count} {count === 1 ? 'clause' : 'clauses'}
+                </span>
+              </Link>
             </li>
           );
         })}
@@ -76,14 +85,26 @@ export default function ConstitutionBrowsePage() {
 
       <ol className="browse-list browse-list--const">
         <li className="browse-row-const">
-          <span className="browse-row-const__locator">Amendments I–X</span>
-          <span className="browse-row-const__title">The Bill of Rights</span>
-          <span className="browse-row-const__meta">1791 · 10 amendments</span>
+          <Link
+            href="/constitution/bill-of-rights"
+            className="browse-row-const__link"
+          >
+            <span className="browse-row-const__locator">Amendments I–X</span>
+            <span className="browse-row-const__title">The Bill of Rights</span>
+            <span className="browse-row-const__meta">1791 · 10 amendments</span>
+          </Link>
         </li>
         <li className="browse-row-const">
-          <span className="browse-row-const__locator">Amendments XI–XXVII</span>
-          <span className="browse-row-const__title">Subsequent Amendments</span>
-          <span className="browse-row-const__meta">1795–1992 · 17 amendments</span>
+          <Link
+            href="/constitution/amendments-11-27"
+            className="browse-row-const__link"
+          >
+            <span className="browse-row-const__locator">Amendments XI–XXVII</span>
+            <span className="browse-row-const__title">Subsequent Amendments</span>
+            <span className="browse-row-const__meta">
+              1795–1992 · 17 amendments
+            </span>
+          </Link>
         </li>
       </ol>
     </main>
