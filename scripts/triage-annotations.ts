@@ -70,6 +70,126 @@ THE TABLES BELOW ARE EXHAUSTIVE, NOT ILLUSTRATIVE. A substitution or rendering q
 The corpus-specific rubric below tells you which patterns qualify for "accept" or "rewrite". If a flag does not match an explicit pattern in the rubric, output "manual".`;
 
 // ---------------------------------------------------------------------------
+// Tocqueville deterministic pre-check constants and helpers.
+//
+// These back the Tocqueville adapter's deterministicResolve, which runs
+// before classify() in the main loop. The patterns they encode were
+// hand-migrated out of the LLM rubric in v3 (see DECISIONS.md, "Triage
+// rubric v3"): rendering-content patterns whose triggers are string-checkable
+// were exactly the surface where v2's Volume I back-test failed (Hecwelder
+// safety hallucination, ch10 ¶451 chapter-heading rewrite mis-fire). The
+// LLM is a poor reader of the rendering string it is shown; verifying that
+// "the rendering contains X" against the string is what code does well.
+//
+// Federalist deliberately does not use these helpers — no labeled Federalist
+// back-test exists yet, and building un-validated deterministic checks on
+// the safety side is the failure mode v3 exists to eliminate.
+// ---------------------------------------------------------------------------
+
+export const PERIOD_VOCAB = [
+  'sauvages',
+  'sauvage',
+  'nègres',
+  'moeurs',
+  'mœurs',
+  'commune',
+  'buffles',
+  'patrie',
+  'liberté',
+  'néant',
+  'élan',
+  'cité',
+  'peuplade',
+  'métis',
+] as const;
+
+export const MISSPELLINGS = [
+  { wrong: 'Meaupou', right: 'Maupeou' },
+  { wrong: 'Hecwelder', right: 'Heckewelder' },
+  { wrong: 'Blakstone', right: 'Blackstone' },
+  { wrong: 'Francklin', right: 'Franklin' },
+] as const;
+
+export const UNTRANSLATED_TERMS = [
+  "raison d'État",
+  'Ancien Régime',
+  'bourgeois',
+  'bourgeoisie',
+  'arrondissement',
+] as const;
+
+function escapeRegex(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+// Unicode-aware word boundary: a "word" character is any letter (\p{L}),
+// combining mark (\p{M}), or digit (\p{N}). \b in JS regex is ASCII-only and
+// would treat "é", "œ", "è" as non-word characters, producing false matches
+// inside words like "communément" (would match "commune") or "patriotique"
+// (would match "patrie"). Lookarounds give correct French-language behavior.
+function wordRegex(term: string, flags = 'iu'): RegExp {
+  return new RegExp(
+    `(?<![\\p{L}\\p{M}\\p{N}])${escapeRegex(term)}(?![\\p{L}\\p{M}\\p{N}])`,
+    flags,
+  );
+}
+
+export function findPeriodVocab(text: string): string | null {
+  for (const term of PERIOD_VOCAB) {
+    if (wordRegex(term).test(text)) return term;
+  }
+  return null;
+}
+
+// Italicized in markdown (*term*) or HTML (<em>term</em>). Strict definition:
+// the term is the sole content of an italic run (modulo surrounding
+// whitespace). The loose reading — "term appears anywhere inside a *…* pair"
+// — would false-positive when the closing `*` of one emphasis and the
+// opening `*` of the next bridge a bare word between them, e.g.
+// `*book A* then bourgeois then *book B*`. That bridge is an Accept-2 false
+// positive on the high-risk side of the matrix; the strict form rejects it.
+// The rubric phrasing "preserved the French term, italicized" supports the
+// strict reading — the term itself is italicized, not embedded in a longer
+// italicized phrase.
+export function italicizedIn(text: string, term: string): boolean {
+  const t = escapeRegex(term);
+  const md = new RegExp(`\\*\\s*${t}\\s*\\*`, 'iu');
+  const html = new RegExp(`<em\\b[^>]*>\\s*${t}\\s*</em>`, 'iu');
+  return md.test(text) || html.test(text);
+}
+
+// "(Translator's note: …)", "[Translator's note: …]", "(modern term: …)".
+function hasInlineTranslatorNote(text: string): boolean {
+  return /[(\[]\s*(?:translator(?:'s)?\s*note|modern\s+term)\s*:/i.test(text);
+}
+
+export function matchMisspelling(flag: {
+  key: string | null;
+  note: string;
+}): (typeof MISSPELLINGS)[number] | null {
+  for (const m of MISSPELLINGS) {
+    const re = wordRegex(m.wrong);
+    if (flag.key !== null && re.test(flag.key)) return m;
+    if (re.test(flag.note)) return m;
+  }
+  return null;
+}
+
+export function spellingApplied(
+  rendering: string,
+  m: { wrong: string; right: string },
+): boolean {
+  return wordRegex(m.right).test(rendering) && !wordRegex(m.wrong).test(rendering);
+}
+
+export function spellingNotApplied(
+  rendering: string,
+  m: { wrong: string; right: string },
+): boolean {
+  return wordRegex(m.wrong).test(rendering);
+}
+
+// ---------------------------------------------------------------------------
 // Federalist rubric. Bumping the version string forces re-triage of all
 // flagged unreviewed records on next run. Source: EDITORIAL_REVIEW_HANDOFF.md.
 // ---------------------------------------------------------------------------
@@ -145,12 +265,24 @@ OUTPUT FORMAT — respond with strict JSON, no markdown, no preamble:
 { "tier": "accept" | "rewrite" | "manual", "rationale": "<one sentence, max 180 chars>" }`;
 
 // ---------------------------------------------------------------------------
-// Tocqueville rubric.
+// Tocqueville rubric — v3. Narrowed to judgment-tail patterns: the
+// rendering-content patterns (Accept 2/3, Rewrite 2/3/4) are resolved
+// upstream by the adapter's deterministicResolve before this rubric is
+// shown to the LLM. See DECISIONS.md, "Triage rubric v3".
+//
+// The period-vocabulary paragraph guard is RETAINED in the hard guards
+// below. This is defense in depth against a future code path that invokes
+// classify() WITHOUT the deterministic resolver in front of it (an
+// architectural-drift safety net). It is NOT a backstop for bugs in
+// findPeriodVocab itself — those are critical bugs whose safety net is the
+// resolver's unit test, not this rubric.
 // ---------------------------------------------------------------------------
 
-const TOCQUEVILLE_RUBRIC_VERSION = 'tocqueville-v2';
+const TOCQUEVILLE_RUBRIC_VERSION = 'tocqueville-v3';
 
 const TOCQUEVILLE_RUBRIC = `CORPUS: Democracy in America (Tocqueville, French → English)
+
+NOTE: Cases reaching this rubric have already been screened by a deterministic resolver upstream (spelling standardizations, untranslated-term italicization, inline translator's notes, "moeurs" residues, and the period-vocabulary paragraph guard). Those patterns will not reach you; only judgment-tail patterns remain.
 
 FLAG KINDS (existing schema): READING, TEXTURE, TERM
 
@@ -162,18 +294,10 @@ FLAG KINDS (existing schema): READING, TEXTURE, TERM
      - Flag's french is NOT in the "Period vocabulary" table.
      - The paragraph contains NO period-vocabulary terms.
 
-  2. TERM flag for an untranslated/italicized term, preserved correctly.
-     - Flag's french matches an entry in "Untranslated terms" below.
-     - The rendering preserved the French term, italicized (asterisks or HTML em).
-     - The paragraph contains NO period-vocabulary terms.
-
-  3. READING flag for a spelling standardization, applied correctly.
-     - Flag identifies a spelling correction listed below.
-     - The rendering shows the corrected English spelling.
-     - The paragraph contains NO period-vocabulary terms.
-
-  4. TEXTURE flag for an editorial structural element preserved verbatim.
-     - Flag describes a section break ("* * * * *"), asterisks, chapter sommaire, or similar.
+  2. TEXTURE flag for an editorial structural element preserved verbatim,
+     OTHER THAN the patterns handled by the deterministic resolver upstream.
+     - Flag describes a section break ("* * * * *"), asterisks, chapter sommaire, or similar
+       structural element not already handled in code.
      - Rendering is the same structural element, unchanged.
      - The paragraph contains NO period-vocabulary terms.
 
@@ -183,19 +307,6 @@ FLAG KINDS (existing schema): READING, TEXTURE, TERM
      - Flag note identifies a recurring English-language source (see "English sources" below).
      - The rendering shows English text that is clearly NOT the verbatim original
        (e.g., it reads as a back-translation from French rather than canonical English text).
-
-  2. Spelling standardization not applied.
-     - Flag identifies a spelling correction (Meaupou, Hecwelder, Blakstone, Francklin).
-     - The rendering still shows the uncorrected period spelling.
-
-  3. Inline translator's note added by the generation pass.
-     - The rendering contains a parenthetical gloss, modernization note, or
-       editorial bracket NOT present in the original French (e.g., "(modern term: ...)",
-       "(Translator's note: ...)").
-
-  4. Chapter heading with "moeurs" left untranslated.
-     - The unit is title-like (paragraph_index 0 of a chapter, or contains a chapter heading).
-     - The rendering contains "moeurs" verbatim instead of "mores".
 
 [MANUAL] — everything else. When uncertain, output "manual".
 
@@ -209,14 +320,10 @@ HARD GUARDS — never output "accept" if any of these is true:
     social/ethnological assessment, or Tocqueville's voice.
   - Flag is READING interpreting argumentative content.
   - The rendering softens, modernizes, or euphemizes any period vocabulary term.
-  - The rendering contains an inline translator's note (route to "rewrite" instead).
 
 PERIOD VOCABULARY (EXHAUSTIVE LIST of hard-guard terms) — these terms must never appear in an "accept" tier, even if the rendering looks correct. This guard is closed: terms outside this list are not hard-guarded by this rule, but they are also NOT auto-acceptable just because they're missing — route to "manual" if anything else gives you pause:
   sauvages, sauvage, nègres, moeurs, mœurs, commune, buffles, patrie, liberté,
   néant, élan, cité, peuplade, métis
-
-UNTRANSLATED TERMS (EXHAUSTIVE LIST OF 4) — TERM flag for these, preserved-italicized in rendering, is candidate for "accept". This is the COMPLETE list; any other untranslated French term is NOT covered, regardless of how plausible the editorial reasoning for leaving it untranslated may seem. Verbatim membership only:
-  raison d'État, Ancien Régime, bourgeois, bourgeoisie, arrondissement
 
 ESTABLISHED TERM RENDERINGS (EXHAUSTIVE LIST) — TERM flag where the flag's french is a VERBATIM member of the left side AND the rendering uses the right-hand value verbatim is a candidate for "accept". This is the COMPLETE list. Similarity is not membership; the classifier may not extend this table by analogy. Variants of established renderings (different word order, partial overlap, "spirit of the table") do NOT qualify. The list:
   - principe générateur → generative principle
@@ -253,12 +360,6 @@ ESTABLISHED TERM RENDERINGS (EXHAUSTIVE LIST) — TERM flag where the flag's fre
   - détrompeur → illusions ("cast aside his illusions")
   - les ressorts du gouvernement → the springs of government
   - promenant la torche → carrying the torch
-
-SPELLING STANDARDIZATIONS (EXHAUSTIVE LIST OF 4) — READING flag where rendering applied the standard form is candidate for "accept". Verbatim membership only; any other spelling normalization is NOT covered:
-  - Meaupou → Maupeou
-  - Hecwelder → Heckewelder
-  - Blakstone → Blackstone
-  - Francklin → Franklin
 
 ENGLISH SOURCES (back-translation of any of these in the rendering = "rewrite"):
   - Jefferson, Notes on the State of Virginia
@@ -408,6 +509,12 @@ type Candidate = {
 // loop is corpus-agnostic.
 // ---------------------------------------------------------------------------
 
+// Deterministic resolver result. The classifier loop applies this directly
+// to the annotation record and skips the LLM for that candidate. Rationale
+// is prefixed `[deterministic]` so the audit trail in triage_rationale makes
+// the resolution source visible without consulting telemetry.
+type DetVerdict = { tier: Tier; rationale: string; pattern: string };
+
 interface CorpusAdapter {
   readonly slug: 'federalist' | 'tocqueville';
   readonly rubric: string;
@@ -415,6 +522,11 @@ interface CorpusAdapter {
   readFileVersion(): { version: string | null; sha: string | null };
   writeFileVersion(version: string, sha: string): void;
   buildCandidates(opts: { includeAlreadyTriaged: boolean; includeReviewed: boolean }): Candidate[];
+  // Optional. Only implemented by the Tocqueville adapter in v3. Called by
+  // the main loop before classify(); on non-null verdict, the LLM is skipped
+  // for that candidate. The Federalist adapter intentionally does NOT
+  // implement this — see DECISIONS.md "Triage rubric v3: Federalist deferred".
+  deterministicResolve?(c: Candidate): DetVerdict | null;
 }
 
 function createFederalistAdapter(): CorpusAdapter {
@@ -487,6 +599,96 @@ function createTocquevilleAdapter(): CorpusAdapter {
     atomicWriteJson(TOCQUEVILLE_ANN, ann);
   }
 
+  // Order matters. Rewrite checks first (a paragraph with a period-vocab
+  // term AND an unfixed Hecwelder is still a rewrite, not a manual). Then
+  // the period-vocab paragraph guard returns manual. Then accept resolution
+  // requires every flag to independently resolve. Anything else → null
+  // (LLM handles the residual judgment-tail patterns).
+  function deterministicResolveToc(c: Candidate): DetVerdict | null {
+    // Rewrite 3 — inline translator's note in the rendering.
+    if (hasInlineTranslatorNote(c.rendering)) {
+      return {
+        tier: 'rewrite',
+        rationale: "[deterministic] inline translator's note in rendering (Rewrite 3)",
+        pattern: 'Rewrite 3',
+      };
+    }
+
+    // Rewrite 2 — spelling standardization not applied. Per-flag scan: if
+    // any flag references one of the four misspellings and the misspelled
+    // form is still verbatim in the rendering, this is a rewrite.
+    for (const flag of c.flags) {
+      const m = matchMisspelling(flag);
+      if (m && spellingNotApplied(c.rendering, m)) {
+        return {
+          tier: 'rewrite',
+          rationale: `[deterministic] spelling not applied: ${m.wrong} → ${m.right} (Rewrite 2)`,
+          pattern: 'Rewrite 2',
+        };
+      }
+    }
+
+    // Rewrite 4 — moeurs or mœurs anywhere in the rendering (no paragraph-
+    // index precondition; see DECISIONS.md "Moeurs convention").
+    for (const form of ['moeurs', 'mœurs'] as const) {
+      if (wordRegex(form).test(c.rendering)) {
+        return {
+          tier: 'rewrite',
+          rationale: `[deterministic] "${form}" present in rendering (Rewrite 4)`,
+          pattern: 'Rewrite 4',
+        };
+      }
+    }
+
+    // Period-vocab paragraph guard. Original OR rendering. Closed list of
+    // 14 terms. A hit routes to manual deterministically — keeps the LLM
+    // away from the surface where v2's Hecwelder hallucination occurred.
+    const pvOrig = findPeriodVocab(c.original);
+    const pvRend = findPeriodVocab(c.rendering);
+    if (pvOrig !== null || pvRend !== null) {
+      const hit = pvOrig ?? pvRend;
+      const where = pvOrig !== null ? 'original' : 'rendering';
+      return {
+        tier: 'manual',
+        rationale: `[deterministic] period-vocabulary term "${hit}" present in ${where} (guard)`,
+        pattern: 'period-vocab guard',
+      };
+    }
+
+    // Accept resolution. Every flag must independently resolve to Accept 2
+    // (untranslated-term italicization) or Accept 3 (spelling applied). If
+    // any flag does not resolve, fall through to the LLM (null) — accept
+    // is the high-risk side of the matrix, and partial deterministic
+    // matches are not enough.
+    const reasons: string[] = [];
+    for (const flag of c.flags) {
+      // Accept 3.
+      if (flag.kind === 'READING') {
+        const m = matchMisspelling(flag);
+        if (m && spellingApplied(c.rendering, m)) {
+          reasons.push(`spelling ${m.wrong}→${m.right} applied`);
+          continue;
+        }
+      }
+      // Accept 2.
+      if (flag.kind === 'TERM' && flag.key !== null) {
+        const exact = UNTRANSLATED_TERMS.find((t) => t === flag.key);
+        if (exact && italicizedIn(c.rendering, exact)) {
+          reasons.push(`untranslated term "${exact}" preserved-italicized`);
+          continue;
+        }
+      }
+      // Flag did not resolve — defer to the LLM.
+      return null;
+    }
+    if (reasons.length === 0) return null;
+    return {
+      tier: 'accept',
+      rationale: `[deterministic] ${reasons.join('; ')}`,
+      pattern: 'Accept',
+    };
+  }
+
   return {
     slug: 'tocqueville',
     rubric: TOCQUEVILLE_RUBRIC,
@@ -500,6 +702,7 @@ function createTocquevilleAdapter(): CorpusAdapter {
       ann.triage_rubric_sha256 = sha;
       write();
     },
+    deterministicResolve: deterministicResolveToc,
     buildCandidates: ({ includeAlreadyTriaged, includeReviewed }) => {
       const out: Candidate[] = [];
       for (const annItem of ann.items) {
@@ -882,25 +1085,44 @@ async function main(): Promise<void> {
   console.log(`[triage] debug log:   ${debugLogPath} (first-attempt parse failures and terminals)`);
 
   const counts: Record<Tier, number> = { accept: 0, rewrite: 0, manual: 0 };
+  // Resolution-source breakdown of `counts`. detCounts[source][tier] tracks
+  // how many of each tier came from the deterministic resolver vs the LLM.
+  // Their sums match counts: detCounts.deterministic.accept +
+  // detCounts.llm.accept === counts.accept, and so on.
+  const detCounts: Record<'deterministic' | 'llm', Record<Tier, number>> = {
+    deterministic: { accept: 0, rewrite: 0, manual: 0 },
+    llm: { accept: 0, rewrite: 0, manual: 0 },
+  };
   let parseRetries = 0;
   let parseTerminal = 0;
 
   for (let i = 0; i < candidates.length; i++) {
     const c = candidates[i];
-    const userMessage = buildUserMessage(c, adapter.slug);
-    let result: ClassificationResult;
-    try {
-      result = await classify(client, systemPrompt, userMessage, c.locator, debugLogPath);
-    } catch (e) {
-      console.error(`[triage] API error on ${c.locator}: ${(e as Error).message}`);
-      console.error('[triage] stopping run; existing writes are durable. Re-run to resume.');
-      throw e;
-    }
 
-    c.apply(result.tier, result.rationale, ts());
-    counts[result.tier]++;
-    if (result.retried) parseRetries++;
-    if (result.terminal) parseTerminal++;
+    // Deterministic pre-check. Only the Tocqueville adapter implements this
+    // in v3; Federalist's deterministicResolve is undefined, so the call
+    // falls through to classify() unchanged.
+    const det = adapter.deterministicResolve?.(c) ?? null;
+    if (det !== null) {
+      c.apply(det.tier, det.rationale, ts());
+      counts[det.tier]++;
+      detCounts.deterministic[det.tier]++;
+    } else {
+      const userMessage = buildUserMessage(c, adapter.slug);
+      let result: ClassificationResult;
+      try {
+        result = await classify(client, systemPrompt, userMessage, c.locator, debugLogPath);
+      } catch (e) {
+        console.error(`[triage] API error on ${c.locator}: ${(e as Error).message}`);
+        console.error('[triage] stopping run; existing writes are durable. Re-run to resume.');
+        throw e;
+      }
+      c.apply(result.tier, result.rationale, ts());
+      counts[result.tier]++;
+      detCounts.llm[result.tier]++;
+      if (result.retried) parseRetries++;
+      if (result.terminal) parseTerminal++;
+    }
 
     if ((i + 1) % 25 === 0 || i + 1 === candidates.length) {
       console.log(
@@ -909,14 +1131,22 @@ async function main(): Promise<void> {
     }
   }
 
+  const detTotal =
+    detCounts.deterministic.accept +
+    detCounts.deterministic.rewrite +
+    detCounts.deterministic.manual;
+  const llmTotal =
+    detCounts.llm.accept + detCounts.llm.rewrite + detCounts.llm.manual;
+
   console.log('');
   console.log('=== TRIAGE SUMMARY ===');
   console.log(`  corpus:           ${adapter.slug}`);
   console.log(`  rubric:           ${adapter.rubricVersion}`);
   console.log(`  candidates:       ${candidates.length}`);
-  console.log(`  accept:           ${counts.accept}`);
-  console.log(`  rewrite:          ${counts.rewrite}`);
-  console.log(`  manual:           ${counts.manual}`);
+  console.log(`  accept:           ${counts.accept}  (deterministic=${detCounts.deterministic.accept}, llm=${detCounts.llm.accept})`);
+  console.log(`  rewrite:          ${counts.rewrite}  (deterministic=${detCounts.deterministic.rewrite}, llm=${detCounts.llm.rewrite})`);
+  console.log(`  manual:           ${counts.manual}  (deterministic=${detCounts.deterministic.manual}, llm=${detCounts.llm.manual})`);
+  console.log(`  resolution source: deterministic=${detTotal}, llm=${llmTotal}`);
   console.log(`  parse retries:    ${parseRetries} (first attempt failed JSON, second succeeded)`);
   console.log(`  parse terminal:   ${parseTerminal} (both attempts failed; defaulted to manual)`);
   if (parseRetries > 0 || parseTerminal > 0) {
