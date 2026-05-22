@@ -147,7 +147,7 @@
       "id": "P14",
       "category": "cross_corpus_placeholder",
       "phase_5_only": true,
-      "question": "How do Madison and Tocqueville differ on the dangers of majority rule, and what remedies does each propose?",
+      "question": "What are the dangers of majority rule in democratic government, and what remedies or structural safeguards are available?",
       "must_include": [
         { "item_id": "federalist:10" },
         { "item_id": "federalist:51" },
@@ -160,7 +160,7 @@
       "id": "P15",
       "category": "cross_corpus_placeholder",
       "phase_5_only": true,
-      "question": "Did Tocqueville's observations of American federalism in practice align with the Federalist's structural arguments for it, or did he see federalism doing something the founders did not anticipate?",
+      "question": "How does the division of authority between a central government and constituent states prevent tyranny and preserve republican government?",
       "must_include": [
         { "item_id": "federalist:39" },
         { "item_id": "federalist:46" },
@@ -174,7 +174,7 @@
       "phase_5_only": true,
       "question": "What does Tocqueville report from Charlevoix's account of the first war between the French of Canada and the Iroquois in 1610, and what does he infer from it about the contrast between European and Native conceptions of honor?",
       "must_include": [
-        { "item_id": "tocqueville:vol1.t1.notes.D", "kind": "end_note" }
+        { "item_id": "tocqueville:vol1.t1.notes.D" }
       ],
       "rationale": "End-note D (Vol I tome 1, page 58) summarizes Charlevoix's account of the 1610 French-Iroquois war and uses it to contrast European and Native moral codes around honor. As a substantive standalone item under the schema's standalone-item exception for lettered end-notes, this probe tests that Tocqueville end-notes are independently retrievable — retrieval should surface the end-note item itself, not the chapter that references it. Skipped by Phase 1.1 runner; recorded now to lock the design intent for end-note-as-chunk. Note: the Phase 0 session notes referred informally to a 'note on Indian removal,' but Tocqueville's most substantive Indian-policy material is in chapter vol1.part2.ch10 (a chapter, not an end-note); end-note D is the closest thematic end-note. If the Phase 4 editorial chapter→end-note mapping reveals a more appropriate end-note target, swap the must_include here."
     }
