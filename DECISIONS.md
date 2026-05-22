@@ -800,6 +800,43 @@ All three route to NEEDS JUDGMENT under v2. If the owner judges any of them tabl
 
 ---
 
+## Triage rubric v3 (Tocqueville) — deterministic pre-checks for rendering-content patterns (May 2026)
+
+**Decision.** The Tocqueville rubric advances to `tocqueville-v3`. Five patterns whose triggers turn on a string-checkable fact about the rendering — Accept 2 (untranslated term preserved-italicized), Accept 3 (spelling standardization applied), Rewrite 2 (spelling standardization not applied), Rewrite 3 (inline translator's note), Rewrite 4 (moeurs/mœurs left in rendering) — are removed from the LLM-facing rubric and resolved in code before the LLM is called. The period-vocabulary paragraph guard, also a deterministic read, returns the `manual` tier directly from the code path when any period-vocab term is present in the original or the rendering. The LLM retains only judgment-tail patterns: Accept 1 (established term renderings, sense-disambiguated rows), Accept 4 (TEXTURE preserving "similar" structural elements), Rewrite 1 (back-translation of English sources), the residual hard guards.
+
+**Federalist deferred.** Federalist rubric stays at `federalist-v2`. The audit identified four Federalist patterns that are equally string-checkable (Accept 1 false-alarm WORD, Accept 2 settled-substitution WORD, Rewrite 1 preserve-word removal, Rewrite 3 capitalization stripped); they are not built in this fix. Reason: no Federalist back-test corpus exists today (55 of 880 paragraphs reviewed). Building un-validated deterministic checks on the safety side reintroduces the un-validated-classifier risk v3 exists to eliminate. The Federalist build happens once a labeled Federalist test set exists. A version bump must signal a real change; Federalist has none in this fix.
+
+**Architecture.** `scripts/triage-annotations.ts` gains a `deterministicResolve(candidate) → { tier, rationale, pattern } | null` on the Tocqueville `CorpusAdapter`. It runs inside the main classification loop, before `classify()`. On non-null, the verdict is written directly to `triage_tier` and the LLM is skipped for that candidate. On null, the LLM runs as before against the narrowed v3 rubric. The Federalist adapter does not implement the method; Federalist behavior is byte-identical to v2. The classifier's main loop is single-path — `decideVersionAction`'s first_run, resume, and reclassify_all branches all funnel through the same `for` loop (lines 888–910), so the resolver is invoked on every Tocqueville candidate the script processes, including the v3-bump-driven full re-triage that validates this fix.
+
+**The five deterministic patterns, exactly.**
+
+1. *Rewrite 3 — inline translator's note.* Rendering matches `(translator's note:` / `[translator's note:` / `(modern term:` (case-insensitive). On match: `rewrite`.
+2. *Rewrite 2 — spelling not applied.* For each flag, if `flag.french` or `flag.note` mentions one of {Meaupou, Hecwelder, Blakstone, Francklin} and the misspelled form appears verbatim (Unicode-word-bounded) in the rendering: `rewrite`.
+3. *Rewrite 4 — moeurs in rendering.* Rendering contains verbatim `moeurs` or `mœurs` (Unicode-word-bounded, case-insensitive) anywhere: `rewrite`. No paragraph-index precondition. Justification: the moeurs convention, below.
+4. *Period-vocab paragraph guard.* Original OR rendering contains a verbatim Unicode-word-bounded occurrence of any of the 14 PERIOD VOCABULARY terms (sauvages, sauvage, nègres, moeurs, mœurs, commune, buffles, patrie, liberté, néant, élan, cité, peuplade, métis): `manual`. Runs before the accept resolvers.
+5. *Accept resolution.* Every flag must independently resolve:
+   - Accept 3: `kind === 'READING'`, mentions one of the four misspellings, corrected form present and misspelled form absent (Unicode-word-bounded).
+   - Accept 2: `kind === 'TERM'`, `french` ∈ {raison d'État, Ancien Régime, bourgeois, bourgeoisie, arrondissement}, term appears inside markdown `*…*` or `<em>…</em>`.
+   If every flag resolves, return `accept` with per-flag rationale. Else return `null` and let the LLM evaluate the remaining patterns.
+
+All code-path rationales are prefixed `[deterministic]`. Telemetry breaks down accept/rewrite/manual counts by resolution source.
+
+**Moeurs convention — the policy Rewrite 4 enforces.** Rewrite 4 is the only check in v3 scoped to "any occurrence forever" rather than to a closed, owner-curated set (contrast Accept 2/3 and Rewrite 3, all closed lists). Its correctness rests on a stated editorial convention, not on the one-time scan that confirmed three uppercase residues in `vol1.part2.ch9` and zero legitimate retained-moeurs cases as of May 2026:
+
+> *Convention: no untranslated moeurs/mœurs in any finished Tocqueville rendering; deterministic Rewrite 4 enforces this corpus-wide. If a future phase requires a retained French moeurs (e.g., a discussed-term epigraph, a quoted French source explicitly preserving the word), this check must be revisited; it is scoped to a convention, not a closed term list.*
+
+Recorded as a convention so any future phase wanting to retain a French *moeurs* must surface that intention against the standing rule, not silently violate it.
+
+**LLM-facing rubric — what remains.** Accept 1 intact (sense-disambiguated rows still require LLM judgment); Accept 4 trimmed to "TEXTURE flag preserving a structural element other than those already handled in code"; Rewrite 1 intact; hard guards retained as a defense layer in case the resolver mis-fires. A one-line preamble at the top tells the LLM that cases reaching it have already been screened by the deterministic resolver.
+
+**Manual is terminal.** Verified by trace: `triage_tier` is written once per candidate per run; no downstream consumer reassigns it; the safety number is computed against the written tier. `review-annotations.ts` reads `triage_tier` for routing (filter to accept for batch-accept; per-unit review for rewrite and manual) and never reassigns. A deterministic `manual` verdict removes a candidate from the accept-side safety surface — the only side the gate measures. The period-vocab guard's move to code is therefore a safety improvement, not just a relocation.
+
+**Validation gate.** Re-run the Volume I back-test under v3 (`scripts/triage-annotations.ts --corpus tocqueville --include-reviewed`). Gate unchanged from v2: `accept × flagged_for_rewrite` must be zero. The v2 failures are deterministic-resolved (Hecwelder → rewrite via Rewrite 2; ch10 ¶451 → no Rewrite 4 trigger; three `*MOEURS*` case-residues in `vol1.part2.ch9` → rewrite via Rewrite 4). The gate is evaluated on the Volume I cases not examined in this design — the residue, where the matrix actually moves.
+
+**Revisit if:** the back-test fails again on a new rendering-misreading surface; a Federalist back-test corpus exists and the deferred Federalist deterministic checks become buildable; a future phase legitimately requires retained French *moeurs* and the convention must be loosened; or a new corpus is added and the resolver framework needs extending.
+
+---
+
 # Open observations
 
 Items in this section are observed behaviors or tensions not yet decided. They are recorded here so they don't get lost between sessions, and so that a future decision has the original observation in front of it rather than a paraphrase. When an item resolves into a standing decision, it moves up into the main decision list and is removed from here.
