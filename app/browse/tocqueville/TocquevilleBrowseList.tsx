@@ -8,6 +8,7 @@ export type TocquevilleRow = {
   volume: number;
   locator: string;
   frenchTitle: string;
+  translatedTitle: string | null;
   meta: string;
   hasTranslation: boolean;
 };
@@ -64,6 +65,11 @@ export function TocquevilleBrowseList({ rows }: { rows: TocquevilleRow[] }) {
                 <>
                   <span className="browse-row-toc__locator">{r.locator}</span>
                   <span className="browse-row-toc__title">{r.frenchTitle}</span>
+                  {r.translatedTitle && (
+                    <span className="browse-row-toc__translated">
+                      {r.translatedTitle}
+                    </span>
+                  )}
                   <span className="browse-row-toc__meta">{r.meta}</span>
                 </>
               );

@@ -1268,8 +1268,9 @@ All three corrected by direct JSON edit, verified by counting Vol I items with `
 
 **Sidecar at `data/tocqueville/.title-candidates.json` left in place** for reference — not deleted after `--review`. Gitignored to match the existing `.retry-results.json` convention.
 
+**Addendum (2026-05-22):** the Browse-row UI deviation flagged in the 2026-05-22 Browse entry is now closed — Tocqueville Vol I rows render the English title below the French via a new `.browse-row-toc__translated` class, using `var(--font-body)` (Spectral) in place of the spec's Source Serif which is not loaded in this project.
+
 **What does not exist yet:**
-- The English-title slot on Tocqueville Browse rows is *data-ready* now but the row layout in `app/browse/tocqueville/TocquevilleBrowseList.tsx` still doesn't render it — the 2026-05-22 deviation in the Browse entry above remains a UI follow-up.
 - No Vol II title-translation pass. The script supports it (just change `TARGET_VOLUME`), but Vol II body translation isn't done yet; titles before bodies would be out of order.
 - The script `translate-tocqueville-titles.ts` runs sequentially. For 39 items this is fine (~few minutes); if the workflow ever covers a larger corpus, Batch API would be the right shape.
 

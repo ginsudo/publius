@@ -13,6 +13,7 @@ type TocquevilleItem = {
     chapter: number | null;
     kind: 'avertissement' | 'introduction' | 'chapter' | 'end_note' | 'appendix';
     translation: string[] | null;
+    translated_title: string | null;
   };
 };
 
@@ -48,6 +49,7 @@ export default function TocquevilleBrowsePage() {
     volume: it.tocqueville.volume,
     locator: locator(it),
     frenchTitle: it.title,
+    translatedTitle: it.tocqueville.translated_title,
     meta: `Tocqueville · ${VOLUME_DATE[it.tocqueville.volume] ?? ''}`.trim(),
     hasTranslation: it.tocqueville.translation != null,
   }));
