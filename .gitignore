@@ -48,6 +48,9 @@ data/tocqueville/.translation-batch-results.json
 data/tocqueville/.translation-batch-state.json
 data/tocqueville/.translation-resubmit-state.json
 
+# Retry pass ephemeral state (retry-tocqueville-flagged.ts)
+data/tocqueville/.retry-results.json
+
 # Phase 1.1 retrieval test — local-only artifacts
 data/eval/results.md
 
