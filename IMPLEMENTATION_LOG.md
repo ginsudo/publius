@@ -992,6 +992,58 @@ Run with `node --experimental-strip-types --test scripts/triage-annotations.test
 
 **No back-test in this commit.** Per task discipline, this commit is the code change only. The Volume I back-test (`--corpus tocqueville --include-reviewed`) runs in the next session, and the gate decision (`accept × flagged_for_rewrite === 0`) is made then. If the gate fails on a new surface, STOP and report — do not patch under momentum.
 
+### Phase 3.2 review — triage rubric v3 Volume I back-test — gate PASSES (2026-05-22)
+
+`scripts/triage-annotations.ts --corpus tocqueville --include-reviewed`, post-commit `1ed5434`, re-classifying all 378 already-decided flagged candidates against `tocqueville-v3`. The version-mismatch path drove a full reclassification (no resume). Editorial decisions on those 378 records were the labeled test set; the script never modifies `editorial_status`.
+
+**Safety gate: 0 (PASSES).** Zero records where `triage_tier === 'accept'` AND `editorial_status === 'flagged_for_rewrite'`. v2 had at least one confirmed hallucination on this surface (Hecwelder ¶12). v3 has none.
+
+**Confusion matrix (378 candidates):**
+
+| triage \ editorial | accepted | flagged_for_rewrite |
+|---|---|---|
+| `accept` | **17** | **0** ← safety gate |
+| `rewrite` | 0 | **14** |
+| `manual` | 279 | 68 |
+
+Precision on both decisive tiers is 17/17 accept and 14/14 rewrite. The 347 manual verdicts are the safe-side punt: editor reviews them anyway.
+
+**`detCounts` — resolution-source split:**
+
+```
+accept:   17  (deterministic=0,   llm=17)
+rewrite:  14  (deterministic=5,   llm=9)
+manual:  347  (deterministic=164, llm=183)
+total:        deterministic=169   llm=209
+parse retries: 20 (first attempt failed JSON, second succeeded)
+parse terminal: 8 (both attempts failed; defaulted to manual)
+```
+
+The split is what diagnoses where v3 actually moved the matrix.
+
+**`deterministic.manual = 164` is doing most of the safety work.** The period-vocab paragraph guard routes 164 of 169 deterministic verdicts. That is precisely the surface where v2's Hecwelder hallucination occurred — moving it to code closes the v2 failure mode at the source. The LLM never sees those 164 candidates' rendering content.
+
+**`deterministic.rewrite = 5` catches the v2-known failures at the deterministic layer.** Reasonable accounting: Hecwelder (Rewrite 2), the three `*MOEURS*` case-residues in `vol1.part2.ch9` (Rewrite 4), plus one other (likely a fourth misspelling or an additional moeurs hit). All five are rendering-misreading patterns that v2's LLM either missed or got right inconsistently.
+
+**`deterministic.accept = 0` — calibration confirmed, NOT a resolver miss.** Direct check of the annotation file: exactly 2 TERM flags in the reviewed Vol I subset have `french ∈ UNTRANSLATED_TERMS`:
+
+- `vol1.part1.ch6 ¶25` — `raison d'État`. Rendering uses English; no preserved French to italicize. → LLM → manual → owner flagged for rewrite.
+- `vol1.t2.notes.C ¶5` — `arrondissement`. Rendering uses English. → LLM → manual → owner accepted.
+
+Both renderings chose English over preserved French; `italicizedIn` correctly returned false for both. Accept 2 had **zero firing opportunities** in this back-test. The `project_v3_backtest_calibration` memory called this exactly: 4/5 UNTRANSLATED_TERMS have zero rendering occurrences, and even `arrondissement` (3 isolated `*arrondissement*` cases in the corpus) wasn't covered by a TERM flag in the flagged set. The strict-`italicizedIn` choice was not tested by this back-test — the unit tests in `scripts/triage-annotations.test.ts` remain its only safety net. Accept 2 gets first genuine corpus exercise when later renderings populate more preserved French.
+
+**Parse failures.** 20 retries (~5%) and 8 terminals (~2%) — same order as v2. The 8 terminals are scattered across 8 different paragraphs (no chapter clustering); all defaulted to manual (safe side). Logged to `/var/folders/.../triage-debug-tocqueville.log` for future diagnosis if a pattern emerges. Not a regression.
+
+**Cost of the asymmetric design: 279 `manual × accepted`.** Most of these come from the period-vocab paragraph guard's `original OR rendering` scope — any paragraph containing a period-vocab term routes to manual regardless of whether the specific flag was about that term. The editor reviews them; they accept the rendering. Cost is editor time, not safety. This is exactly the trade the v3 design endorsed: misrouting to manual is free, misrouting to accept is the v2 failure.
+
+**`68 manual × flagged_for_rewrite`.** Cases the classifier punted on (manual) that the editor judged needed rewrite. The classifier did not reach the `rewrite` tier on these because the patterns weren't in the rubric's closed Rewrite list — typically TEXTURE/READING flags on argumentative content, or back-translation cases the LLM was uncertain about. Same cost as above: editor reviews and rewrites. Not a safety failure.
+
+**Working-tree scope.** Only `data/tocqueville/tocqueville-annotations.json` modified (the script's writes to `triage_tier` / `triage_rationale` / `triage_generated_at` on all 378 records, plus the file-level `triage_rubric_version` → `tocqueville-v3` and `triage_rubric_sha256` updates written at the start of the run). `editorial_status` and `editorial_note` untouched; the test set integrity is preserved.
+
+**What the gate validates and what it does not.** Validated: period-vocab paragraph guard, Rewrite 2 (spelling), Rewrite 4 (moeurs), the asymmetric error-tolerance discipline. Not validated by this back-test: Accept 2 (zero firing opportunities — calibration), Accept 4 trimmed-TEXTURE pattern (no obvious cases), Rewrite 3 inline translator's note (presumably zero hits — no entry in `detCounts.deterministic.rewrite` reads obviously translator-note-shaped without checking rationale by rationale; not worth a separate scan).
+
+**Revisit if:** a future review pass surfaces a v3-tier hallucination on the safety side; later Tocqueville renderings populate more preserved French and Accept 2's surface becomes nonempty; or the deferred Federalist deterministic checks become buildable once a Federalist labeled set exists.
+
 ## Current state of the repository
 
 **What exists in the repo:**
