@@ -48,6 +48,8 @@ The local-model variant (self-host to avoid API costs) was considered. The cross
 
 **Decide between Turso and Pinecone at:** Phase 5 (when Tocqueville corpus is added and the vector store holds two corpora). Don't decide earlier than needed.
 
+**Update, Phase 1.4:** Turso self-deselected when sqlite-vec became the Vercel production store at scale. The Phase 5 comparison is now stay on sqlite-vec vs. migrate to Pinecone. See the "Phase 1.4 Vercel deploy — Option A landed" entry below for the framing change in detail.
+
 ---
 
 ## GitHub: private repo
