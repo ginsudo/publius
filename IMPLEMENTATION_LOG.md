@@ -1044,7 +1044,7 @@ Both renderings chose English over preserved French; `italicizedIn` correctly re
 
 **Revisit if:** a future review pass surfaces a v3-tier hallucination on the safety side; later Tocqueville renderings populate more preserved French and Accept 2's surface becomes nonempty; or the deferred Federalist deterministic checks become buildable once a Federalist labeled set exists.
 
-### Phase 5 — Tocqueville reading view at `/item/[id]` (2026-05-22)
+### Tocqueville reading view at `/item/[id]` (2026-05-22)
 
 The `/item/[id]` route ships the first Tocqueville reading view. All 39 Vol I items with populated `translation` pre-render statically; the page honours the same typographic register as `/paper/[number]` and reuses the toggle pattern with the corpus-architecture inversion documented in `DECISIONS.md` ("Tocqueville display architecture"): default = English translation, opt-in = French source. Both modes carry interactive footnote markers. The `chapter_summary` field — present on 5 Vol I tome 1 chapters — surfaces only in French mode, as a paired French navigational artifact. Hand-rolled CSS only; no new npm dependencies; no changes to `/ask`, `/browse`, `/paper`, or the masthead nav.
 
