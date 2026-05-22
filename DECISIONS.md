@@ -849,4 +849,40 @@ Items in this section are observed behaviors or tensions not yet decided. They a
 
 When a user's question frames an inquiry as a critique of a particular interpretive school (e.g., "why do originalists reach conservative outcomes"), the current system prompt produces answers that work within the frame rather than balancing it. The project instructions require surfacing originalist and living constitutionalist readings when both exist, which suggests loaded questions should trigger explicit steelmanning of the disfavored side.
 
+---
+
+## Tocqueville reading view: `/item/[id]` with literal corpus IDs in the URL (May 2026)
+
+**Decision:** The Tocqueville reading route is `/item/[id]`, with the URL parameter equal to the literal corpus ID — `/item/tocqueville:vol1.part1.ch1`. The colon stays in the slug. No corpus-prefix stripping, no `:` → `-` transform.
+
+**Rationale:** Colons are valid `pchar` per RFC 3986 and Next.js 16 App Router accepts them in dynamic segments. `next build` pre-rendered all 39 Vol I paths cleanly; the production bundle on Vercel will hold the same shape unless deploy-time evidence forces a fallback. Keeping the literal ID in the URL preserves a single citeable identifier across the corpus, retrieval, and UI layers — citations can point at `/item/<id>` without a slug-mapping table. It also keeps the route corpus-agnostic in name: when Federalist and SCOTUS reading views consolidate behind `/item/[id]` (a future slice, not this one), no migration is required.
+
+**One non-obvious gotcha — Next.js 16 percent-encodes URL params before delivery.** When the request URL contains a literal `:`, the `params.id` value arriving at the page handler is `"tocqueville%3Avol1.part1.ch1"`, not `"tocqueville:vol1.part1.ch1"`. This was caught at first browser test (every URL returning 404) and resolved by a `decodeURIComponent(id)` call in `findItem()` before the lookup. The decode is wrapped in try/catch so malformed input falls through to `notFound()` rather than throwing. This behavior is documented here so a future contributor running into the same 404 mystery has a written answer.
+
+**Fallback path (not exercised):** If Vercel's production filesystem trace or CDN encodes colons in a way that breaks the route on deploy, fall back to a `:` → `-` slug transform: `tocqueville-vol1-part1-ch1` as the URL parameter, reversed at lookup time. The current implementation does not pre-optimize for this — it will be applied only if the deploy actually fails.
+
+---
+
+## `/item/[id]` toggle: TRANSLATION default, FRENCH on demand (May 2026)
+
+**Decision:** The reading view's mode toggle inverts the Federalist `ORIGINAL · MODERN ENGLISH` direction. For Tocqueville, default = `translation` (the owner-authored English rendering), opt-in = `french` (Tocqueville's French source). Label: `TRANSLATION · FRENCH`. URL: `?mode=french` (absent for translation). localStorage key: `publius:tocq-reading-mode` — distinct from the Federalist `publius:reading-mode` so the two toggles don't bleed across routes.
+
+This is the corpus-architecture inversion already pinned in `Tocqueville display architecture: translation as retrieval surface, French as verification layer` (May 2026). This entry pins the implementation-side specifics — labels, URL, storage — so the next reader doesn't have to reverse-engineer them from `ItemBody.tsx`.
+
+**Footnote interactivity in both modes.** Inline footnote markers appear in both `item.paragraphs` (French) and `item.tocqueville.translation` (English); the marker sets in `footnotes` and `footnotes_translation` are byte-identical across all 39 Vol I items. One regex built from `footnotes.map(f => f.marker)` covers both modes; the footnote-body lookup switches between `footnotes_translation` (English mode) and `footnotes` (French mode). Marker counts in body text are very close but not byte-exact between FR and EN — the translator occasionally collapses adjacent same-marker references — which is a translator-level normalization, not a data defect. Both modes get interactive markers regardless.
+
+**Explicit marker regex, not a generic bracketed-token pattern.** The translation occasionally contains bracketed editorial insertions like `[sic]` (one occurrence in `vol1.part2.ch5 ¶41`) that are not footnote markers. A regex matching `\[[A-Za-z0-9-]+\]` would treat `[sic]` as a marker and fail the lookup. The actual regex is built from the alternation of the item's `footnotes[].marker` strings (escaped, sorted longest-first for `[10]` vs `[100]` discrimination), so non-marker bracketed tokens fall through to the text path unchanged.
+
+---
+
+## `/item/[id]` chapter_summary visibility: French mode only (May 2026)
+
+**Decision:** The `tocqueville.chapter_summary` field — present on 5 of the 39 Vol I items (all Vol I tome 1 chapters per the schema) — renders only when the toggle is in `french` mode. In `translation` mode the summary is hidden.
+
+**Rationale:** The chapter summary is a navigational block in Tocqueville's own French prose; the Pagnerre 1848 edition prints it between each Vol I tome 1 chapter title and its body. There is no English translation of it in the corpus, and the workflow for generating one would be a distinct editorial pass with its own decisions (does it get its own flag stream? does the summary modernize differently from chapter body?). Pairing the summary with the French body register is the cleanest default — when the reader is in the French source view, they see all of Tocqueville's French apparatus, including the bullet-summary block; when in the English translation, they see the English rendering and nothing else.
+
+**Alternative considered:** show always, italicized in secondary gray, as an untranslated artifact regardless of mode. Rejected because inserting a French navigational block into an otherwise English reading view jars the register, and the summary is content, not metadata — it deserves the toggle's mode discipline.
+
+**If a future slice translates the chapter summaries** (e.g., adds `chapter_summary_translation` to the corpus extension), the toggle logic flips trivially: render the appropriate-mode summary in both modes. The current single-French-only display is the right shape to evolve from, not a layout that would have to be torn out.
+
 Not yet decided whether this requires a system prompt addition or whether the current behavior is acceptable. Observed in comparison testing against Claude chat on the originalism/motivated-reasoning question. Worth revisiting after more example questions accumulate.
