@@ -1466,9 +1466,8 @@ A short post-runE housekeeping pass. Three pieces, none architectural.
 **Where the project actually is.** Phase 1.1 retrieval, Phase 1.2 Q&A (system prompt + HTTP boundary), Phase 1.3 observability, Phase 1.4 first Vercel deploy, Phase 2.1 Browse UI, Phase 2.3 Ask UI (with NDJSON streaming, rotating sample questions, error mapping, typed block renderer), Phase 2.4 Paper reading view, Phase 3.1 plain-English generation, Phase 3.2 annotations layer + corpus-parameterized review CLI + confidence-tiered triage pipeline (v3 Tocqueville-only), Phase 3.3 ORIGINAL · MODERN ENGLISH toggle, Phase 4 Tocqueville Volume I translation, and Phase 5 Tocqueville Vol I retrieval (the populated translation is now embedded into `data/eval/index.sqlite`) are all landed. The Constitution corpus seam was resolved 2026-05-18 ahead of schedule. Active editorial work: Federalist review (55/880 flagged) and Tocqueville post-Vol-I-review retry decisions.
 
 **Most likely next slices (none committed; the editorial pass is owner-driven):**
-1. Owner sign-off on `data/eval/results.md` phase-5 probes (P14 / P15 / P16); act on the must_include kind-vs-kind mismatch and the cross-corpus question-phrasing findings recorded in the 2026-05-22 entry.
-2. Federalist editorial review continued. Resume at `g 8 6` per user memory; the 21 paragraphs retried via `prompts/retry-v0.2.1.md` reappear in document order as null-status entries.
-3. Tocqueville Volume II translation: 85 items still `null`. Same workflow as Vol I via `generate-translation.ts`; Vol II won't enter the retrieval index until translated and editorially reviewed.
+1. Federalist editorial review continued. Resume at `g 8 6` per user memory; the 21 paragraphs retried via `prompts/retry-v0.2.1.md` reappear in document order as null-status entries.
+2. Tocqueville Volume II translation: 85 items still `null`. Same workflow as Vol I via `generate-translation.ts`; Vol II won't enter the retrieval index until translated and editorially reviewed.
 
 **Do not:**
 - Add a fourth corpus before resolving its epistemic tag (argument/observation/holding plus a fourth category — owner's call). The argument/observation/holding taxonomy is in `CLAUDE.md`.
