@@ -13,19 +13,19 @@
   },
   {
     "id": "SQ04",
-    "question": "Federalist 84 argues against a Bill of Rights, on the grounds that enumerating rights implies the government has powers it doesn't have. How does that argument hold together — and what does it imply about how the Bill of Rights should have been interpreted once ratified?"
+    "question": "Federalist 84 argues against a Bill of Rights on the grounds that enumerating rights implies the government has powers it doesn't have. Trace the argument carefully: does it hold together, and what does it commit its author to about how the Constitution should be read once the Bill of Rights was ratified anyway?"
   },
   {
     "id": "SQ05",
-    "question": "Hamilton argues in Federalist 70 that unity in the executive produces accountability because the public knows who to blame. Does that argument actually support a unitary executive theory, or does it support something more limited?"
+    "question": "Hamilton argues in Federalist 70 that unity in the executive produces accountability because the public knows who to blame. Does that argument actually support a unitary executive theory, or does it support something more limited — and where does Hamilton's argument end and a later doctrinal construction begin?"
   },
   {
     "id": "SQ06",
-    "question": "Federalist 49 argues against frequent appeals to the people to resolve constitutional disputes, on the grounds that it would destabilize government and erode constitutional veneration. What does that argument imply about the role of popular sovereignty in constitutional theory — and is it in tension with the democratic premises the Papers elsewhere assert?"
+    "question": "Federalist 49 argues against frequent appeals to the people to resolve constitutional disputes, on the grounds that it would destabilize government and erode constitutional veneration. What does that argument imply about the role of popular sovereignty in constitutional theory, and how does it sit alongside the democratic premises the Papers assert elsewhere?"
   },
   {
     "id": "SQ07",
-    "question": "Federalist 37 is Madison's most philosophically candid paper — an acknowledgment that the Constitution is imperfect, that language is inherently imprecise, and that the Convention's success was partly providential. How does that acknowledgment sit with the argumentative confidence of the rest of the Papers — and what does it imply about how much interpretive weight the constitutional text can bear?"
+    "question": "Federalist 37 is Madison's most philosophically candid paper — an acknowledgment that the Constitution is imperfect, that language is inherently imprecise, and that the Convention's success was partly providential. How does that acknowledgment sit with the argumentative confidence of the rest of the Papers, and what does it imply about how much interpretive weight the constitutional text can bear?"
   },
   {
     "id": "SQ08",
@@ -33,11 +33,11 @@
   },
   {
     "id": "SQ09",
-    "question": "Madison argues in Federalist 46 that state governments will serve as a counterweight to federal overreach, with citizens loyal enough to their states to resist federal tyranny. What conditions does that argument depend on — and does the Federalist corpus supply any account of what happens if those conditions fail?"
+    "question": "Hamilton argues in Federalist 27 that citizens will develop affection for the federal government through habitual experience of its laws and administration — that allegiance follows familiarity. What does that argument assume about the relationship between citizens and the institutions that govern them, and is the assumption doing more work than Hamilton acknowledges?"
   },
   {
     "id": "SQ10",
-    "question": "Publius repeatedly invokes the lessons of history — Greece, Rome, the Dutch Republic, the Swiss cantons. Is history being used as genuine evidence in these arguments, or as rhetorical decoration? Where, if anywhere, does the historical argument do real analytical work?"
+    "question": "Federalist 62 and 63 defend the Senate on multiple grounds simultaneously: stability against popular passion, institutional memory across sessions, and the reputation of the republic in foreign affairs. Are these arguments for the same institution, or are they arguments for three different things that happen to share a design?"
   },
   {
     "id": "SQ11",
@@ -45,7 +45,7 @@
   },
   {
     "id": "SQ12",
-    "question": "If you had to identify the single argument in the Federalist Papers that has aged worst — the one where the reasoning was sound for 1787 but depends most heavily on conditions that no longer obtain — what would it be, and why?"
+    "question": "Publius repeatedly invokes the lessons of history — Greece, Rome, the Dutch Republic, the Swiss cantons. Is history being used as genuine evidence in these arguments, or as rhetorical decoration? Where, if anywhere, does the historical argument do real analytical work?"
   },
   {
     "id": "SQ13",
@@ -53,7 +53,7 @@
   },
   {
     "id": "SQ14",
-    "question": "Tocqueville worried about a soft despotism that democratic peoples might choose voluntarily — an administrative tutelage that keeps citizens fixed in childhood, not through oppression but through the gradual absorption of public life into centralized management. Does anything in the Federalist's theory of republican government identify this as a distinct danger?"
+    "question": "Tocqueville worried about a soft despotism that democratic peoples might choose voluntarily — an administrative tutelage that keeps citizens fixed in childhood, not through oppression but through the gradual absorption of public life into centralized management. Does anything in the Federalist's theory of republican government identify this as a distinct danger, or is it a failure mode the founders' framework cannot see?"
   },
   {
     "id": "SQ15",
@@ -61,11 +61,11 @@
   },
   {
     "id": "SQ16",
-    "question": "Tocqueville observed that Americans were more passionate about equality than about liberty, and predicted this passion would gradually reshape their institutions in ways that compressed individual distinctiveness. Does the Federalist's theory of republican government anticipate this as a constitutional risk — or does it assume that equality and liberty reinforce each other?"
+    "question": "Tocqueville thought the legal profession was the closest thing America had to an aristocracy — a class whose habits of mind, deference to precedent, and instinctive caution about popular passion served as a brake on democratic excess. Is there anything in the Federalist's design for republican government that anticipates this function, or is it a structural feature Madison's framework simply failed to account for?"
   },
   {
     "id": "SQ17",
-    "question": "Hamilton argues in Federalist 27 that citizens will develop affection for the federal government through habitual experience of its laws and administration. Tocqueville observed American constitutional culture several decades later. Did he find what Hamilton predicted — and if not, what did he find instead?"
+    "question": "Hamilton argues in Federalist 27 that citizens will develop affection for the federal government through habitual experience of its laws. Tocqueville observed American constitutional culture several decades later. Did he find what Hamilton predicted — and if not, what did he find instead, and what does the difference reveal about the argument's assumptions?"
   },
   {
     "id": "SQ18",
@@ -73,10 +73,10 @@
   },
   {
     "id": "SQ19",
-    "question": "Madison in Federalist 10 treats the proliferation of factions as the structural solution to faction's danger. Tocqueville observed that Americans' extraordinary propensity to form voluntary associations was the practical foundation of their liberty. Are these the same insight expressed differently, or are they pointing to different mechanisms — and does the difference matter for constitutional design?"
+    "question": "Madison in Federalist 10 treats the proliferation of factions as the structural solution to faction's danger. Tocqueville observed that Americans' extraordinary propensity to form voluntary associations was the practical foundation of their liberty. Are these the same insight expressed differently, or are they pointing to different mechanisms — and does the difference matter for how the constitutional design should be evaluated?"
   },
   {
     "id": "SQ20",
-    "question": "The Federalist Papers defend bicameralism partly on the grounds that the Senate would attract a superior class of men — experienced, wise, insulated from popular passion. Tocqueville observed what American legislative bodies actually looked like by the 1830s. What did he find, and what does his observation do to the Federalist's institutional theory?"
+    "question": "Federalist 62 and 63 defend the Senate partly on the grounds that it would attract men of long experience, stable character, and insulation from popular passion — a body capable of governing when the House cannot. Tocqueville observed what American legislative bodies actually looked like by the 1830s, including the Senate. What did he find, and does his observation engage the Federalist's actual argument for the institution or something adjacent to it?"
   }
 ]
