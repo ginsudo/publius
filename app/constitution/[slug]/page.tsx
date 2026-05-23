@@ -170,19 +170,65 @@ function renderBody(info: SlugInfo) {
   }
 }
 
-function renderClauseParagraphs(item: ConstitutionItem) {
-  const anchor = anchorFor(item.id);
-  return item.paragraphs.map((para, i) => (
-    <p key={i} id={i === 0 ? anchor : undefined}>
-      {para}
-    </p>
-  ));
+function isMidSentenceFragment(item: ConstitutionItem): boolean {
+  const text = item.paragraphs.join(' ').trimEnd();
+  if (!text) return false;
+  const last = text[text.length - 1];
+  return last === ',' || last === ';';
+}
+
+function renderClauseGroup(group: ConstitutionItem[]): React.ReactNode[] {
+  const out: React.ReactNode[] = [];
+  let pending: ConstitutionItem[] = [];
+
+  const flush = () => {
+    if (pending.length === 0) return;
+    if (pending.length === 1) {
+      const item = pending[0];
+      const anchor = anchorFor(item.id);
+      item.paragraphs.forEach((para, i) => {
+        out.push(
+          <p key={`${item.id}-${i}`} id={i === 0 ? anchor : undefined}>
+            {para}
+          </p>,
+        );
+      });
+    } else {
+      const children: React.ReactNode[] = [];
+      pending.forEach((item, i) => {
+        const text = item.paragraphs.join(' ');
+        if (i === 0) {
+          children.push(text);
+        } else {
+          children.push(' ');
+          children.push(
+            <span key={`anc-${item.id}`} id={anchorFor(item.id)} />,
+          );
+          children.push(text);
+        }
+      });
+      out.push(
+        <p key={pending[0].id} id={anchorFor(pending[0].id)}>
+          {children}
+        </p>,
+      );
+    }
+    pending = [];
+  };
+
+  for (const item of group) {
+    pending.push(item);
+    if (!isMidSentenceFragment(item)) flush();
+  }
+  flush();
+
+  return out;
 }
 
 function renderPreamble() {
   const item = items.find((it) => it.id === 'constitution:preamble');
   if (!item) return null;
-  return renderClauseParagraphs(item);
+  return renderClauseGroup([item]);
 }
 
 function renderArticle(n: number) {
@@ -206,9 +252,7 @@ function renderArticle(n: number) {
     return (
       <Fragment key={sec}>
         {showHeadings && <h2 className="const-subheading">Section {sec}.</h2>}
-        {clauses.map((it) => (
-          <Fragment key={it.id}>{renderClauseParagraphs(it)}</Fragment>
-        ))}
+        {renderClauseGroup(clauses)}
       </Fragment>
     );
   });
@@ -274,16 +318,16 @@ function renderAmendments(start: number, end: number, showDate: boolean) {
             Section {sec}.
           </h3>,
         );
-        for (const it of sections.get(sec)!) {
-          out.push(
-            <Fragment key={it.id}>{renderClauseParagraphs(it)}</Fragment>,
-          );
-        }
+        out.push(
+          <Fragment key={`s-body-${n}-${sec}`}>
+            {renderClauseGroup(sections.get(sec)!)}
+          </Fragment>,
+        );
       }
     } else {
-      for (const it of amendItems) {
-        out.push(<Fragment key={it.id}>{renderClauseParagraphs(it)}</Fragment>);
-      }
+      out.push(
+        <Fragment key={`a-body-${n}`}>{renderClauseGroup(amendItems)}</Fragment>,
+      );
     }
   }
 
