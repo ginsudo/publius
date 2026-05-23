@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import federalistData from '@/data/federalist/federalist.json';
@@ -88,7 +89,8 @@ export default async function PaperPage({
       <article>
         <header className="paper-header">
           <p className="paper-corpus-tag">
-            Federalist · No. {item.federalist.number}
+            <Link href="/browse/federalist">Federalist</Link>
+            {' · '}No. {item.federalist.number}
           </p>
           <h1 className="paper-title">{item.title}</h1>
           <p className="paper-byline">

@@ -1,6 +1,7 @@
 'use client';
 
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import Link from 'next/link';
 
 type Footnote = { marker: string; paragraphs: string[] };
 type Mode = 'translation' | 'french';
@@ -77,7 +78,9 @@ export function ItemBody({
   chapterSummary,
   frenchTitle,
   translatedTitle,
-  corpusTagText,
+  corpusLabel,
+  corpusBrowseHref,
+  corpusTagRest,
   metaText,
 }: {
   translation: string[];
@@ -87,7 +90,9 @@ export function ItemBody({
   chapterSummary: string | null;
   frenchTitle: string;
   translatedTitle: string;
-  corpusTagText: string;
+  corpusLabel: string;
+  corpusBrowseHref: string;
+  corpusTagRest: string;
   metaText: string;
 }) {
   // Marker set is identical across footnotes and footnotes_translation (verified
@@ -219,7 +224,10 @@ export function ItemBody({
   return (
     <>
       <header className="item-header">
-        <p className="item-corpus-tag">{corpusTagText}</p>
+        <p className="item-corpus-tag">
+          <Link href={corpusBrowseHref}>{corpusLabel}</Link>
+          {corpusTagRest}
+        </p>
         <h1 className="item-title">
           {mode === 'french' ? frenchTitle : translatedTitle}
         </h1>

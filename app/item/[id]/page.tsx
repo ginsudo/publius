@@ -75,21 +75,21 @@ function toRoman(n: number): string {
   return ROMAN[n] ?? String(n);
 }
 
-function corpusTag(item: TocquevilleItem): string {
+function corpusTagRest(item: TocquevilleItem): string {
   const vol = toRoman(item.tocqueville.volume);
   const k = item.tocqueville.kind;
   if (k === 'chapter') {
     const part = item.tocqueville.part != null ? toRoman(item.tocqueville.part) : null;
     const chap =
       item.tocqueville.chapter != null ? toRoman(item.tocqueville.chapter) : null;
-    return `Tocqueville · Vol ${vol} · Part ${part} · Chapter ${chap}`;
+    return ` · Vol ${vol} · Part ${part} · Chapter ${chap}`;
   }
   if (k === 'end_note') {
     const m = item.id.match(/notes\.([A-Za-z][A-Za-z0-9-]*)$/);
     const letter = m ? m[1] : '';
-    return `Tocqueville · Vol ${vol} · Note ${letter}`;
+    return ` · Vol ${vol} · Note ${letter}`;
   }
-  return `Tocqueville · Vol ${vol}`;
+  return ` · Vol ${vol}`;
 }
 
 function metaLine(item: TocquevilleItem): string {
@@ -140,7 +140,9 @@ export default async function ItemPage({
           chapterSummary={chapterSummary}
           frenchTitle={item.title}
           translatedTitle={item.tocqueville.translated_title ?? item.title}
-          corpusTagText={corpusTag(item)}
+          corpusLabel="Tocqueville"
+          corpusBrowseHref="/browse/tocqueville"
+          corpusTagRest={corpusTagRest(item)}
           metaText={metaLine(item)}
         />
       </article>

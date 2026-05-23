@@ -860,6 +860,24 @@ main {
   color: var(--text-tertiary);
 }
 
+.item-corpus-tag a,
+.paper-corpus-tag a {
+  color: inherit;
+  text-decoration: none;
+  outline: none;
+}
+
+.item-corpus-tag a:hover,
+.paper-corpus-tag a:hover {
+  color: var(--accent);
+}
+
+.item-corpus-tag a:focus-visible,
+.paper-corpus-tag a:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .item-title {
   font-size: 30px;
   line-height: 1.25;

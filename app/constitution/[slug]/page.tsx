@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Fragment } from 'react';
 
@@ -147,7 +148,9 @@ export default async function ConstitutionPage({
     <main>
       <article>
         <header className="item-header">
-          <p className="item-corpus-tag">U.S. Constitution</p>
+          <p className="item-corpus-tag">
+            <Link href="/browse/constitution">U.S. Constitution</Link>
+          </p>
           <h1 className="item-title">{pageTitle(info)}</h1>
           <p className="item-meta">{metaLine(info)}</p>
         </header>
