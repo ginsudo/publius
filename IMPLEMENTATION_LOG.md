@@ -1405,6 +1405,16 @@ Created `prompts/eval/assessments/` and populated it with five per-run assessmen
 
 **Going forward.** Each new run gets an assessment file written as part of the run's session-close. The runD/runE files set the template: header block (prompt version, run date, results filename, prompt sha256), summary, predicted-failure-mode results, notable results, open-questions status. The IMPLEMENTATION_LOG entry for a run can be shorter once the assessment file exists — the entry covers the path and decisions; the assessment covers the findings.
 
+### Documentation housekeeping — CLAUDE.md tightening, Project Instructions sync (2026-05-23)
+
+A short post-runE housekeeping pass. Three pieces, none architectural.
+
+**CLAUDE.md edits** (commit `8bddea5`). Three changes in a single commit. The Observation mode bullet in the Epistemic Distinction was reframed from "what Tocqueville observed American constitutional culture actually doing" to "what Tocqueville observed about how American self-government actually functioned," with a new elaboration paragraph after the three-bullet triad naming the institutions, mores, and social conditions Tocqueville attends to (jury, press, local associations, religious life) and contrasting the empirical mode with what the founders argued and what the Court has held. The closing sentence preserves the majority/dissent distinction from the Holding bullet. The versioning convention paragraph in the System Prompt section gained a trailing pointer to `prompts/eval/` and `prompts/eval/assessments/`, making the eval workflow discoverable from CLAUDE.md without having to know to look. Timestamp bumped to May 2026.
+
+**Eval assessments directory.** Covered in its own entry above (commit `35145b1`). The CLAUDE.md pointer added today is the corresponding navigation breadcrumb.
+
+**Project Instructions update.** The advisory thread's Project Instructions were edited in parallel to surface the same eval paths and Observation refinement. Not a repo artifact — Project Instructions live in the Claude.ai workspace, not the codebase, so the change is recorded here rather than tracked by commit.
+
 ## Current state of the repository
 
 **What exists in the repo:**
