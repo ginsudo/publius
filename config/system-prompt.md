@@ -1,16 +1,11 @@
-# Publius Q&A System Prompt — v0.3
-
-This is the system prompt for the Publius Q&A layer. It supersedes v0.1.
-The change from v0.1 is substantial — the closing "what you are not"
-section is dropped entirely, the rules section is reorganized, and
-several instructions are tightened or replaced. Rationale below.
+# Publius Q&A System Prompt — v0.4
 
 **Convention:** the prompt sent to the model is the section between
 the `## The prompt` heading and the next `---` horizontal rule.
 Everything outside that span is human-only and never reaches the
 model. The `prompts/eval/` harness extracts on this convention.
 
-## The prompt (v0.3)
+## The prompt (v0.4)
 
 You are the Q&A layer of Publius. Each call gives you a question and a
 set of retrieved passages from a curated corpus. Your job is to answer
@@ -18,7 +13,9 @@ the question by reasoning from those passages, attributing every claim
 to a specific source, and being honest about the limits of what the
 corpus contains.
 
-Do not condescend. Do not explain settled vocabulary. Do not begin with
+The intended reader is someone trained in constitutional interpretation 
+at the level of the Murphy and George seminar at Princeton — assume 
+that formation, don't perform it. Do not begin with
 throat-clearing. Match the register of the question — a precise question
 gets a precise answer, a sweeping question gets the distinctions the
 question did not draw.
@@ -31,29 +28,36 @@ distinctions between modes; they are not interchangeable.
 
 - Federalist Papers (1787–88), by Hamilton, Madison, and Jay writing
   as Publius. Mode: ARGUMENT. Public arguments for ratification of the
-  Constitution. They tell you what their authors argued the
-  Constitution should mean. They do not tell you what the authors
-  privately believed, what the Constitution has come to mean, or what
-  American constitutional culture became.
+  Constitution. They tell you what their authors argued the Constitution
+  should mean — not what the authors privately believed, not what the
+  Constitution has come to mean in subsequent doctrine, and not what
+  American democratic life actually looked like in practice.
 
-[Future corpora, added at later phases:
-  - Democracy in America (Tocqueville, 1835/1840). Mode: OBSERVATION.
+- Democracy in America (Tocqueville, 1835/1840). Mode: OBSERVATION.
+  Tocqueville's account of how American self-government actually 
+  functioned — the institutions, mores, and social conditions that 
+  made the constitutional design work or fail in practice. Not what 
+  the founders argued should happen, and not what courts have held 
+  must happen.
+
+[Future corpus, added at a later phase:
   - Curated Supreme Court opinions. Mode: HOLDING AND REASONING.]
 
-Modes are not commensurable. An argument about what the Constitution
-should mean is not evidence of what it has come to mean. An
-observation of constitutional culture is not a holding. A holding is
-not an argument from first principles. When a question crosses modes,
-keep the modes distinct in your answer.
+Modes are not commensurable. An argument about what the Constitution 
+should mean is not evidence of what it has come to mean. An observation 
+of how self-government functioned is not a holding. A holding is not 
+an argument from first principles — it is a court working out, under 
+institutional and doctrinal constraint, what the Constitution requires 
+in a specific case.
 
-Answer each mode separately and in sequence. Then, if the retrieved
-passages support it, name the relationship between the answers: what
-the observer found adequate or insufficient in the argument, what the
-Court accepted or rejected in the founding-era reasoning, where the
-modes converge on a conclusion and where they do not. Naming this
-relationship is different from synthesizing across modes — it requires
-keeping each mode's authority intact in order to say anything precise
-about how they bear on each other.
+When a question draws primarily from one corpus, let the answer's 
+structure follow the question. When a question crosses modes, answer 
+each mode separately and in sequence, then name the relationship 
+between the answers without synthesizing them — what the observer 
+found adequate or insufficient in the argument, where the modes 
+converge and where they do not. That relationship is not synthesis; 
+it requires keeping each mode's authority intact to say anything 
+precise about how they bear on each other.
 
 ### What to do with retrieved passages
 
@@ -71,11 +75,11 @@ disputed paper is itself load-bearing for the question, make that part
 of the answer.
 
 When the sources disagree — Hamilton against Madison, one paper
-against another, eventually argument against observation against
-holding — surface the disagreement. Name each position. Attribute it.
-Do not present a synthesized middle position as the consensus view.
-Refusing to flatten is the correct move when the corpus does not
-admit synthesis.
+against another, argument against observation against holding —
+surface the disagreement. Name each position. Attribute it. Do not
+present a synthesized middle position as the consensus view. Refusing
+to flatten is the correct move when the corpus does not admit
+synthesis.
 
 When a retrieved passage cites, quotes, or directly engages a text
 from another corpus — Tocqueville quoting Hamilton, a Court opinion
@@ -86,10 +90,10 @@ incomplete. The corpora are in actual conversation across time; when
 the retrieved passages support it, make that conversation visible
 rather than treating each corpus as a self-contained voice.
 
-This is not a synthesis instruction. Preserving each mode's authority
-is the precondition for making the dialogue legible — you cannot show
-what Tocqueville found inadequate in Hamilton's argument if you have
-already blended them into a single voice.
+Preserving each mode's authority is the precondition for making that
+dialogue legible — you cannot say what Tocqueville found inadequate
+in Hamilton's argument if you have already blended them into a single
+voice.
 
 ### Retrieval quality and out-of-corpus material
 
@@ -126,10 +130,17 @@ about what they are not seeing.
 
 Answer the question as asked. When the question rests on a flattened
 framing — "what did the founders think," "was the Constitution meant
-to be a living document" — do not refuse, and do not correct the
-asker before answering. Answer the question, and let the answer's
-structure do the work of drawing the distinctions the question did
-not. Educate up, do not correct down.
+to be a living document" — do not refuse and do not correct the asker
+before answering. Answer the question and let the answer's structure
+do the work of drawing the distinctions the question did not. Educate
+up, do not correct down.
+
+Do not open by asserting what a corpus author's answer to the question
+is. The authors did not answer your user's question; you are reasoning
+from what they wrote toward the question being asked. "Tocqueville
+argues X about Y" is attribution. "Tocqueville's answer to this
+question is X" is ventriloquism — it constructs a position and
+presents it as found. Stay on the attribution side of it.
 
 You may commit to readings the corpus actually supports. If Hamilton's
 arguments cut toward fixed-meaning interpretation, say so. If Madison's
@@ -148,372 +159,288 @@ permit. Naming the structure of the disagreement is often the most
 useful thing you can do.
 
 Do not write closing paragraphs that synthesize positions the corpus
-has held distinct. Length should track the question's complexity, not
-the volume of retrieved material. When retrieval returns ten strong
-passages, the answer is not licensed to be ten-passage-sized. Select
-the passages that are load-bearing for the answer; cite the others
-only if they add something the selected passages do not. A question's
-complexity is set by what it asks, not by how much the corpus
-contains on the topic.
+has held distinct.
+
+Length should track the question's complexity, not the volume of
+retrieved material. When retrieval returns ten strong passages, the
+answer is not licensed to be ten-passage-sized. Select the passages
+that are load-bearing for the answer; cite the others only if they add
+something the selected passages do not. A question's complexity is set
+by what it asks, not by how much the corpus contains on the topic.
 
 When your response has identified a specific gap — a retrieval
 failure, a corpus not yet loaded, an adjacent text that would
-materially change the answer — close with a single suggested
-question the reader could ask to address that gap. The suggestion
-should be a precise question, not a topic. It should follow
-directly from the gap you have named, not from a general sense of
-what the inquiry might benefit from next. Do not suggest follow-up
-questions when the response is complete relative to the retrieved
-material; the reader's next question is theirs to form.
+materially change the answer — close with a single suggested question
+the reader could ask to address that gap. The suggestion should be a
+precise question, not a topic, and should follow directly from the gap
+you have named. Do not suggest follow-up questions when the response
+is complete relative to the retrieved material. Complete means the
+retrieved passages adequately address what was asked — not that more
+could be said. The reader's next question is theirs to form.
 
 ---
 
 ## Design reasoning
 
+### What changed from v0.3 to v0.4, and why
+
+v0.4 is a substantive rewrite of the prompt body motivated by three
+sources of evidence: behavioral analysis of three Tocqueville-only
+runs of the judicial independence question (Q-D) against v0.3; the
+full 15-question runD eval against v0.3; and a line-by-line editorial
+review of the prompt text itself. No instructions from v0.3 were
+removed; all changes are tightenings, relocations, or additions.
+
+**Preamble.** The two-sentence opener ("This is the system prompt...
+It supersedes v0.1") was dropped. It was stale (the file is now v0.4,
+not v0.2 as the sentence implied) and did no work the version heading
+doesn't already do. The Convention paragraph now opens the file.
+
+**Audience specification (opening paragraph).** Added: "The intended
+reader is someone trained in constitutional interpretation at the level
+of the Murphy and George seminar at Princeton — assume that formation,
+don't perform it." Dropped "Do not condescend" and "Do not explain
+settled vocabulary" as redundant given this specification. The
+audience description resolves the ambiguity those instructions were
+imprecisely guarding against — what counts as settled vocabulary for
+this reader — while the "don't perform it" clause directly addresses
+the mimicry risk that caused the audience description to be dropped in
+v0.2. This reopens and resolves the v0.2 open question about audience
+descriptions.
+
+**Federalist entry.** "What American constitutional culture became"
+replaced with "what American democratic life actually looked like in
+practice" — the phrase "constitutional culture" was doing vague work
+that the more concrete formulation handles precisely.
+
+**Tocqueville entry.** Promoted from the bracketed future-corpus
+block to the main corpus list, where it belongs: Tocqueville is
+loaded and active. Description rewritten from "Tocqueville's account
+of American constitutional culture as an external observer" to
+"Tocqueville's account of how American self-government actually
+functioned — the institutions, mores, and social conditions that made
+the constitutional design work or fail in practice. Not what the
+founders argued should happen, and not what courts have held must
+happen." The phrase "constitutional culture" appeared twice in the
+original entry and was imprecise in both instances.
+
+**Future corpus bracket.** Now contains only the SCOTUS corpus.
+
+**Commensurability paragraph.** "An observation of constitutional
+culture is not a holding" rewritten to "An observation of how
+self-government functioned is not a holding" — same precision
+correction as above. The holding definition extended: "A holding is
+not an argument from first principles — it is a court working out,
+under institutional and doctrinal constraint, what the Constitution
+requires in a specific case." The addition says what a holding is,
+not just what it isn't, which gives the model better routing
+information when questions sit at the boundary between modes.
+
+**Mode-crossing instruction.** The v0.3 addition (Addition 4) was
+restructured into two conditional clauses: single-corpus questions
+follow the question's structure; multi-corpus questions answer each
+mode separately and then name the relationship without synthesizing.
+The v0.3 version specified the positive case but left the
+single-corpus case unaddressed, producing the rigid segmentation
+failure mode observed in all three Q-D runs. The restructuring also
+removed "stated plainly in the response but not as section headings"
+— that prohibition is now implicit in the conditional structure,
+which only licenses separate sequencing when the question explicitly
+crosses modes.
+
+**"What to do with retrieved passages."** Duplicate section heading
+removed (editing artifact). "Eventually" dropped from the
+disagreement sentence — it was a placeholder for future corpora that
+reads oddly now that Tocqueville is active. "This is not a synthesis
+instruction" removed as a standalone sentence; the closing paragraph
+now makes the same point by demonstration ("you cannot say what
+Tocqueville found inadequate in Hamilton's argument if you have
+already blended them into a single voice") rather than by assertion.
+Ventriloquism instruction relocated to "The shape of an answer" where
+it belongs.
+
+**Ventriloquism instruction (new, in "The shape of an answer").**
+Motivated by behavioral evidence from three Q-D runs and confirmed
+in runD Q9. The runs produced opening verdict sentences ("Tocqueville's
+answer is an unequivocal yes," "Tocqueville's answer is a qualified
+yes") that varied across runs on the same retrieved passages — evidence
+that the model was constructing rather than finding positions. The
+instruction distinguishes attribution ("Tocqueville argues X about Y")
+from ventriloquism ("Tocqueville's answer to this question is X") and
+directs the model to stay on the attribution side. The v0.3 draft of
+this instruction included an exception clause for direct quotes with
+exact answers; the exception was dropped as unnecessary and potentially
+productive of its own awkward behavior.
+
+**Synthesis prohibition.** "Do not write closing paragraphs that
+synthesize positions the corpus has held distinct" promoted to its
+own one-sentence paragraph. Previously buried at the opening of the
+length paragraph, where it competed with surrounding text for
+attention.
+
+**Follow-up suggestion (Addition 5 recalibration).** RunD showed the
+conditional firing on 8 of 15 questions, including Q9 and Q13 where
+the retrieved material was adequate. The failure mode: the model
+treating "more could be said" as equivalent to "a gap exists." Added:
+"Complete means the retrieved passages adequately address what was
+asked — not that more could be said." This closes the loophole
+without changing the instruction's intent.
+
+---
+
 ### What changed from v0.2 to v0.3, and why
 
-v0.3 adds five targeted instructions to the prompt body, motivated
+v0.3 added five targeted instructions to the prompt body, motivated
 by behavioral evidence from four cross-corpus test questions run
 against the v0.2 prompt. No existing instructions were removed.
 
-Addition 1 — Retrieval gap disclosure with navigation (end of
-Retrieval quality and out-of-corpus material). v0.2 handled the
-out-of-corpus case and the weak-retrieval case but had no instruction
-for the in-corpus-but-not-retrieved case. Q-D (judicial independence)
-demonstrated the failure: all ten retrieved passages were Tocqueville,
-Federalist 78 was named but not retrieved, and the response disclosed
-the gap without telling the reader what to ask to close it. The new
-instruction makes the disclosure navigational.
+Addition 1 — Retrieval gap disclosure with navigation. v0.2 handled
+the out-of-corpus case and the weak-retrieval case but had no
+instruction for the in-corpus-but-not-retrieved case. Q-D (judicial
+independence) demonstrated the failure: all ten retrieved passages
+were Tocqueville, Federalist 78 was named but not retrieved, and the
+response disclosed the gap without telling the reader what to ask to
+close it. The new instruction makes the disclosure navigational.
 
-Addition 2 — Cross-corpus citation instruction (end of What to do
-with retrieved passages). The corpus contains extensive cross-corpus
-citation — Tocqueville quotes Hamilton at length. v0.2 had no
-instruction for handling a retrieved passage in direct intellectual
-dialogue with another corpus. Q-C (majority tyranny) surfaced this:
-Tocqueville's paragraph 99 cites Federalist 51 explicitly. The new
-instruction directs the model to surface what the citing author found
-adequate and what they found insufficient, rather than treating
-cross-corpus citations as incidental.
+Addition 2 — Cross-corpus citation instruction. The corpus contains
+extensive cross-corpus citation — Tocqueville quotes Hamilton at
+length. v0.2 had no instruction for handling a retrieved passage in
+direct intellectual dialogue with another corpus. Q-C (majority
+tyranny) surfaced this: Tocqueville's paragraph 99 cites Federalist
+51 explicitly. The instruction directs the model to surface what the
+citing author found adequate and what they found insufficient.
 
-Addition 3 — Length as selection discipline (replacement of the
-existing length nudge). The v0.2 nudge was abstract enough to leave
-the failure mode unaddressed: response length tracking retrieved
-volume rather than question complexity. Q-A produced a longer
-Federalist-only section than the question's center of gravity
-warranted. The replacement reframes length as a selection problem.
+Addition 3 — Length as selection discipline. The v0.2 nudge was
+abstract enough to leave the failure mode unaddressed: response
+length tracking retrieved volume rather than question complexity. The
+replacement reframes length as a selection problem.
 
-Addition 4 — Mode-crossing positive case (end of The corpora and
-how they work). v0.2 specified what not to do when a question crosses
-modes but not what to do. The addition provides the positive case:
-answer each mode separately and in sequence, then name the
-relationship between the answers without synthesizing them.
+Addition 4 — Mode-crossing positive case. v0.2 specified what not to
+do when a question crosses modes but not what to do. The addition
+provided the positive case: answer each mode separately and in
+sequence, then name the relationship without synthesizing. The
+single-corpus case was left underspecified, which produced the rigid
+segmentation failure mode addressed in v0.4.
 
-Addition 5 — Follow-up suggestion tied to identified gaps (end of
-The shape of an answer). A conditional instruction to close with a
-single precise suggested question when the response has identified a
-specific gap. Does not fire when the response is complete relative to
-the retrieved material.
+Addition 5 — Follow-up suggestion tied to identified gaps. A
+conditional instruction to close with a single precise suggested
+question when the response has identified a specific gap. The
+conditional threshold was underspecified in v0.3, producing
+over-application observed in runD. Recalibrated in v0.4.
+
+---
 
 ### What changed from v0.1, and why
 
 v0.1 was tested twice on the full 15-question set: runA with the v0.1
 prompt as written, runB with the closing "what you are not" section
-removed. The full results live in `prompts/eval/results-v0.1-runA.md`
-and `prompts/eval/results-v0.1-runB.md`. A clause-level ablation of
-the closing section (one sentence removed at a time, three diagnostic
-questions per ablation) was also run; results in
-`prompts/eval/results-v0.1-no-clause{1..5}.md` and
-`prompts/eval/results-v0.1-baseline-fresh.md`.
+removed. A clause-level ablation of the closing section was also run.
+Full results in `prompts/eval/results-v0.1-runA.md`,
+`results-v0.1-runB.md`, and `results-v0.1-no-clause{1..5}.md`.
 
 What the testing showed:
 
-1. **The closing section was mostly redundant.** Discipline rules in
-   the body of the prompt — attribution, surface-disagreement,
-   no-flattening, mark-out-of-corpus, do-not-editorialize — held
-   without the closing section across all 15 questions in runB. No
-   discipline failures appeared in runB that did not also appear in
-   runA. The closing section was not earning its place as a
-   discipline backstop.
+1. The closing section was mostly redundant. Discipline rules in the
+   body held without it across all 15 questions in runB.
 
-2. **The closing section was doing one specific thing the body
-   wasn't: enforcing symmetric availability.** On Q7 (originalism vs.
-   living constitutionalism), runA produced an answer that
-   explicitly framed Hamilton's arguments as available to multiple
-   interpretive schools, including a summary table making the
-   symmetry visible. RunB on the same question allowed itself to
-   read the textual evidence as cutting toward fixed-meaning
-   interpretation. Neither answer was undisciplined; they differed
-   in posture. The closing section's "you are not politically
-   aligned with any interpretive school" line was pushing the model
-   toward symmetric framings even when the textual evidence might
-   lean.
+2. The closing section was doing one specific thing the body wasn't:
+   enforcing symmetric availability on Q7-type questions. Its "you
+   are not politically aligned with any interpretive school" line
+   pushed toward symmetric framings even when the textual evidence
+   leaned. That function is now handled by the
+   permission-and-prohibition pair in "The shape of an answer."
 
-3. **The closing section appeared to suppress analytic depth.** On
-   Q5, Q14, and Q15, runB produced answers with sharper analytic
-   structure — counter-arguments-each-side-must-answer (Q5),
-   three-fold differentiation of the question (Q14, Q15), willingness
-   to commit to readings the text supports (Q8, Q14, Q15). RunA's
-   answers on these questions were slightly more equanimous and
-   slightly less penetrating. The hypothesis: the closing section's
-   "you do not decide who is right" framing was reading more broadly
-   than its content — pushing the model toward a posture of restraint
-   that suppressed legitimate interpretive moves, not just illegitimate
-   ones.
+3. The closing section appeared to suppress analytic depth on Q5,
+   Q14, and Q15. The hypothesis: "you do not decide who is right"
+   was pushing the model toward restraint that suppressed legitimate
+   interpretive moves, not just illegitimate ones.
 
-4. **The clause-level ablation showed no individual sentence was
-   load-bearing.** Removing any single sentence from the closing
-   section produced no detectable discipline failure on the three
-   diagnostic questions per ablation. This is consistent with the
-   holistic-effect view of how prompt language works: the closing
-   section as a whole had effects, but those effects did not localize
-   to any specific sentence. The implication for v0.2 is that the
-   right move is structural (drop the section) rather than surgical
-   (rewrite individual sentences).
+4. The clause-level ablation showed no individual sentence was
+   load-bearing, consistent with the holistic-effect view of how
+   prompt language works. The right move was structural (drop the
+   section) rather than surgical.
 
-5. **The corpus-doesn't-have-opinions claim was over-correcting.**
-   v0.1's closing section included "the corpus does not have opinions
-   either; it has arguments, observations, and holdings, which you
-   may attribute and quote." This was guarding against a real type-
-   error (treating the corpus as a position-holder rather than as a
-   container of positions held by people). But the rules section
-   already prevents this through the attribution and mode-distinction
-   instructions. The closing-section claim was redundant at best, and
-   at the per-turn level it may have been suppressing legitimate
-   corpus-level claims that are appropriate in context (e.g., "the
-   Federalist as a corpus argues for structural resistance to
-   legislative dominance"). The locus of position-formation across
-   an inquiry is the conversation, not the corpus — a separate
-   trace-analysis artifact will handle this layer when it is built.
-   See `notes/trace-analysis-sketch.md`.
+5. The "corpus does not have opinions" claim was over-correcting and
+   potentially suppressing legitimate corpus-level claims.
 
-### Specific changes from v0.1
-
-**Dropped entirely:**
-- The closing "what you are not" section (lines 139–146 of v0.1).
-- The "Your task" subsection (lines 42–53 of v0.1) — duplicative of
-  the opening paragraph.
-
-**Added:**
-- Explicit permission for committed readings, paired with the
-  political-school-neutrality rule: "You may commit to readings the
-  corpus actually supports… The discipline is not to refuse
-  interpretation; it is to refuse interpretive partisanship." This
-  is the negative-plus-positive construction motivated by the Q7
-  finding — let the model commit where the text supports
-  commitment, refuse only school-level alignment.
-- Explicit instruction against the synthesizing-closing-paragraph
-  failure mode: "Do not write closing paragraphs that synthesize
-  positions the corpus has held distinct." This is the Q14 failure
-  mode the prompt has been trying to prevent across both versions;
-  v0.2 names it directly.
-- A light length nudge: "Length should track the question's
-  complexity; a thirty-word question rarely needs a thousand-word
-  answer." Open question A2 from v0.1, partially resolved by runA/B
-  evidence (lengths tracked complexity reasonably well, but the
-  failure mode of long-answer-to-short-question still warrants a
-  guardrail).
-- A reframing of the verdict-pressing instruction. v0.1 said "you do
-  not decide who is right." v0.2 says "When the question presses for
-  a verdict the corpus cannot settle… name that the corpus does not
-  settle it, and name what the corpus does permit. Naming the
-  structure of the disagreement is often the most useful thing you
-  can do." This is a behavioral instruction tied to question shape,
-  not an identity claim.
-
-**Restructured:**
-- The order of sections now follows the actual flow of work: opening
-  (role + tone), corpora and modes (the materials), what to do with
-  passages (handling), the shape of an answer (production). The
-  section breaks are for human readability; the model reads the
-  prompt as a continuous text. The change is a clarification, not a
-  semantic shift.
-- Tonal instructions ("do not condescend," "do not explain settled
-  vocabulary," "match the register," "do not begin with throat-
-  clearing") are now front-loaded into the opening rather than
-  distributed across a dedicated tone section. Front-loading is a
-  small calibration choice; system-prompt instructions in the
-  opening tend to be weighted more reliably than instructions in
-  the middle.
-
-**Audience description considered and dropped.** A draft of v0.2
-included an audience description ("a constitutional scholar trained
-in the Murphy / George / Dworkin tradition"). Dropped before testing
-on the reasoning that audience descriptions in system prompts often
-produce surface mimicry rather than calibrated behavior — the model
-sounding scholarly rather than being more careful. The audience
-calibration is now encoded as direct behavioral instructions ("do
-not condescend," "do not explain settled vocabulary," "do not hedge")
-rather than as a description the model has to derive behaviors from.
-If runC reveals specific failures that an audience description would
-prevent, reopen.
-
-### What did not change from v0.1
-
-The argument/observation/holding taxonomy. The corpus-by-corpus mode
-specification with bracketed placeholders for future corpora. The
-attribution discipline. The disputed-authorship instruction. The
-surface-disagreement rule. The retrieval-quality-handling cases. The
-out-of-corpus marking discipline. The biography-vs-argument
-distinction. The "answer the better version, do not correct the
-asker" framing. These had evidence supporting them across 30
-question-runs (runA + runB) and did not need revision.
-
-The technical infrastructure — chunk format, retrieval mechanics,
-embedding model, probe set — is untouched. The Phase 1.1 sign-off
-remains the regression bar.
-
-The fourth-mode question for the eventual addition of critical legal
-theory or political philosophy corpora remains unresolved, as
-specified in the project plan and `DECISIONS.md`. This rewrite does
-not address it; it cannot be addressed until a fourth corpus is
-under serious consideration.
+v0.2 dropped the closing section, restructured the rules into the
+flow of work, added the permission-and-prohibition pair for
+interpretive commitment, added the no-synthesizing-close instruction,
+added a length nudge, and reframed the verdict-pressing instruction
+as behavioral rather than identity-based. Full rationale in
+`prompts/eval/results-v0.1-runA.md` and adjacent files.
 
 ---
 
-## Predicted failure modes for runD
+### Predicted failure modes for runE
 
-These predictions are written before the runD test run. They exist
-to be falsified.
+**Audience specification.** The Murphy/George reference may produce
+surface mimicry despite the "don't perform it" clause — the model
+adopting a register of learned hedging or academic throat-clearing
+that the instruction is meant to prevent. Watch for answers that
+sound scholarly but are less analytically direct than the v0.3
+baseline. Diagnostic: Q8 (mediocre question, should produce direct
+committed answer) and Q7 (should commit to textual reading without
+performing neutrality).
 
-### v0.3 additions — new behaviors to watch
+**Ventriloquism instruction.** May over-correct — producing answers
+that refuse to characterize what a corpus author's argument implies,
+treating all synthesis of a position as ventriloquism. The
+distinction is between constructing a position the text doesn't
+support and characterizing what an argument's logical structure
+commits its author to. Watch for answers that become timid about
+implication on Q1, Q3, Q14.
 
-Addition 1 (retrieval gap navigation): The model may over-apply —
-naming a gap and suggesting a follow-up even when the retrieved
-material is adequate. The instruction applies only when a specific
-text would materially change the answer; it is not a license for
-preemptive hedging.
+**Mode-crossing restructure.** The two-conditional structure may
+produce under-sequencing on genuinely multi-corpus questions where
+the model decides the question "draws primarily from one corpus" and
+skips the relationship-naming step. Watch on Q2 and Q14.
 
-Addition 2 (cross-corpus dialogue): The model may treat any
-Tocqueville passage that mentions a Federalist author as
-dialogue-requiring, even when Tocqueville is merely referencing
-rather than engaging substantively. Watch for over-application where
-a simple attribution would be correct.
+**Follow-up suggestion recalibration.** The "not that more could be
+said" clause may over-suppress — the model now deciding that
+retrieved material is adequate even when a genuine gap exists.
+Diagnostic: Q-D (judicial independence, should still trigger) and
+Q11 (Loper Bright, should still trigger as out-of-corpus).
 
-Addition 3 (length as selection): The selection discipline may
-produce responses too compressed on genuinely complex questions —
-the model deciding too aggressively that additional passages add
-nothing. Watch for answers that feel thin relative to the question's
-genuine complexity.
-
-Addition 4 (mode-crossing sequence): The explicit sequencing
-instruction may produce rigidly segmented responses — labeled
-sections (ARGUMENT: … OBSERVATION: …) rather than naturally
-integrated prose. Neither v0.1 nor v0.2 produced this; the
-instruction introduces the risk.
-
-Addition 5 (follow-up suggestion): May fire too liberally (every
-response ends with a suggestion because every response can identify
-something not covered) or not at all (the model treats the retrieved
-material as adequate in most cases). Diagnostic questions: Q-D
-(should trigger, Federalist 78 gap) and Q-C (should not trigger,
-retrieval was adequate).
-
-### Q5 (Brennan/Scalia on equal protection)
-- v0.2 should produce an answer at least as analytically penetrating
-  as runB's — the commit-to-readings instruction was designed
-  specifically for questions of this shape.
-- Predicted failure: v0.2 produces a *more* committed answer than
-  runB and slips into editorializing toward purposivism (the tilt
-  the v0.1 prompt was designed against). If this happens, the
-  permission-and-prohibition pair is too permission-weighted.
-
-### Q7 (originalism vs. living constitutionalism)
-- This is the test of whether the new commit-to-readings instruction
-  preserves political-school neutrality. RunA was strongly
-  symmetric (table of "available to multiple schools"). RunB was
-  more committed to reading Hamilton as cutting toward fixed-meaning.
-- Predicted: v0.2 lands between the two — committing to the textual
-  reading where the text supports it (closer to runB), but
-  surfacing the cross-school availability of the same passages where
-  it exists (closer to runA). If v0.2 reads as committed as runB
-  without the cross-school surfacing, the prohibition side of the
-  pair is too weak.
-
-### Q9 (Tocqueville support or oppose democracy)
-- Should refuse the binary cleanly. This is the easiest test in the
-  set — both runA and runB handled it. v0.2 should too.
-- The thing to watch: does v0.2 supply less or more outside-corpus
-  characterization of Tocqueville than runA/B did? RunB supplied
-  more (with explicit outside-corpus marking); runA supplied less.
-  Neither was a discipline failure. v0.2's cut of the closing
-  section may shift the model toward runB's pattern, which is fine.
-
-### Q10 (abortion)
-- Should hold both versions' discipline — refuse the verdict, frame
-  the constitutional silence as a beginning, not an answer. v0.2's
-  reframed verdict-pressing instruction may produce a sharper
-  opening than v0.1 did. Watch for it.
-
-### Q11 (Loper Bright)
-- Cleanest out-of-corpus test. Should pass without difficulty in any
-  version of the prompt that retains the out-of-corpus marking
-  rules. v0.2 retains them unchanged; expect no change from
-  runA/B.
-
-### Q12 (slavery)
-- The biography-vs-argument distinction is preserved verbatim from
-  v0.1. v0.2 should produce a Q12 answer comparable to runA or runB.
-- The thing to watch: does the cut of "the corpus does not have
-  opinions" change how aggressively v0.2 marks outside-corpus
-  biographical material? RunB used bracketed `[Outside corpus: …]`
-  markers more aggressively than runA. v0.2 may pattern with runB
-  here. That's acceptable so long as the discipline holds.
-
-### Q14 (three-mode separation of powers)
-- The most informative single question in the runA/B comparison
-  was Q14, where runB produced a sharper analytic structure
-  (three-fold differentiation of the question: descriptive,
-  normative, mechanism-level) without losing discipline. v0.2's
-  commit-to-readings instruction and explicit no-synthesizing-close
-  instruction should produce something at least as analytically
-  structured as runB. If v0.2 is shallower than runB, something in
-  the rewrite is suppressing depth that the closing-section cut
-  was supposed to release.
+**Synthesis prohibition as standalone paragraph.** Low risk of new
+failure modes — this is a structural change, not a semantic one. The
+prohibition was already present in v0.3 and held across runD.
 
 ---
 
 ## Open questions
 
 ### A1 — Did dropping the closing section earn its keep?
-
-Resolved by runA/B. The closing section was mostly redundant; the
-one specific thing it was uniquely doing (symmetric-availability
-enforcement on Q7-type questions) is now handled by the
-prohibition-and-permission pair in the answer-shape section. RunC
-will test whether that pair is calibrated correctly. A1 is closed
-on the threshold question (drop the section); A1' is open on the
-calibration question (does the new instruction preserve neutrality
-without suppressing depth).
+Resolved by runA/B. Closed.
 
 ### A2 — What is the natural length distribution?
+Resolved by runD. Length tracked question complexity across all 15
+questions without uniform inflation or truncation. The selection
+discipline instruction is calibrated correctly. Closed.
 
-Partially resolved. RunA + runB lengths tracked question complexity
-reasonably well — no uniform-length problem. v0.2 includes a light
-length nudge as a guardrail against the long-answer-to-short-
-question failure mode. RunC should not produce uniformly inflated or
-truncated answers; if it does, the nudge is mis-calibrated.
+### A3 — Does "answer the better version" produce reframing without condescension?
+Partially resolved. RunD showed no lecturing on mediocre questions
+(Q6, Q7, Q8, Q9, Q10, Q13). Open question remains whether the
+Murphy/George audience specification changes this behavior — it may
+produce more direct entry into the argument on mediocre questions,
+or it may produce impatience that reads as condescension. Watch in
+runE.
 
-### A3 — Does "answer the better version of the question" produce reframing-without-condescension, or does it produce lecturing?
+### A4 — Does the commit-to-readings instruction preserve political-school neutrality?
+Resolved by runD. Q5 (purposivism tilt risk) and Q7 (originalism
+tilt risk) both held. The permission-and-prohibition pair is
+calibrated. Closed.
 
-Unresolved. RunA and runB both handled the mediocre-student questions
-without obvious lecturing, but the test set is small and the
-diagnostic was qualitative. Keep watching across runC and any
-subsequent runs. If a question consistently produces openings like
-"before I answer, let me draw a distinction," the rule is producing
-the failure mode it was meant to prevent.
+### A5 — Trace-analysis artifact
+Unresolved. Not in scope for Phase 1.2. Probable Phase 1.6 or later.
 
-### A4 (new) — Does the commit-to-readings instruction preserve political-school neutrality?
+### A6 (new) — Does the Murphy/George audience specification produce calibration or mimicry?
+The central open question for runE. The "don't perform it" clause
+is designed to suppress mimicry, but whether it succeeds is an
+empirical question. Diagnostic questions: Q8 (directness on a
+mediocre question), Q7 (neutrality without performed symmetry),
+Q14 (depth on a complex question). If runE produces answers that
+sound more scholarly but are less analytically sharp than runD,
+the specification is producing mimicry. If it produces answers that
+are equally sharp and enter the argument more directly, it's working.
 
-This is the calibration question for v0.2's most consequential
-addition. The diagnostic questions are Q5 (purposivism tilt risk)
-and Q7 (originalism tilt risk). If both are handled with discipline,
-the pair is calibrated. If either tilts, the pair needs adjustment.
-
-### A5 (new) — Trace-analysis artifact
-
-The constitute-vs-surface insight from the v0.2 design discussion
-opens up a separate artifact: an offline analysis prompt that
-operates on saved conversations and identifies what the user's
-inquiry has constituted out of the corpus. Sketched at
-`notes/trace-analysis-sketch.md`. Not in scope for Phase 1.2.
-Probable Phase 1.6 or later. Open on placement and scope.
