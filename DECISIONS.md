@@ -429,6 +429,14 @@ Full design reasoning, predicted failure modes, and open questions:
 
 ---
 
+## Q&A System Prompt v0.3
+
+Five targeted additions to the prompt body, motivated by behavioral evidence from cross-corpus evaluation of four test questions (Q-A through Q-D) against the v0.2 prompt. No existing instructions were removed. Full change record with per-addition rationale and predicted failure modes for runD is in config/system-prompt.md under "What changed from v0.2 to v0.3, and why."
+
+Additions: retrieval gap disclosure with navigation; cross-corpus citation instruction; length as selection discipline (replacement of prior nudge); mode-crossing positive case; follow-up suggestion tied to identified gaps only.
+
+---
+
 ## TypeScript configuration for harness/route co-existence
 
 **Decision:** `tsconfig.json` uses `moduleResolution: bundler` and `allowImportingTsExtensions: true` to allow the same `.ts` import style used by the `node --experimental-strip-types` harness. This keeps the harness and the Next routes importing from `data/eval/` with identical syntax — no fork between toolchains. Changes to either flag require re-validating that the harness still resolves correctly. `@types/node` is pinned to `^22` (overriding `create-next-app`'s default `^20`) because `node:sqlite` types live in `^22` and are required for the route handlers.
