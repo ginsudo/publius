@@ -399,7 +399,7 @@ export function AskForm() {
       <form className="ask-form" onSubmit={onSubmit}>
         <textarea
           className="ask-input"
-          rows={5}
+          rows={7}
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           onKeyDown={onKeyDown}
