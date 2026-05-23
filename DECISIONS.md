@@ -437,6 +437,14 @@ Additions: retrieval gap disclosure with navigation; cross-corpus citation instr
 
 ---
 
+## Q&A System Prompt v0.4
+
+Substantive rewrite of the prompt body motivated by three sources of evidence: behavioral analysis of three Tocqueville-only Q-D runs against v0.3, the full 15-question runD eval against v0.3, and a line-by-line editorial review of the prompt text itself. No instructions from v0.3 were removed; all changes are tightenings, relocations, or additions. Locked at commit f054666. Full change record with per-change rationale, predicted failure modes for runE, and the open-questions register (A3 partially resolved, A6 new) is in config/system-prompt.md under "What changed from v0.3 to v0.4, and why."
+
+Changes: dropped the stale preamble; added a Murphy/George audience specification with anti-mimicry clause (reopening and resolving the v0.2 audience-description question); promoted Tocqueville from the future-corpus bracket to the active corpus list; replaced "constitutional culture" with "how American democratic life actually looked in practice" / "how American self-government actually functioned"; extended the holding definition; restructured the mode-crossing instruction into single-corpus and multi-corpus conditional clauses; added the ventriloquism instruction in "The shape of an answer"; promoted the no-synthesizing-close prohibition to a standalone paragraph; recalibrated the follow-up-suggestion rule with "complete means the retrieved passages adequately address what was asked — not that more could be said."
+
+---
+
 ## TypeScript configuration for harness/route co-existence
 
 **Decision:** `tsconfig.json` uses `moduleResolution: bundler` and `allowImportingTsExtensions: true` to allow the same `.ts` import style used by the `node --experimental-strip-types` harness. This keeps the harness and the Next routes importing from `data/eval/` with identical syntax — no fork between toolchains. Changes to either flag require re-validating that the harness still resolves correctly. `@types/node` is pinned to `^22` (overriding `create-next-app`'s default `^20`) because `node:sqlite` types live in `^22` and are required for the route handlers.
