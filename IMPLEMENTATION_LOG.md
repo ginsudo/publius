@@ -1356,6 +1356,55 @@ Session closed.
 
 Session closed.
 
+### Q&A System Prompt v0.3 — runD (2026-05-23)
+
+RunD executed: the v0.3 Q&A system prompt evaluated against the full 15-question test set.
+
+- Output: `prompts/eval/results-v0.3-runD.md`
+- Prompt sha256 (extracted section): `22adba693753cb042d3f9cce8de77e393e8fb1a7762ec4fe57cb0beeb4ae3271`
+- Model: `claude-sonnet-4-6`
+- Top-K: 10
+
+Session closed.
+
+### Q&A System Prompt v0.4 — editorial rewrite from runD evidence (2026-05-23)
+
+v0.4 is a substantive rewrite of the prompt body — the first version since v0.1→v0.2 that does structural work, not just additions. Locked at commit `f054666` (305 insertions, 378 deletions in `config/system-prompt.md`). No instructions from v0.3 were removed; the rewrite consists of tightenings, relocations, and four targeted additions.
+
+**Three sources of evidence motivated the rewrite.** First, behavioral analysis of three Tocqueville-only runs of Q-D (judicial independence) against v0.3: the runs produced opening verdict sentences that varied across runs on the same retrieved passages ("Tocqueville's answer is an unequivocal yes" in one, "Tocqueville's answer is a qualified yes" in another) — evidence that the model was constructing positions rather than finding them. This produced the ventriloquism diagnosis. Second, the full 15-question runD eval against v0.3: the rigid mode-segmentation failure mode observed across the Q-D runs reappeared on multi-corpus questions; the follow-up suggestion conditional fired on 8 of 15 questions including Q9 and Q13 where the retrieved material was adequate (the model treating "more could be said" as equivalent to "a gap exists"); and a class of mode-crossing prose issues showed up that the v0.3 conditional did not address. Third, a line-by-line editorial review of the prompt text itself surfaced the stale preamble (the file is v0.4 but the opener still claimed v0.2), the duplicate `### What to do with retrieved passages` heading, the imprecise use of "constitutional culture" appearing four times across the corpus descriptions and commensurability paragraph, and the placement-error of the ventriloquism instruction (drafted in "What to do with retrieved passages" but belonging in "The shape of an answer").
+
+**Changes made.** Dropped the stale two-sentence preamble. Added a Murphy/George audience specification in the opening paragraph with an anti-mimicry clause ("assume that formation, don't perform it") — this reopens and resolves the v0.2 open question about audience descriptions, with the "don't perform it" clause directly addressing the mimicry risk that caused the audience description to be dropped in v0.2. Dropped "Do not condescend" and "Do not explain settled vocabulary" as redundant given the audience specification. Promoted Tocqueville from the bracketed future-corpus block to the main corpus list (Tocqueville is loaded and active; the bracket now contains only the SCOTUS corpus). Replaced "what American constitutional culture became" / "Tocqueville's account of American constitutional culture as an external observer" / "An observation of constitutional culture is not a holding" with concrete formulations ("what American democratic life actually looked like in practice," "how American self-government actually functioned — the institutions, mores, and social conditions that made the constitutional design work or fail in practice," "An observation of how self-government functioned is not a holding"). Extended the holding definition to say what a holding *is*, not just what it isn't. Restructured the mode-crossing instruction into two conditional clauses: single-corpus questions follow the question's structure; multi-corpus questions answer each mode separately and then name the relationship without synthesizing. Removed the duplicate `### What to do with retrieved passages` heading. Dropped "eventually" from the disagreement sentence (placeholder for future corpora, reads oddly with Tocqueville active). Removed the standalone "This is not a synthesis instruction" sentence; the closing paragraph makes the same point by demonstration. Relocated the ventriloquism instruction to "The shape of an answer" with the v0.3 exception clause dropped. Promoted "Do not write closing paragraphs that synthesize positions the corpus has held distinct" to its own one-sentence paragraph. Recalibrated the follow-up-suggestion conditional with "Complete means the retrieved passages adequately address what was asked — not that more could be said."
+
+**Open questions carried forward to runE.**
+- **A3 — Does "answer the better version" produce reframing without condescension?** Partially resolved. RunD showed no lecturing on mediocre questions. Open question is whether the Murphy/George audience specification changes this behavior — it may produce more direct entry into the argument on mediocre questions, or it may produce impatience that reads as condescension. Watch in runE.
+- **A5 — Trace-analysis artifact.** Unresolved. Not in scope for Phase 1.2. Probable Phase 1.6 or later. Carried forward unchanged from v0.3.
+- **A6 — Does the Murphy/George audience specification produce calibration or mimicry? (new)** The central open question for runE. The "don't perform it" clause is designed to suppress mimicry but whether it succeeds is empirical. Diagnostic questions: Q8 (directness on a mediocre question), Q7 (neutrality without performed symmetry), Q14 (depth on a complex question). If runE produces answers that sound more scholarly but are less analytically sharp than runD, the specification is producing mimicry; if equally sharp and more directly engaged with the argument, it's working.
+
+Closes A1, A2, A4 (all resolved by prior runs).
+
+### Q&A System Prompt v0.4 — runE (2026-05-23)
+
+RunE executed: the v0.4 Q&A system prompt evaluated against the full 15-question test set. Diagnostic run — results not yet interpreted.
+
+- Output: `prompts/eval/results-v0.4-runE.md`
+- Run started: `2026-05-23T09:51:35.660Z`
+- Prompt sha256 (extracted section): `cac307dbc001228130a6b23fe9c0ffd2c28e464cee9f1fa1b80378cada1b2da5`
+- Model: `claude-sonnet-4-6`
+- Top-K: 10
+- All 15 questions returned `end_turn`. No truncations, no API errors.
+
+### Eval assessments directory — created with runA–E records (2026-05-23)
+
+Created `prompts/eval/assessments/` and populated it with five per-run assessment files: `runA-assessment.md`, `runB-assessment.md`, `runC-assessment.md`, `runD-assessment.md`, `runE-assessment.md`. The directory is the canonical home for per-run findings going forward — the place to look when asking "what did runX show?" without having to re-read `config/system-prompt.md`'s accumulated design-reasoning history or scan a 100KB results file.
+
+**Why now.** RunD and runE both produced substantive assessments (predicted-failure-mode evaluations, open-question status updates, ventriloquism finding) that lived inline in the IMPLEMENTATION_LOG entries and in the v0.4 "What changed" section of `config/system-prompt.md`. As the eval cadence stabilizes, having the assessment as its own artifact — named consistently, sha256-pinned to the prompt version that was evaluated — is the cleaner discipline. The runD and runE files lift their content from the existing log entries; nothing new is being asserted.
+
+**Stubs for runA, runB, runC.** The first three runs predate the per-run-assessment convention. Their findings are preserved in `config/system-prompt.md` under "What changed from v0.1, and why" (runA, runB) and "What changed from v0.2 to v0.3, and why" (runC). The stub files exist so the directory has a complete record of which runs happened against which prompt versions and where to find the findings — not to retroactively manufacture assessments that weren't separately written at the time.
+
+**Filename convention.** `run<Letter>-assessment.md`. The corresponding results file is named in the assessment's header, not encoded in the filename, since results files follow `results-v<X.Y>-run<Letter>.md`.
+
+**Going forward.** Each new run gets an assessment file written as part of the run's session-close. The runD/runE files set the template: header block (prompt version, run date, results filename, prompt sha256), summary, predicted-failure-mode results, notable results, open-questions status. The IMPLEMENTATION_LOG entry for a run can be shorter once the assessment file exists — the entry covers the path and decisions; the assessment covers the findings.
+
 ## Current state of the repository
 
 **What exists in the repo:**
