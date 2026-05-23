@@ -1423,6 +1423,16 @@ A short post-runE housekeeping pass. Three pieces, none architectural.
 - **P15:** Pass — all 3 must_include hit, both corpora well-represented.
 - **P16:** Pass — end-note D rank 1 at 0.692, dominates 6 of 10 hits. Standalone-item retrievability confirmed.
 
+### Reading-view corpus label links back to corpus browse sub-page (2026-05-23)
+
+Small navigation fix surfaced during reading-view use: from inside a chapter or paper there was no way back to the corpus browse list — only the masthead `Browse` link, which dumps the reader on the landing page. The corpus segment of the locator line above the title (TOCQUEVILLE, FEDERALIST, U.S. CONSTITUTION) is now a `<Link>` to `/browse/<corpus>`. Commit `444f954`.
+
+Three reading-view pages were touched, asymmetrically because the locator strings differ in shape. `app/paper/[number]/page.tsx` (Federalist, inline header) splits the existing text node: `<Link>Federalist</Link>{' · '}No. {n}`. `app/constitution/[slug]/page.tsx` (Constitution, inline header) wraps the whole label — the Constitution locator is just "U.S. Constitution" with no separator, so there is nothing left un-linked. `app/item/[id]/page.tsx` (Tocqueville) renames `corpusTag()` to `corpusTagRest()`, drops the "Tocqueville" prefix from its return value (now `" · Vol I · Part I · Chapter II"` etc.), and passes three props through to the `ItemBody` client component instead of one combined string: `corpusLabel="Tocqueville"`, `corpusBrowseHref="/browse/tocqueville"`, `corpusTagRest`. `app/item/[id]/ItemBody.tsx` renders `<Link href={corpusBrowseHref}>{corpusLabel}</Link>{corpusTagRest}` inside the existing `<p className="item-corpus-tag">`. The shared CSS rule in `app/globals.css` targets `.item-corpus-tag a, .paper-corpus-tag a`: `color: inherit; text-decoration: none` at rest, `color: var(--accent)` on hover, `outline: 1px solid var(--accent)` on `:focus-visible` — matching the masthead nav pattern at `.masthead-nav a`.
+
+The `ItemBody` prop split (three strings rather than a `ReactNode` composed in the server component) is the simpler-to-read shape but does push corpus identity into the client component. If a future corpus reuses `ItemBody`, the three props generalize cleanly; if `ItemBody` ever needs more complex header markup, switching to a `ReactNode` prop is a small refactor.
+
+`npx tsc --noEmit` clean. Not yet browser-verified across all three corpora — the link wiring is straightforward and typecheck-covered, but the hover/focus styling should be eyeballed at `/item/<id>`, `/paper/<n>`, and `/constitution/<slug>` before treating the slice as fully verified.
+
 ## Current state of the repository
 
 **What exists in the repo:**
