@@ -15,10 +15,10 @@ A handoff for the next planning chat accompanying a Claude Code session for Publ
 ## Current position
 
 - **CLI command:** `node --experimental-strip-types scripts/review-annotations.ts`
-- **Resume position:** `g next` — use the new navigation command; last known position was Federalist 8, paragraph 6
-- **Reviewed so far:** 75 of 901 flagged paragraphs
-- **Flagged for rewrite:** queryable from annotations file; approximately 20+ at this point
-- **Flag rate:** approximately 20% — higher than initial projection, tracking Hamilton's denser style
+- **Resume position:** `g next` — Federalist 8, paragraph 6 (first unreviewed unit in document order)
+- **Annotation state (post-retry):** 55 `accepted`, 0 `flagged_for_rewrite`, 1248 `null` (of 1303 total paragraphs). Accepted units span Fed 1–8; last accepted is Fed 8 ¶5.
+- **Retry pass status:** the first retry pass already ran on 2026-05-12 (commit `539a1cb`) against the 21 paragraphs that had been `flagged_for_rewrite` in Fed 1–8 at the time. Those paragraphs had their renderings replaced and their `editorial_status` reset to `null`, routing them back through the review queue at their original positions. This handoff was not updated at that time — the section below has been corrected.
+- **Flag rate (historical, pre-retry):** approximately 20% across the first 75 reviewed positions — higher than initial projection, tracking Hamilton's denser style.
 
 ---
 
@@ -46,7 +46,7 @@ Atomic writes on every action. Progress is durable — quitting and relaunching 
 ## Three-pass structure
 
 1. **This pass (current)** — move fast. `a` if acceptable, `f` with a diagnostic note if not. `e` only for trivial one-word fixes. The goal is to record intent, not execute repairs.
-2. **Retry pass** — `--retry` against all `flagged_for_rewrite` paragraphs, run against a refined system prompt synthesized from editorial preferences and `f` notes. **The owner has decided to run the retry pass now, at 75 positions reviewed, rather than waiting for the full 901.** The retry pass Claude Code session should extract all `f` notes from `federalist-annotations.json`, synthesize them into a refined system prompt, show it to the owner for approval, and only then run the batch. Do not run the batch without approval.
+2. **Retry pass** — `--retry` against all `flagged_for_rewrite` paragraphs, run against a refined system prompt synthesized from editorial preferences and `f` notes. The retry pass Claude Code session should extract all `f` notes from `federalist-annotations.json`, synthesize them into a refined system prompt, show it to the owner for approval, and only then run the batch. Do not run the batch without approval.
 3. **Hand-edit pass** — anything still wrong after retry gets `e` treatment directly.
 
 **Key discipline:** prefer `f` over `e` during this pass. Don't mix repair work into the review pass.
@@ -148,9 +148,11 @@ False-alarm flags (flag noted substitution risk, rendering preserved original wo
 
 ---
 
-## What comes next — retry pass
+## Retry pass — first pass completed 2026-05-12
 
-The owner has decided to run the retry pass now (at 75/901 reviewed) rather than waiting for the full pass to close. The next Claude Code session should:
+The first retry pass ran on 2026-05-12 (commit `539a1cb`) against the 21 paragraphs in Fed 1–8 that were `flagged_for_rewrite` at the time. The retry runner (`scripts/retry-flagged.ts`) re-rendered them against the v0.2.1 prompt (`prompts/retry-v0.2.1.md`, gitignored) and reset their `editorial_status` to `null`, routing them back through the document-order review queue at their original positions. As of this update there are zero `flagged_for_rewrite` paragraphs in the annotations file — a fresh retry would be a no-op.
+
+When the next batch of `flagged_for_rewrite` paragraphs accumulates from the resumed review pass, the next retry pass should:
 
 1. Read all `flagged_for_rewrite` paragraphs and their `editorial_note` fields from `federalist-annotations.json`
 2. Use this handoff document as the source of editorial preferences
@@ -158,7 +160,7 @@ The owner has decided to run the retry pass now (at 75/901 reviewed) rather than
 4. Show the owner the synthesized prompt for approval before running anything
 5. Only after approval: run the retry batch against flagged paragraphs only
 
-The review pass (this CLI session) continues after the retry pass — the retry pass does not close the review pass.
+The review pass (this CLI session) continues after each retry pass — a retry pass does not close the review pass.
 
 ---
 
