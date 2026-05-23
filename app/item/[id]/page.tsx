@@ -25,6 +25,7 @@ type TocquevilleItem = {
     end_notes_referenced: string[];
     translation: string[] | null;
     footnotes_translation: Footnote[] | null;
+    translated_title: string | null;
   };
 };
 
@@ -110,7 +111,8 @@ export async function generateMetadata({
   const { id } = await params;
   const item = findItem(id);
   if (!item) return { title: 'Not found · Publius' };
-  return { title: `${item.title} · Tocqueville · Publius` };
+  const title = item.tocqueville.translated_title ?? item.title;
+  return { title: `${title} · Tocqueville · Publius` };
 }
 
 export default async function ItemPage({
@@ -130,17 +132,16 @@ export default async function ItemPage({
   return (
     <main>
       <article>
-        <header className="item-header">
-          <p className="item-corpus-tag">{corpusTag(item)}</p>
-          <h1 className="item-title">{item.title}</h1>
-          <p className="item-meta">{metaLine(item)}</p>
-        </header>
         <ItemBody
           translation={translation}
           french={item.paragraphs}
           footnotes={item.footnotes}
           footnotesTranslation={footnotesTranslation}
           chapterSummary={chapterSummary}
+          frenchTitle={item.title}
+          translatedTitle={item.tocqueville.translated_title ?? item.title}
+          corpusTagText={corpusTag(item)}
+          metaText={metaLine(item)}
         />
       </article>
     </main>

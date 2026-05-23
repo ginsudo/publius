@@ -1331,6 +1331,31 @@ v0.2 was evaluated against four cross-corpus test questions (Q-A through Q-D) be
 
 Session closed.
 
+### Tocqueville chapter titles: English everywhere — display-layer fix, then source-fix and re-embed (2026-05-23)
+
+**Goal.** Switch the user-facing Tocqueville chapter title from French (`item.title`) to English (`item.tocqueville.translated_title`) in three surfaces: the browse list at `/browse/tocqueville`, the reading view h1 at `/item/[id]`, and the Sources citations panel in `AskForm`. The field is nested inside the corpus extension, not at the item top level; populated 39/39 on Vol I, null on the 85 Vol II items (display falls back to French via `?? item.title` everywhere).
+
+**Original plan: display-layer only.** The session opened with a four-step spec: (1) swap browse list primary/secondary; (2) move the reading view h1 into the client component so it can read the mode toggle; (3) fix citations at the display layer by looking up `translated_title` from `tocqueville.json` via `item_id`; (4) note the pending chunk-header switch in DECISIONS.md as a future trigger for the next re-embed. The opening instruction was explicit: "Do not trigger a re-embed. Fix at the display layer."
+
+**Steps 1 and 2 clean.** Browse list: JSX swap puts `translated_title` in the `__title` slot and `item.title` in the `__translated` slot, both with `?? frenchTitle` fallback. CSS swap: dropped `font-style: italic` from `__title` (English titles aren't italicized by convention), added italic + `--text-tertiary` to `__translated`. Reading view: moved the entire `<header>` (corpus tag + h1 + meta) into `ItemBody.tsx` so the h1 can read the mode toggle; server `page.tsx` keeps `<main><article>` as a pure structural shell and passes four new props (`frenchTitle`, `translatedTitle`, `corpusTagText`, `metaText`). `generateMetadata` switched to prefer English for the `<title>` tag, matching the default reading mode. The h1 instant-swaps on mode toggle — header sits outside the body's fade-animation wrapper, and an instant flip reads better than an ambiguous fade for a title swap.
+
+**Step 3 surprise: bundle size.** The literal "look up from `tocqueville.json` client-side" instruction is a non-starter — the file is 3.5 MB and `AskForm` is a client component on the `/ask` route. I proposed Option C: server-side enrichment in `app/api/ask/route.ts` — import the JSON, build a `Map<item_id, translated_title>` at module load, swap `Citation.title` for Tocqueville citations before sending to client. Citation contract unchanged; client untouched. The user accepted; I executed (import, `withDisplayTitles` helper, two call-site wrappings).
+
+**Mid-Step-4 redirect to source-fix.** Mid-stream the user reversed direction: discard Option C entirely, fix at the source in `data/eval/lib.ts`, and re-embed now. This reversed the opening instruction. The motivation is real: Option C leaves `chunks.title` and the in-chunk header text French (what the model sees during retrieval) while citations render English (what the user sees in the Sources panel) — a small but persistent coherence cost between model context and user-facing display. Source-fix collapses that divergence and makes the eventual DECISIONS.md entry a "done" record instead of a "pending" intent.
+
+**Source-fix and re-embed.** Three lines in `data/eval/lib.ts` change `item.title` → `t.translated_title ?? item.title`: line 227 (chapter locator in chunk-header text, which feeds the body chunk via line 275 and non-chapter footnote chunks via line 308), line 290 (`chunks.title` for body rows), line 318 (`chunks.title` for footnote rows). Footnote chunks of chapter-kind items use an inline title-free locator (line 307), so no change needed there. Reverted Option C in `app/api/ask/route.ts`. Ran `node --experimental-strip-types data/eval/build-tocqueville-index.ts --force` from repo root. The builder's `--force` path deletes existing Tocqueville rows (3680) from both `chunks` and `chunks_vec` in a single transaction, then re-embeds and re-inserts starting at `MAX(rowid)+1` — which after the delete equals 1375, so new Tocqueville rowids fill the same range (1375..5054) without gaps. 45.3 seconds, 384,477 Voyage tokens (~$0.07). Federalist's 1374 rows verified untouched (1303 body + 71 footnote, identical before and after).
+
+**Spot-check.** `"tyranny of the majority"` query top 3 all land on `tocqueville:vol1.part2.ch7`. `title` field reads `"On the Omnipotence of the Majority in the United States and Its Effects"` on every hit; chunk-text header begins `"Tocqueville, Democracy in America — Volume I, Part 2, Chapter 7: On the Omnipotence of the Majority..."`. Both the metadata column and the embedded header are now English. Spot-check is structural (item alignment), not numerical — Voyage embeddings aren't bit-stable cross-session per DECISIONS.md.
+
+**DECISIONS.md.** The originally-appended "Pending change" block was rewritten in place as a "(May 2026 re-embed)" entry describing the completed change with implementation details. The pre-existing "Chunk text format conventions" entry (in the multi-corpus retrieval section) was edited inline to reflect English-title state, with a parenthetical pointing to the May 2026 entry below. User chose option B (edit inline) over A (leave as historical snapshot) or C (strikethrough/supersede in place).
+
+**Worth flagging for future sessions.**
+- The "patch at source + `--force` re-embed" pattern is the right move for any future change that affects chunk text or `chunks.title`. Display-layer enrichment hacks introduce a model-vs-user divergence that isn't worth the bundle savings.
+- Two facts in the "Current state of the repository" snapshot at the foot of this file are now stale: (a) the Tocqueville citation rendering line still describes the title field as `<French title>`; (b) the `/item/[id]` description doesn't note that the header is now in the `ItemBody` client component island. Worth refreshing on the next session that touches either area.
+- Voyage embedding non-determinism (cross-session) means the new Tocqueville vectors differ slightly from the prior set even though chunk text changed minimally (header locator only); any test asserting numerical retrieval equivalence would need tolerance bands.
+
+Session closed.
+
 ## Current state of the repository
 
 **What exists in the repo:**

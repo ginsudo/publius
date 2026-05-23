@@ -64,10 +64,12 @@ export function TocquevilleBrowseList({ rows }: { rows: TocquevilleRow[] }) {
               const inner = (
                 <>
                   <span className="browse-row-toc__locator">{r.locator}</span>
-                  <span className="browse-row-toc__title">{r.frenchTitle}</span>
+                  <span className="browse-row-toc__title">
+                    {r.translatedTitle ?? r.frenchTitle}
+                  </span>
                   {r.translatedTitle && (
                     <span className="browse-row-toc__translated">
-                      {r.translatedTitle}
+                      {r.frenchTitle}
                     </span>
                   )}
                   <span className="browse-row-toc__meta">{r.meta}</span>

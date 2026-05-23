@@ -223,8 +223,10 @@ function tocquevilleItemLocator(item: any): string {
   const t = item.tocqueville;
   const volRoman = t.volume === 1 ? 'I' : 'II';
   switch (t.kind) {
-    case 'chapter':
-      return `Volume ${volRoman}, Part ${t.part}, Chapter ${t.chapter}: ${item.title}`;
+    case 'chapter': {
+      const chapTitle = t.translated_title ?? item.title;
+      return `Volume ${volRoman}, Part ${t.part}, Chapter ${t.chapter}: ${chapTitle}`;
+    }
     case 'end_note': {
       // ID form: tocqueville:vol1.t1.notes.A → letter = "A"; preserves TN- prefix in Vol II.
       const m = item.id.match(/\.notes\.([A-Za-z0-9-]+)$/);
@@ -287,7 +289,7 @@ export function tocquevilleChunks(): Chunk[] {
         marker: null,
         text: `${itemHeader}\n\n${para}`,
         paper_number: null as unknown as number, // null in DB; Federalist-only field
-        title: item.title,
+        title: t.translated_title ?? item.title,
         authors_json: authorsJson,
         authorship_status: 'undisputed',
         date: item.date,
@@ -315,7 +317,7 @@ export function tocquevilleChunks(): Chunk[] {
         marker: fn.marker,
         text: `${fnHeaderItem}\nFootnote ${fn.marker}\nAuthor: Tocqueville\n\n${fnText}`,
         paper_number: null as unknown as number,
-        title: item.title,
+        title: t.translated_title ?? item.title,
         authors_json: authorsJson,
         authorship_status: 'undisputed',
         date: item.date,

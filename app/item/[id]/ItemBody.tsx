@@ -75,12 +75,20 @@ export function ItemBody({
   footnotes,
   footnotesTranslation,
   chapterSummary,
+  frenchTitle,
+  translatedTitle,
+  corpusTagText,
+  metaText,
 }: {
   translation: string[];
   french: string[];
   footnotes: Footnote[];
   footnotesTranslation: Footnote[];
   chapterSummary: string | null;
+  frenchTitle: string;
+  translatedTitle: string;
+  corpusTagText: string;
+  metaText: string;
 }) {
   // Marker set is identical across footnotes and footnotes_translation (verified
   // at build time across all 39 Vol I items); one regex covers both modes.
@@ -210,6 +218,13 @@ export function ItemBody({
 
   return (
     <>
+      <header className="item-header">
+        <p className="item-corpus-tag">{corpusTagText}</p>
+        <h1 className="item-title">
+          {mode === 'french' ? frenchTitle : translatedTitle}
+        </h1>
+        <p className="item-meta">{metaText}</p>
+      </header>
       <div className="item-mode-toggle" role="group" aria-label="Reading mode">
         <button
           type="button"

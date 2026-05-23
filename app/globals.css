@@ -331,7 +331,6 @@ main {
 
 .browse-row-toc__title {
   font-family: var(--font-display);
-  font-style: italic;
   font-size: 18px;
   line-height: 1.3;
   color: var(--text);
@@ -340,10 +339,10 @@ main {
 .browse-row-toc__translated {
   grid-column: 2;
   font-family: var(--font-body);
-  font-style: normal;
+  font-style: italic;
   font-size: 13px;
   line-height: 1.35;
-  color: var(--text-secondary);
+  color: var(--text-tertiary);
 }
 
 .browse-row-toc__meta {
