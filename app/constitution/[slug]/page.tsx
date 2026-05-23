@@ -230,7 +230,11 @@ function renderClauseGroup(group: ConstitutionItem[]): React.ReactNode[] {
 
 function renderPreamble() {
   const item = items.find((it) => it.id === 'constitution:preamble');
-  if (!item) return null;
+  if (!item) {
+    throw new Error(
+      'renderPreamble: no item with id "constitution:preamble" in constitution.json',
+    );
+  }
   return renderClauseGroup([item]);
 }
 
@@ -240,25 +244,45 @@ function renderArticle(n: number) {
       it.constitution.kind === 'body_clause' && it.constitution.article === n,
   );
 
+  if (articleItems.length === 0) {
+    throw new Error(
+      `renderArticle: no body_clause items found for Article ${n} in constitution.json`,
+    );
+  }
+
   const sections = new Map<number, ConstitutionItem[]>();
+  const unsectioned: ConstitutionItem[] = [];
   for (const it of articleItems) {
     const sec = it.constitution.section;
-    if (sec == null) continue;
-    if (!sections.has(sec)) sections.set(sec, []);
-    sections.get(sec)!.push(it);
+    if (sec == null) {
+      unsectioned.push(it);
+    } else {
+      if (!sections.has(sec)) sections.set(sec, []);
+      sections.get(sec)!.push(it);
+    }
   }
   const sectionNums = [...sections.keys()].sort((a, b) => a - b);
   const showHeadings = sectionNums.length > 1;
 
-  return sectionNums.map((sec) => {
+  const out: React.ReactNode[] = [];
+
+  if (unsectioned.length > 0) {
+    out.push(
+      <Fragment key="unsectioned">{renderClauseGroup(unsectioned)}</Fragment>,
+    );
+  }
+
+  for (const sec of sectionNums) {
     const clauses = sections.get(sec)!;
-    return (
+    out.push(
       <Fragment key={sec}>
         {showHeadings && <h2 className="const-subheading">Section {sec}.</h2>}
         {renderClauseGroup(clauses)}
-      </Fragment>
+      </Fragment>,
     );
-  });
+  }
+
+  return out;
 }
 
 function formatRatificationDate(iso: string): string {
@@ -282,6 +306,7 @@ function formatRatificationDate(iso: string): string {
 
 function renderAmendments(start: number, end: number, showDate: boolean) {
   const out: React.ReactNode[] = [];
+  let amendmentsRendered = 0;
 
   for (let n = start; n <= end; n++) {
     const amendItems = items.filter(
@@ -290,6 +315,7 @@ function renderAmendments(start: number, end: number, showDate: boolean) {
         it.constitution.amendment === n,
     );
     if (amendItems.length === 0) continue;
+    amendmentsRendered++;
 
     const hasSections = amendItems.some((it) => it.constitution.section != null);
 
@@ -332,6 +358,12 @@ function renderAmendments(start: number, end: number, showDate: boolean) {
         <Fragment key={`a-body-${n}`}>{renderClauseGroup(amendItems)}</Fragment>,
       );
     }
+  }
+
+  if (amendmentsRendered === 0) {
+    throw new Error(
+      `renderAmendments: no amendment_clause items found for amendments ${start}–${end} in constitution.json`,
+    );
   }
 
   return out;
