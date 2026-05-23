@@ -1302,14 +1302,14 @@ The 2026-05-22 Browse entry left Constitution article and amendment rows as dead
 
 ### Q&A System Prompt v0.3 — five targeted additions from cross-corpus eval (2026-05-23)
 
-v0.2 was evaluated against four cross-corpus test questions (Q-A through Q-D) before this session opened. The eval was not saved to `prompts/eval/` as a results-vX.md file the way runA/runB/runC were; the behavioral findings entered this session as user-supplied design-reasoning text, not as a re-runnable artifact. Three of the four questions produced findings concrete enough to motivate specific prompt additions and are reconstructible from the v0.3 design reasoning now committed in `config/system-prompt.md`. Q-B's specific finding is not reconstructible from this session's transcript and lives wherever the user's eval notes were kept; flagging it here as an open thread rather than fabricating one.
+v0.2 was evaluated against four cross-corpus test questions (Q-A through Q-D) before this session opened — designed as a 2×2 over question framing vs. corpus: Q-A names Federalist/implicates Tocqueville; Q-B names Tocqueville/implicates Federalist; Q-C names both; Q-D names neither. The eval was not saved to `prompts/eval/` as a results-vX.md file the way runA/runB/runC were; the behavioral findings entered this session as user-supplied design-reasoning text, not as a re-runnable artifact. All four questions produced findings recorded in `prompts/eval/cross-corpus-eval-v0.2.md` (backfilled; not a re-runnable harness artifact). The key findings are summarized below.
 
 **Findings that motivated additions.**
 
 - **Q-A (length / Federalist-heavy section).** The response produced a longer Federalist-only section than the question's center of gravity warranted. The v0.2 length nudge ("a thirty-word question rarely needs a thousand-word answer") was abstract enough to leave this failure mode unaddressed — length was tracking retrieved volume rather than question complexity.
 - **Q-C (majority tyranny / cross-corpus citation).** Tocqueville's paragraph 99 cites Federalist 51 explicitly. v0.2 had no instruction for handling a retrieved passage in direct intellectual dialogue with another corpus, so the cross-corpus citation read as incidental rather than as Tocqueville engaging Hamilton's argument.
 - **Q-D (judicial independence / unretrieved canonical text).** All ten retrieved passages were Tocqueville; Federalist 78 — the canonical text on the question — was named in the response but not retrieved. v0.2 handled out-of-corpus and weak-retrieval cases but had no instruction for the in-corpus-but-not-retrieved case, so the gap was disclosed without telling the reader what to ask to close it.
-- **Q-B.** Findings not reconstructible from this session. Additions 4 (mode-crossing positive case) and 5 (follow-up suggestion tied to gaps) don't reference Q-B specifically in the v0.3 design-reasoning text, so the mapping from Q-B to a specific addition is uncertain. May have produced the mode-crossing or follow-up evidence, or may have been a fourth eval point that didn't surface a quotable finding.
+- **Q-B (legal profession as aristocracy / Tocqueville-only retrieval).** Retrieval correctly concentrated in Tocqueville Vol. I, Pt. 2, Ch. 8 and did not drift toward Federalist material despite the question asking about institutional design choices. A pass, not a failure. No specific addition was motivated by Q-B; Additions 4 and 5 were motivated by the cross-corpus comparison work generally.
 
 **Five additions to the prompt body.** No existing instructions removed. Each placed at the end of the most-relevant prompt subsection.
 
@@ -1327,7 +1327,6 @@ v0.2 was evaluated against four cross-corpus test questions (Q-A through Q-D) be
 
 **Open threads.**
 - The v0.2-against-Q-A-through-Q-D eval has no `prompts/eval/results-*.md` artifact equivalent to runA/B/C. If the eval needs to be re-run or independently audited, it would have to be reconstructed from the user's notes. Worth deciding whether to backfill a `results-v0.2-runC-extension.md` (or similar) so the v0.3 motivation is re-runnable, or whether the user-authored design reasoning in `config/system-prompt.md` is sufficient.
-- Q-B's specific finding is not in this session's transcript and may or may not exist in the user's eval notes.
 - The convention for marking the prompt-file's version (top-level heading, `## The prompt (vX)` subheading, and the rolling `## Design reasoning` and `## Predicted failure modes` updates) is now load-bearing; worth a one-paragraph note in the prompt file itself or in `CLAUDE.md` so it's not re-derived each version.
 
 Session closed.

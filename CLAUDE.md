@@ -92,6 +92,8 @@ This is a parser-design issue worth fixing properly (read existing populated val
 
 The system prompt for the Q&A layer is the highest-stakes artifact in the project. Claude Code drafts and runs tests against it; the project owner sets it. Do not treat a system prompt that produces plausible-sounding output as done — test it against 10–15 questions spanning easy and hard cases, including cases where genuine disagreement should surface and where a naive model would flatten it.
 
+**Versioning convention.** `config/system-prompt.md` carries the full version history of the Q&A system prompt. A version bump updates the top-level heading (`# Publius Q&A System Prompt — vX`) and the prompt-span heading (`## The prompt (vX)`), adds a new `### What changed from v(X-1) to vX, and why` subsection at the top of `## Design reasoning`, and renames `## Predicted failure modes for run{N}` to `run{N+1}` while adding a new subsection of per-addition failure predictions inside it. Prior versions' design-reasoning and predicted-failure entries are preserved beneath the new ones — the file accumulates the version history rather than overwriting it. The prompt span sent to the model remains the text between the `## The prompt` heading and the first `---` rule, per the extraction convention noted at the file head.
+
 ---
 
 ## What This Project Is Not
