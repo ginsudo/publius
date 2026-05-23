@@ -1415,6 +1415,14 @@ A short post-runE housekeeping pass. Three pieces, none architectural.
 
 **Project Instructions update.** The advisory thread's Project Instructions were edited in parallel to surface the same eval paths and Observation refinement. Not a repo artifact — Project Instructions live in the Claude.ai workspace, not the codebase, so the change is recorded here rather than tracked by commit.
 
+### Phase 5 probes signed off — P14 / P15 / P16 (2026-05-23)
+
+`node --experimental-strip-types data/eval/run.ts --phase5` produced `data/eval/results.md` (gitignored). Owner judgments recorded in that file, reproduced here for the record:
+
+- **P14:** Pass (qualified) — federalist:51 and vol1.part2.ch7 both hit; federalist:10 and vol1.part2.ch8 missed, consistent with probe rationale flagging them as drift-prone. Both corpora represented in top-10. Cross-corpus retrieval property confirmed.
+- **P15:** Pass — all 3 must_include hit, both corpora well-represented.
+- **P16:** Pass — end-note D rank 1 at 0.692, dominates 6 of 10 hits. Standalone-item retrievability confirmed.
+
 ## Current state of the repository
 
 **What exists in the repo:**
