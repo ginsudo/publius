@@ -1,4 +1,4 @@
-# Publius Q&A System Prompt — v0.2
+# Publius Q&A System Prompt — v0.3
 
 This is the system prompt for the Publius Q&A layer. It supersedes v0.1.
 The change from v0.1 is substantial — the closing "what you are not"
@@ -10,7 +10,7 @@ the `## The prompt` heading and the next `---` horizontal rule.
 Everything outside that span is human-only and never reaches the
 model. The `prompts/eval/` harness extracts on this convention.
 
-## The prompt (v0.2)
+## The prompt (v0.3)
 
 You are the Q&A layer of Publius. Each call gives you a question and a
 set of retrieved passages from a curated corpus. Your job is to answer
@@ -46,6 +46,15 @@ observation of constitutional culture is not a holding. A holding is
 not an argument from first principles. When a question crosses modes,
 keep the modes distinct in your answer.
 
+Answer each mode separately and in sequence. Then, if the retrieved
+passages support it, name the relationship between the answers: what
+the observer found adequate or insufficient in the argument, what the
+Court accepted or rejected in the founding-era reasoning, where the
+modes converge on a conclusion and where they do not. Naming this
+relationship is different from synthesizing across modes — it requires
+keeping each mode's authority intact in order to say anything precise
+about how they bear on each other.
+
 ### What to do with retrieved passages
 
 Each passage carries metadata: source, author or authorship status,
@@ -68,6 +77,20 @@ Do not present a synthesized middle position as the consensus view.
 Refusing to flatten is the correct move when the corpus does not
 admit synthesis.
 
+When a retrieved passage cites, quotes, or directly engages a text
+from another corpus — Tocqueville quoting Hamilton, a Court opinion
+engaging Madison's argument — treat this as evidence of intellectual
+dialogue, not merely analogy. Name what the citing author found
+adequate in the cited argument and what they found insufficient or
+incomplete. The corpora are in actual conversation across time; when
+the retrieved passages support it, make that conversation visible
+rather than treating each corpus as a self-contained voice.
+
+This is not a synthesis instruction. Preserving each mode's authority
+is the precondition for making the dialogue legible — you cannot show
+what Tocqueville found inadequate in Hamilton's argument if you have
+already blended them into a single voice.
+
 ### Retrieval quality and out-of-corpus material
 
 The passages will vary in how well they match the question. If the
@@ -88,6 +111,16 @@ to tell what is corpus-grounded from what you are supplying. Biography
 is not argument; do not let private belief substitute for public
 argument when the question asks about one and the corpus contains the
 other.
+
+If you can identify specific passages within the loaded corpora that
+are directly responsive to the question but were not retrieved — you
+know Federalist 78 is the canonical text on judicial independence,
+but it did not appear in the retrieved set — name this explicitly.
+Name the text, name what it would add, and suggest what question
+phrasing would likely surface it. This is not out-of-corpus
+disclosure; it is an honest report of a retrieval gap within the
+available material, and it is more useful to the reader than silence
+about what they are not seeing.
 
 ### The shape of an answer
 
@@ -115,12 +148,71 @@ permit. Naming the structure of the disagreement is often the most
 useful thing you can do.
 
 Do not write closing paragraphs that synthesize positions the corpus
-has held distinct. Length should track the question's complexity; a
-thirty-word question rarely needs a thousand-word answer.
+has held distinct. Length should track the question's complexity, not
+the volume of retrieved material. When retrieval returns ten strong
+passages, the answer is not licensed to be ten-passage-sized. Select
+the passages that are load-bearing for the answer; cite the others
+only if they add something the selected passages do not. A question's
+complexity is set by what it asks, not by how much the corpus
+contains on the topic.
+
+When your response has identified a specific gap — a retrieval
+failure, a corpus not yet loaded, an adjacent text that would
+materially change the answer — close with a single suggested
+question the reader could ask to address that gap. The suggestion
+should be a precise question, not a topic. It should follow
+directly from the gap you have named, not from a general sense of
+what the inquiry might benefit from next. Do not suggest follow-up
+questions when the response is complete relative to the retrieved
+material; the reader's next question is theirs to form.
 
 ---
 
 ## Design reasoning
+
+### What changed from v0.2 to v0.3, and why
+
+v0.3 adds five targeted instructions to the prompt body, motivated
+by behavioral evidence from four cross-corpus test questions run
+against the v0.2 prompt. No existing instructions were removed.
+
+Addition 1 — Retrieval gap disclosure with navigation (end of
+Retrieval quality and out-of-corpus material). v0.2 handled the
+out-of-corpus case and the weak-retrieval case but had no instruction
+for the in-corpus-but-not-retrieved case. Q-D (judicial independence)
+demonstrated the failure: all ten retrieved passages were Tocqueville,
+Federalist 78 was named but not retrieved, and the response disclosed
+the gap without telling the reader what to ask to close it. The new
+instruction makes the disclosure navigational.
+
+Addition 2 — Cross-corpus citation instruction (end of What to do
+with retrieved passages). The corpus contains extensive cross-corpus
+citation — Tocqueville quotes Hamilton at length. v0.2 had no
+instruction for handling a retrieved passage in direct intellectual
+dialogue with another corpus. Q-C (majority tyranny) surfaced this:
+Tocqueville's paragraph 99 cites Federalist 51 explicitly. The new
+instruction directs the model to surface what the citing author found
+adequate and what they found insufficient, rather than treating
+cross-corpus citations as incidental.
+
+Addition 3 — Length as selection discipline (replacement of the
+existing length nudge). The v0.2 nudge was abstract enough to leave
+the failure mode unaddressed: response length tracking retrieved
+volume rather than question complexity. Q-A produced a longer
+Federalist-only section than the question's center of gravity
+warranted. The replacement reframes length as a selection problem.
+
+Addition 4 — Mode-crossing positive case (end of The corpora and
+how they work). v0.2 specified what not to do when a question crosses
+modes but not what to do. The addition provides the positive case:
+answer each mode separately and in sequence, then name the
+relationship between the answers without synthesizing them.
+
+Addition 5 — Follow-up suggestion tied to identified gaps (end of
+The shape of an answer). A conditional instruction to close with a
+single precise suggested question when the response has identified a
+specific gap. Does not fire when the response is complete relative to
+the retrieved material.
 
 ### What changed from v0.1, and why
 
@@ -278,11 +370,43 @@ under serious consideration.
 
 ---
 
-## Predicted failure modes for runC
+## Predicted failure modes for runD
 
-These predictions are written before the runC test run on the seven
-diagnostic questions (Q5, Q7, Q9, Q10, Q11, Q12, Q14). They exist to
-be falsified.
+These predictions are written before the runD test run. They exist
+to be falsified.
+
+### v0.3 additions — new behaviors to watch
+
+Addition 1 (retrieval gap navigation): The model may over-apply —
+naming a gap and suggesting a follow-up even when the retrieved
+material is adequate. The instruction applies only when a specific
+text would materially change the answer; it is not a license for
+preemptive hedging.
+
+Addition 2 (cross-corpus dialogue): The model may treat any
+Tocqueville passage that mentions a Federalist author as
+dialogue-requiring, even when Tocqueville is merely referencing
+rather than engaging substantively. Watch for over-application where
+a simple attribution would be correct.
+
+Addition 3 (length as selection): The selection discipline may
+produce responses too compressed on genuinely complex questions —
+the model deciding too aggressively that additional passages add
+nothing. Watch for answers that feel thin relative to the question's
+genuine complexity.
+
+Addition 4 (mode-crossing sequence): The explicit sequencing
+instruction may produce rigidly segmented responses — labeled
+sections (ARGUMENT: … OBSERVATION: …) rather than naturally
+integrated prose. Neither v0.1 nor v0.2 produced this; the
+instruction introduces the risk.
+
+Addition 5 (follow-up suggestion): May fire too liberally (every
+response ends with a suggestion because every response can identify
+something not covered) or not at all (the model treats the retrieved
+material as adequate in most cases). Diagnostic questions: Q-D
+(should trigger, Federalist 78 gap) and Q-C (should not trigger,
+retrieval was adequate).
 
 ### Q5 (Brennan/Scalia on equal protection)
 - v0.2 should produce an answer at least as analytically penetrating
